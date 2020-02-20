@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2025D08723FF3830003A05A7 /* Combine_RandomController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2025D08623FF3830003A05A7 /* Combine_RandomController.swift */; };
 		2040631723BF1B19001D0BB5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2040631623BF1B19001D0BB5 /* AppDelegate.swift */; };
 		2040631923BF1B19001D0BB5 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2040631823BF1B19001D0BB5 /* ViewController.swift */; };
 		2040631B23BF1B1B001D0BB5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2040631A23BF1B1B001D0BB5 /* Assets.xcassets */; };
@@ -24,6 +25,7 @@
 
 /* Begin PBXFileReference section */
 		13F29D9B5B10B60322A308DA /* Pods-Desk_hassou_03.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Desk_hassou_03.debug.xcconfig"; path = "Target Support Files/Pods-Desk_hassou_03/Pods-Desk_hassou_03.debug.xcconfig"; sourceTree = "<group>"; };
+		2025D08623FF3830003A05A7 /* Combine_RandomController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Combine_RandomController.swift; sourceTree = "<group>"; };
 		2040631323BF1B19001D0BB5 /* Desk_hassou_03.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Desk_hassou_03.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2040631623BF1B19001D0BB5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		2040631823BF1B19001D0BB5 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -79,6 +81,7 @@
 				2040631623BF1B19001D0BB5 /* AppDelegate.swift */,
 				208C4E5823F8F25700A586FD /* Nine_x_NineController.swift */,
 				208C4E6023FB450100A586FD /* EnlergeController.swift */,
+				2025D08623FF3830003A05A7 /* Combine_RandomController.swift */,
 				208C4E5A23F9D7E600A586FD /* List_Nine_x_NineController.swift */,
 				2040632C23BF4923001D0BB5 /* View_2_Controller.swift */,
 				2040634023BF8877001D0BB5 /* View_4_Controller.swift */,
@@ -230,6 +233,7 @@
 				2040632D23BF4923001D0BB5 /* View_2_Controller.swift in Sources */,
 				2040634123BF8877001D0BB5 /* View_4_Controller.swift in Sources */,
 				208C4E5B23F9D7E600A586FD /* List_Nine_x_NineController.swift in Sources */,
+				2025D08723FF3830003A05A7 /* Combine_RandomController.swift in Sources */,
 				208C4E5923F8F25700A586FD /* Nine_x_NineController.swift in Sources */,
 				208C4E6123FB450100A586FD /* EnlergeController.swift in Sources */,
 				2040632723BF2335001D0BB5 /* SetV.swift in Sources */,
