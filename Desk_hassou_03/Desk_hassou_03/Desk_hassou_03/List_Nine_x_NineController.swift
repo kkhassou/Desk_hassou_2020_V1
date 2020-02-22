@@ -22,6 +22,7 @@ class List_Nine_x_NineController: NSViewController, NSTableViewDelegate, NSTable
     var select_btn = NSButton()
     var return_btn = NSButton()
     var delete_btn = NSButton()
+    var new_btn = NSButton()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -43,6 +44,12 @@ class List_Nine_x_NineController: NSViewController, NSTableViewDelegate, NSTable
         delete_btn.frame = CGRect(x: 300, y: 30 , width: 75, height: 50)
         delete_btn.font = NSFont.systemFont(ofSize: 22)
         view.self.addSubview(delete_btn)
+        
+        new_btn = NSButton(title: "新規作成", target: self, action: #selector(new_db))
+        new_btn.frame = CGRect(x: 130, y: 30 , width: 150, height: 50)
+        new_btn.font = NSFont.systemFont(ofSize: 22)
+        view.self.addSubview(new_btn)
+        
         return_btn = NSButton(title: "戻る", target: self, action: #selector(return_disp))
         return_btn.frame = CGRect(x: 25, y: 30 , width: 75, height: 50)
         return_btn.font = NSFont.systemFont(ofSize: 22)
@@ -119,5 +126,12 @@ class List_Nine_x_NineController: NSViewController, NSTableViewDelegate, NSTable
             alert.addButton(withTitle: "OK")
             let response = alert.runModal()
         }
+    }
+    @objc func new_db(){
+        UserDefaults.standard.set("", forKey: "theme")
+        UserDefaults.standard.synchronize()
+        self.dismiss(nil)
+        let next = storyboard?.instantiateController(withIdentifier: "Nine_x_Nine")
+        self.presentAsModalWindow(next! as! NSViewController)
     }
 }

@@ -51,9 +51,27 @@ class Combine_RandomController: NSViewController {
         category_3.backgroundColor = NSColor.white
         self.view.addSubview(category_3)
         
+        var category_1_btn = NSButton()
+        category_1_btn.frame = CGRect(x:50, y:410 , width:100, height:30);
+        category_1_btn.stringValue = "カテゴリ_1_btn"
+        category_1_btn.font = NSFont.systemFont(ofSize: CGFloat(10))
+        self.view.addSubview(category_1_btn)
+        
+        var category_2_btn = NSButton()
+        category_2_btn.frame = CGRect(x:50, y:310 , width:100, height:30);
+        category_2_btn.stringValue = "カテゴリ_2_btn"
+        category_2_btn.font = NSFont.systemFont(ofSize: CGFloat(10))
+        self.view.addSubview(category_2_btn)
+        
+        var category_3_btn = NSButton()
+        category_3_btn.frame = CGRect(x:50, y:210 , width:100, height:30);
+        category_3_btn.stringValue = "カテゴリ_3_btn"
+        category_3_btn.font = NSFont.systemFont(ofSize: CGFloat(10))
+        self.view.addSubview(category_3_btn)
+        
         var think_idea = NSTextField()
         think_idea.frame = CGRect(x:50, y:150 , width:100, height:50);
-        think_idea.stringValue = "思い付いた事"
+        think_idea.stringValue = "思い付いた事\n考えた事など"
         think_idea.font = NSFont.systemFont(ofSize: CGFloat(15))
         think_idea.isEditable = false
         think_idea.isSelectable = false
@@ -98,7 +116,7 @@ class Combine_RandomController: NSViewController {
         
         var think_idea_content = NSTextField()
         think_idea_content.frame = CGRect(x:200, y:100 , width:300, height:100);
-        think_idea_content.stringValue = "思い付いた事"
+        think_idea_content.stringValue = "思い付いた事\n考えた事など"
         think_idea_content.font = NSFont.systemFont(ofSize: CGFloat(15))
         think_idea_content.isEditable = true
         think_idea_content.isSelectable = true
@@ -111,23 +129,24 @@ class Combine_RandomController: NSViewController {
         theme_title_btn.font = NSFont.systemFont(ofSize: CGFloat(30))
         self.view.addSubview(theme_title_btn)
         
-        var category_1_btn = NSButton()
-        category_1_btn.frame = CGRect(x:600, y:450 , width:100, height:50);
-        category_1_btn.stringValue = "カテゴリ_1_btn"
-        category_1_btn.font = NSFont.systemFont(ofSize: CGFloat(15))
-        self.view.addSubview(category_1_btn)
+        var category_1_content_btn = NSButton(title: "テーマ選択", target: self, action: #selector(category_select_click))
+            NSButton()
+        category_1_content_btn.frame = CGRect(x:600, y:450 , width:100, height:50);
+        category_1_content_btn.stringValue = "カテゴリ_1_btn"
+        category_1_content_btn.font = NSFont.systemFont(ofSize: CGFloat(15))
+        self.view.addSubview(category_1_content_btn)
         
-        var category_2_btn = NSButton()
-        category_2_btn.frame = CGRect(x:600, y:350 , width:100, height:50);
-        category_2_btn.stringValue = "カテゴリ_2_btn"
-        category_2_btn.font = NSFont.systemFont(ofSize: CGFloat(15))
-        self.view.addSubview(category_2_btn)
+        var category_2_content_btn = NSButton()
+        category_2_content_btn.frame = CGRect(x:600, y:350 , width:100, height:50);
+        category_2_content_btn.stringValue = "カテゴリ_2_btn"
+        category_2_content_btn.font = NSFont.systemFont(ofSize: CGFloat(15))
+        self.view.addSubview(category_2_content_btn)
         
-        var category_3_btn = NSButton()
-        category_3_btn.frame = CGRect(x:600, y:250 , width:100, height:50);
-        category_3_btn.stringValue = "カテゴリ_3_btn"
-        category_3_btn.font = NSFont.systemFont(ofSize: CGFloat(15))
-        self.view.addSubview(category_3_btn)
+        var category_3_content_btn = NSButton()
+        category_3_content_btn.frame = CGRect(x:600, y:250 , width:100, height:50);
+        category_3_content_btn.stringValue = "カテゴリ_3_btn"
+        category_3_content_btn.font = NSFont.systemFont(ofSize: CGFloat(15))
+        self.view.addSubview(category_3_content_btn)
         
         var think_idea_btn = NSButton()
         think_idea_btn.frame = CGRect(x:600, y:150 , width:100, height:50);
@@ -135,5 +154,7 @@ class Combine_RandomController: NSViewController {
         think_idea_btn.font = NSFont.systemFont(ofSize: CGFloat(15))
         self.view.addSubview(think_idea_btn)
     }
-    
+    @objc func category_select_click(_ sender: NSButton) {
+
+    }
 }
