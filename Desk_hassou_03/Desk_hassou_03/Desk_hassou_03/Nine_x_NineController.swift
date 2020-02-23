@@ -562,10 +562,8 @@ class Nine_x_NineController: NSViewController {
                 break
             }            
         }
-//        let deletting = realm.objects(Nine_x_Nine_Stock.self).filter("y4_x4 == %@",deletting_theme)
 
         try! realm.write() {
-//            realm.delete(deletting)
             realm.add(stock)
         }
         self.dismiss(nil)

@@ -15,6 +15,7 @@ class View_0_Controller: NSViewController, NSComboBoxDataSource{
     var mHintCategory = ""
     var randam_brest_btn = NSButton()
     var randam_9x9_btn = NSButton()
+    var combine_random_btn = NSButton()
     var comboBox =  NSComboBox()
     var dataArray:[String] = []
     let realm = try! Realm()
@@ -60,6 +61,11 @@ class View_0_Controller: NSViewController, NSComboBoxDataSource{
         randam_9x9_btn.frame = CGRect(x: 50, y: 100 , width: 250, height: 50)
         randam_9x9_btn.font = NSFont.systemFont(ofSize: 22)
         self.view.addSubview(randam_9x9_btn)
+        
+        combine_random_btn = NSButton(title: "ランダム組み合わせ", target: self, action: #selector(combine_random_click))
+        combine_random_btn.frame = CGRect(x: 50, y: 0 , width: 250, height: 50)
+        combine_random_btn.font = NSFont.systemFont(ofSize: 22)
+        self.view.addSubview(combine_random_btn)
     }
     @objc func randam_brest_click(_ sender: NSButton) {
         UserDefaults.standard.set(mHintCategory, forKey: "mHintCategory")
@@ -70,6 +76,11 @@ class View_0_Controller: NSViewController, NSComboBoxDataSource{
     }
     @objc func nine_x_nine_brest_click(_ sender: NSButton) {
         let next = storyboard?.instantiateController(withIdentifier: "List_Nine_x_Nine")
+        self.presentAsModalWindow(next! as! NSViewController)
+        self.dismiss(nil)
+    }
+    @objc func combine_random_click(_ sender: NSButton) {
+        let next = storyboard?.instantiateController(withIdentifier: "Combine_Random")
         self.presentAsModalWindow(next! as! NSViewController)
         self.dismiss(nil)
     }

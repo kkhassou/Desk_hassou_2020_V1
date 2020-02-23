@@ -10,11 +10,17 @@ import Foundation
 import RealmSwift
 import Cocoa
 
+class Rnadom_Conb_Db: Object{
+    @objc dynamic var hint_1 = ""
+    @objc dynamic var hint_2 = ""
+    @objc dynamic var hint_3 = ""
+    @objc dynamic var think = ""
+}
+
 class Hint_Db: Object{
     @objc dynamic var theme = the_theme
     @objc dynamic var content = ""
 }
-
 class Idea_Stock: Object{
     @objc dynamic var theme = ""
     @objc dynamic var hint = ""
