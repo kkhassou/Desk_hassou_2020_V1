@@ -20,7 +20,6 @@
 		2040632D23BF4923001D0BB5 /* View_2_Controller.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2040632C23BF4923001D0BB5 /* View_2_Controller.swift */; };
 		2040633423BF7B54001D0BB5 /* View_0_Controller.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2040633223BF7B54001D0BB5 /* View_0_Controller.swift */; };
 		2040633B23BF8370001D0BB5 /* View_3_Controller.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2040633A23BF8370001D0BB5 /* View_3_Controller.swift */; };
-		2040634123BF8877001D0BB5 /* View_4_Controller.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2040634023BF8877001D0BB5 /* View_4_Controller.swift */; };
 		208C4E5923F8F25700A586FD /* Nine_x_NineController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 208C4E5823F8F25700A586FD /* Nine_x_NineController.swift */; };
 		208C4E5B23F9D7E600A586FD /* List_Nine_x_NineController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 208C4E5A23F9D7E600A586FD /* List_Nine_x_NineController.swift */; };
 		208C4E6123FB450100A586FD /* EnlergeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 208C4E6023FB450100A586FD /* EnlergeController.swift */; };
@@ -46,7 +45,6 @@
 		2040632C23BF4923001D0BB5 /* View_2_Controller.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = View_2_Controller.swift; sourceTree = "<group>"; };
 		2040633223BF7B54001D0BB5 /* View_0_Controller.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = View_0_Controller.swift; sourceTree = "<group>"; };
 		2040633A23BF8370001D0BB5 /* View_3_Controller.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = View_3_Controller.swift; sourceTree = "<group>"; };
-		2040634023BF8877001D0BB5 /* View_4_Controller.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = View_4_Controller.swift; sourceTree = "<group>"; };
 		208C4E5823F8F25700A586FD /* Nine_x_NineController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Nine_x_NineController.swift; sourceTree = "<group>"; };
 		208C4E5A23F9D7E600A586FD /* List_Nine_x_NineController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = List_Nine_x_NineController.swift; sourceTree = "<group>"; };
 		208C4E6023FB450100A586FD /* EnlergeController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnlergeController.swift; sourceTree = "<group>"; };
@@ -97,7 +95,6 @@
 				2025D08C24026878003A05A7 /* List_Combine_RandomController.swift */,
 				2025D08A24024C8A003A05A7 /* List_Content_Combine_RandomController.swift */,
 				2040632C23BF4923001D0BB5 /* View_2_Controller.swift */,
-				2040634023BF8877001D0BB5 /* View_4_Controller.swift */,
 				2040633223BF7B54001D0BB5 /* View_0_Controller.swift */,
 				2025D08E240359E0003A05A7 /* Group_DivideController.swift */,
 				2040633A23BF8370001D0BB5 /* View_3_Controller.swift */,
@@ -249,7 +246,6 @@
 				2025D08924010541003A05A7 /* List_Theme_Combine_RandomController.swift in Sources */,
 				2040632D23BF4923001D0BB5 /* View_2_Controller.swift in Sources */,
 				2025D08F240359E0003A05A7 /* Group_DivideController.swift in Sources */,
-				2040634123BF8877001D0BB5 /* View_4_Controller.swift in Sources */,
 				20BCD3C9240B6DDD00E12208 /* U.swift in Sources */,
 				208C4E5B23F9D7E600A586FD /* List_Nine_x_NineController.swift in Sources */,
 				2025D08723FF3830003A05A7 /* Combine_RandomController.swift in Sources */,

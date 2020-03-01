@@ -11,7 +11,6 @@ import Realm
 import RealmSwift
 
 class ViewController: NSViewController {
-
     
     let realm = try! Realm()
     
@@ -26,6 +25,9 @@ class ViewController: NSViewController {
     let SELF_HEITHT = 675
     
     var theme_title = NSTextField()
+    var theme_title_p = Param(st_ :"テーマ",x_:20,y_:600)
+    let theme_title_tpl: (st:String,x:Int,y:Int,width:Int,height:Int,font:Int)
+        = (st:"テーマ",x:20,y:600,width:100,height:50,font:30)
     let THEME_TITLE_ST = "テーマ"
     let THEME_TITLE_X = 20
     let THEME_TITLE_Y = 600
@@ -75,7 +77,6 @@ class ViewController: NSViewController {
     let IDEA_COUNT_HEITHT = 50
     let IDEA_COUNT_FONT_SIZE = 30
     
-    var theme_change_btn = NSButton()
     let THEME_CHANGE_BTN_ST = "テーマ変更"
     let THEME_CHANGE_BTN_X = 140
     let THEME_CHANGE_BTN_Y = 600
@@ -84,7 +85,6 @@ class ViewController: NSViewController {
     let THEME_CHANGE_BTN_FONT = 22
     let THEME_CHANGE_BTN_CLICK = #selector(theme_change_click)
     
-    var theme_select_btn = NSButton()
     let THEME_SELECT_BTN_ST = "テーマ選択"
     let THEME_SELECT_BTN_X = 300
     let THEME_SELECT_BTN_Y = 600
@@ -93,7 +93,6 @@ class ViewController: NSViewController {
     let THEME_SELECT_BTN_FONT = 22
     let THEME_SELECT_BTN_CLICK = #selector(theme_select_click)
     
-    var randam_store_btn = NSButton()
     let RANDOM_STORE_BTN_ST = "ランダム&保存"
     let RANDOM_STORE_BTN_X = 300
     let RANDOM_STORE_BTN_Y = 25
@@ -103,7 +102,9 @@ class ViewController: NSViewController {
     let RANDOM_STORE_BTN_CLICK = #selector(randam_store_click)
     
     var hintArray:[Hint_Db] = []
+
     override func viewDidLoad() {
+        
         m_HintCategory = UserDefaults.standard.object(forKey: "mHintCategory") as! String
         super.viewDidLoad()
         
@@ -112,7 +113,7 @@ class ViewController: NSViewController {
         self.view.frame = CGRect(x:SELF_X, y:SELF_Y , width:SELF_WIDTH, height:SELF_HEITHT);
         self.view.wantsLayer = true
         self.view.layer?.backgroundColor = NSColor.white.cgColor
-    U().text_generate(nsText:theme_title,view:self.view,x:THEME_TITLE_X,y:THEME_TITLE_Y,width:THEME_TITLE_WIDTH,height:THEME_TITLE_HEITHT,st:THEME_TITLE_ST,input_flag:false,fontSize:THEME_TITLE_FONT_SIZE,ajust_flag:false,border_flag:true)
+    U().text_generate(nsText:theme_title,view:self.view,x:theme_title_tpl.x,y:theme_title_tpl.y,width:theme_title_tpl.width,height:theme_title_tpl.height,st:theme_title_tpl.st,input_flag:false,fontSize:theme_title_tpl.font,ajust_flag:false,border_flag:true)
     U().text_generate(nsText:theme_content,view:self.view,x:THEME_CONTENT_X,y:THEME_CONTENT_Y,width:THEME_CONTENT_WIDTH,height:THEME_CONTENT_HEITHT,st:m_theme,input_flag:false,fontSize:0,ajust_flag:true,border_flag:false)
     U().text_generate(nsText:hint_title,view:self.view,x:HINT_TITLE_X,y:HINT_TITLE_Y,width:HINT_TITLE_WIDTH,height:HINT_TITLE_HEITHT,st:HINT_TITLE_ST,input_flag:false,fontSize:HINT_TITLE_FONT_SIZE,ajust_flag:false,border_flag:true)
    

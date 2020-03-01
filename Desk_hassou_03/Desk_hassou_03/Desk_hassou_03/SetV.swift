@@ -10,6 +10,16 @@ import Foundation
 import RealmSwift
 import Cocoa
 
+class Param{
+    var st = ""
+    var x = 0
+    var y = 0
+    init(st_ :String,x_:Int,y_:Int) {
+        self.st = st_
+        self.x = x_
+        self.y = y_
+    }
+}
 
 class Group_Divide_Db: Object{
     @objc dynamic var theme = ""

@@ -67,11 +67,51 @@ class Group_DivideController: NSViewController, NSComboBoxDataSource{
     let GROUP_CONTENT_FONT_SIZE = 13
     
     var group_input = NSTextField()
+    let GROUP_INPUT_X = 10
+    let GROUP_INPUT_Y = 235
+    let GROUP_INPUT_WIDTH = 480
+    let GROUP_INPUT_HEITHT = 20
+    let GROUP_INPUT_FONT_SIZE = 13
     
     var comment_title = NSTextField()
-    
-    var comment_input = NSTextField()
+    let COMENT_TITLE_ST = "コメント"
+    let COMENT_TITLE_X = 10
+    let COMENT_TITLE_Y = 185
+    let COMENT_TITLE_WIDTH = 70
+    let COMENT_TITLE_HEITHT = 20
+    let COMENT_TITLE_FONT_SIZE = 13
 
+    var comment_input = NSTextField()
+    let COMENT_INPUT_X = 10
+    let COMENT_INPUT_Y = 85
+    let COMENT_INPUT_WIDTH = 480
+    let COMENT_INPUT_HEITHT = 80
+    let COMENT_INPUT_FONT_SIZE = 13
+    
+    let GROUP_INPUT_BTN_ST = "リストにセット"
+    let GROUP_INPUT_BTN_X = 380
+    let GROUP_INPUT_BTN_Y = 205
+    let GROUP_INPUT_BTN_WIDTH = 120
+    let GROUP_INPUT_BTN_HEIGHT = 30
+    let GROUP_INPUT_BTN_FONT_SIZE = 10
+    let GROUP_INPUT_BTN_CLICK = #selector(group_input_click)
+    
+    let NEXT_IDEA_BTN_ST = "次へ"
+    let NEXT_IDEA_BTN_X = 135
+    let NEXT_IDEA_BTN_Y = 0
+    let NEXT_IDEA_BTN_WIDTH = 100
+    let NEXT_IDEA_BTN_HEIGHT = 50
+    let NEXT_IDEA_BTN_FONT_SIZE = 22
+    let NEXT_IDEA_BTN_CLICK = #selector(next_idea_click)
+    
+    let RETURN_IDEA_BTN_ST = "前へ"
+    let RETURN_IDEA_BTN_X = 25
+    let RETURN_IDEA_BTN_Y = 0
+    let RETURN_IDEA_BTN_WIDTH = 100
+    let RETURN_IDEA_BTN_HEIGHT = 50
+    let RETURN_IDEA_BTN_FONT_SIZE = 22
+    let RETURN_IDEA_BTN_CLICK = #selector(return_idea_click)
+    
     var m_stock_num = 0
     var m_theme = ""
     var m_idea = ""
@@ -114,67 +154,27 @@ class Group_DivideController: NSViewController, NSComboBoxDataSource{
         comboBox.isEditable = false
         comboBox.stringValue = ""
         self.view.addSubview(comboBox)
-        
-        group_input.frame = CGRect(x:10, y:235 , width:480, height:20);
-        group_input.stringValue = ""
-        group_input.font = NSFont.systemFont(ofSize: 13)
-        group_input.backgroundColor = NSColor.white
-        self.view.addSubview(group_input)
-                
-        comment_title.frame = CGRect(x:10, y:185 , width:70, height:20);
-        comment_title.stringValue = "コメント"
-        comment_title.font = NSFont.systemFont(ofSize: 13)
-        comment_title.isEditable = false
-        comment_title.isSelectable = false
-        comment_title.isBordered = true
-        comment_title.backgroundColor = NSColor.white
-        self.view.addSubview(comment_title)
-        
-        comment_input.frame = CGRect(x:10, y:85 , width:480, height:80);
-        comment_input.stringValue = ""
-        comment_input.font = NSFont.systemFont(ofSize: 13)
-        comment_input.backgroundColor = NSColor.white
-        self.view.addSubview(comment_input)
+    U().text_generate(nsText:group_input,view:self.view,x:GROUP_INPUT_X,y:GROUP_INPUT_Y,width:GROUP_INPUT_WIDTH,height:GROUP_INPUT_HEITHT,st:"",input_flag:true,fontSize:GROUP_INPUT_FONT_SIZE,ajust_flag:false,border_flag:true)
+    U().text_generate(nsText:comment_title,view:self.view,x:COMENT_TITLE_X,y:COMENT_TITLE_Y,width:COMENT_TITLE_WIDTH,height:COMENT_TITLE_HEITHT,st:COMENT_TITLE_ST,input_flag:false,fontSize:COMENT_TITLE_FONT_SIZE,ajust_flag:false,border_flag:true)
         
         // 値があれば、上書きする
         db_select_and_disp()
         
-        var group_1_input_btn = NSButton(title:"リストにセット", target: self, action: #selector(group_1_input_click))
-        group_1_input_btn.frame = CGRect(x:380, y:205 , width:120, height:30);
-        group_1_input_btn.font = NSFont.systemFont(ofSize: CGFloat(10))
-        self.view.addSubview(group_1_input_btn)
+        U().button_generate(viewCon : self ,view:self.view,x:GROUP_INPUT_BTN_X,y:GROUP_INPUT_BTN_Y,width:GROUP_INPUT_BTN_WIDTH,height:GROUP_INPUT_BTN_HEIGHT,st:GROUP_INPUT_BTN_ST,fontSize:GROUP_INPUT_BTN_FONT_SIZE,action: GROUP_INPUT_BTN_CLICK)
         
-        var next_idea_btn = NSButton(title: "次へ", target: self, action: #selector(next_idea_click))
-        next_idea_btn.frame = CGRect(x: 135, y: 0 , width: 100, height: 50)
-        next_idea_btn.font = NSFont.systemFont(ofSize: 22)
-        view.self.addSubview(next_idea_btn)
+        U().button_generate(viewCon : self ,view:self.view,x:NEXT_IDEA_BTN_X,y:NEXT_IDEA_BTN_Y,width:NEXT_IDEA_BTN_WIDTH,height:NEXT_IDEA_BTN_HEIGHT,st:NEXT_IDEA_BTN_ST,fontSize:NEXT_IDEA_BTN_FONT_SIZE,action: NEXT_IDEA_BTN_CLICK)
         
-        var return_idea_btn = NSButton(title: "前へ", target: self, action: #selector(return_idea_click))
-        return_idea_btn.frame = CGRect(x: 25, y: 0 , width: 100, height: 50)
-        return_idea_btn.font = NSFont.systemFont(ofSize: 22)
-        view.self.addSubview(return_idea_btn)
+        U().button_generate(viewCon : self ,view:self.view,x:RETURN_IDEA_BTN_X,y:RETURN_IDEA_BTN_Y,width:RETURN_IDEA_BTN_WIDTH,height:RETURN_IDEA_BTN_HEIGHT,st:RETURN_IDEA_BTN_ST,fontSize:RETURN_IDEA_BTN_FONT_SIZE,action: RETURN_IDEA_BTN_CLICK)
     }
     func db_select_and_disp(){
         var temp =
             realm.objects(Group_Divide_Db.self).filter(" theme == %@",m_theme).filter(" idea == %@",m_idea).last
         if temp != nil{
-            print("temp!.gourp_label")
-            print(temp!.gourp_label)
         U().text_generate(nsText:group_content,view:self.view,x:GROUP_CONTENT_X,y:GROUP_CONTENT_Y,width:GROUP_CONTENT_WIDTH,height:GROUP_CONTENT_HEITHT,st:temp!.gourp_label,input_flag:false,fontSize:GROUP_CONTENT_FONT_SIZE,ajust_flag:false,border_flag:false)
-            
-            comment_input.frame = CGRect(x:10, y:85 , width:480, height:80);
-            comment_input.stringValue = temp!.comment
-            comment_input.font = NSFont.systemFont(ofSize: 13)
-            comment_input.backgroundColor = NSColor.white
-            self.view.addSubview(comment_input)
+        U().text_generate(nsText:comment_input,view:self.view,x:COMENT_INPUT_X,y:COMENT_INPUT_Y,width:COMENT_INPUT_WIDTH,height:COMENT_INPUT_HEITHT,st:temp!.comment,input_flag:true,fontSize:COMENT_INPUT_FONT_SIZE,ajust_flag:false,border_flag:true)
         }else{
         U().text_generate(nsText:group_content,view:self.view,x:GROUP_CONTENT_X,y:GROUP_CONTENT_Y,width:GROUP_CONTENT_WIDTH,height:GROUP_CONTENT_HEITHT,st:"",input_flag:false,fontSize:GROUP_CONTENT_FONT_SIZE,ajust_flag:false,border_flag:false)
-            
-            comment_input.frame = CGRect(x:10, y:85 , width:480, height:80);
-            comment_input.stringValue = ""
-            comment_input.font = NSFont.systemFont(ofSize: 13)
-            comment_input.backgroundColor = NSColor.white
-            self.view.addSubview(comment_input)
+        U().text_generate(nsText:comment_input,view:self.view,x:COMENT_INPUT_X,y:COMENT_INPUT_Y,width:COMENT_INPUT_WIDTH,height:COMENT_INPUT_HEITHT,st:"",input_flag:true,fontSize:COMENT_INPUT_FONT_SIZE,ajust_flag:false,border_flag:true)
         }
     }
     func db_insert(){
@@ -221,7 +221,7 @@ class Group_DivideController: NSViewController, NSComboBoxDataSource{
         
         db_select_and_disp()
     }
-    @objc func group_1_input_click(){    U().text_generate(nsText:group_content,view:self.view,x:GROUP_CONTENT_X,y:GROUP_CONTENT_Y,width:GROUP_CONTENT_WIDTH,height:GROUP_CONTENT_HEITHT,st:group_input.stringValue,input_flag:false,fontSize:GROUP_CONTENT_FONT_SIZE,ajust_flag:false,border_flag:false)
+    @objc func group_input_click(){    U().text_generate(nsText:group_content,view:self.view,x:GROUP_CONTENT_X,y:GROUP_CONTENT_Y,width:GROUP_CONTENT_WIDTH,height:GROUP_CONTENT_HEITHT,st:group_input.stringValue,input_flag:false,fontSize:GROUP_CONTENT_FONT_SIZE,ajust_flag:false,border_flag:false)
     }
     func numberOfItems(in comboBox: NSComboBox) -> Int {
         return m_dataArray.count
