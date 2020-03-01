@@ -12,249 +12,136 @@ import RealmSwift
 
 class ViewController: NSViewController {
 
-    var mHintCategory = ""
     
     let realm = try! Realm()
     
+    var m_theme = ""
+    var m_HintCategory = ""
+    
+    let IDEA_COUNT_SERCH_KEY = "theme"
+    
+    let SELF_X = 10
+    let SELF_Y = 10
+    let SELF_WIDTH = 500
+    let SELF_HEITHT = 675
+    
     var theme_title = NSTextField()
-    var theme_change_btn = NSButton()
-    var theme_select_btn = NSButton()
+    let THEME_TITLE_ST = "テーマ"
+    let THEME_TITLE_X = 20
+    let THEME_TITLE_Y = 600
+    let THEME_TITLE_WIDTH = 100
+    let THEME_TITLE_HEITHT = 50
+    let THEME_TITLE_FONT_SIZE = 30
+    
     var theme_content = NSTextField()
-    var theme_idea_count = NSTextField()
+    let THEME_CONTENT_X = 50
+    let THEME_CONTENT_Y = 480
+    let THEME_CONTENT_WIDTH = 400
+    let THEME_CONTENT_HEITHT = 100
+    
     var hint_title = NSTextField()
+    let HINT_TITLE_ST = "ヒント"
+    let HINT_TITLE_X = 20
+    let HINT_TITLE_Y = 400
+    let HINT_TITLE_WIDTH = 100
+    let HINT_TITLE_HEITHT = 50
+    let HINT_TITLE_FONT_SIZE = 30
+    
     var hint_content = NSTextField()
+    let HINT_CONTENT_X = 50
+    let HINT_CONTENT_Y = 270
+    let HINT_CONTENT_WIDTH = 400
+    let HINT_CONTENT_HEITHT = 100
+    
     var idea_title = NSTextField()
+    let IDEA_TITLE_ST = "アイデア"
+    let IDEA_TITLE_X = 20
+    let IDEA_TITLE_Y = 200
+    let IDEA_TITLE_WIDTH = 125
+    let IDEA_TITLE_HEITHT = 50
+    let IDEA_TITLE_FONT_SIZE = 30
+    
     var idea_input = NSTextField()
+    let IDEA_INPUT_X = 50
+    let IDEA_INPUT_Y = 75
+    let IDEA_INPUT_WIDTH = 400
+    let IDEA_INPUT_HEITHT = 100
+    let IDEA_INPUT_FONT_SIZE = 20
+    
+    var idea_count = NSTextField()
+    let IDEA_COUNT_X = 450
+    let IDEA_COUNT_Y = 600
+    let IDEA_COUNT_WIDTH = 50
+    let IDEA_COUNT_HEITHT = 50
+    let IDEA_COUNT_FONT_SIZE = 30
+    
+    var theme_change_btn = NSButton()
+    let THEME_CHANGE_BTN_ST = "テーマ変更"
+    let THEME_CHANGE_BTN_X = 140
+    let THEME_CHANGE_BTN_Y = 600
+    let THEME_CHANGE_BTN_WIDTH = 150
+    let THEME_CHANGE_BTN_HEIGHT = 50
+    let THEME_CHANGE_BTN_FONT = 22
+    let THEME_CHANGE_BTN_CLICK = #selector(theme_change_click)
+    
+    var theme_select_btn = NSButton()
+    let THEME_SELECT_BTN_ST = "テーマ選択"
+    let THEME_SELECT_BTN_X = 300
+    let THEME_SELECT_BTN_Y = 600
+    let THEME_SELECT_BTN_WIDTH = 150
+    let THEME_SELECT_BTN_HEIGHT = 50
+    let THEME_SELECT_BTN_FONT = 22
+    let THEME_SELECT_BTN_CLICK = #selector(theme_select_click)
+    
     var randam_store_btn = NSButton()
+    let RANDOM_STORE_BTN_ST = "ランダム&保存"
+    let RANDOM_STORE_BTN_X = 300
+    let RANDOM_STORE_BTN_Y = 25
+    let RANDOM_STORE_BTN_WIDTH = 180
+    let RANDOM_STORE_BTN_HEIGHT = 50
+    let RANDOM_STORE_BTN_FONT = 22
+    let RANDOM_STORE_BTN_CLICK = #selector(randam_store_click)
+    
     var hintArray:[Hint_Db] = []
     override func viewDidLoad() {
-        mHintCategory = UserDefaults.standard.object(forKey: "mHintCategory") as! String
-        // 内容を一覧するためにの処理。不要な時はfalseにしておく。
-        if true{
-            let stocks = realm.objects(Nine_x_Nine_Stock.self)
-            if stocks.count == 0{
-                print("NO Nine_x_Nine_Stock")
-            }else{
-                for one in stocks{
-                    print(one.y4_x4)
-                }
-            }
-        }
-        if false{
-            let stocks = realm.objects(Nine_x_Nine_Stock.self)
-            try! realm.write {
-                realm.delete(stocks)
-            }
-
-        }
-        if false{
-            let stocks = realm.objects(Idea_Stock.self)
-            var temp:[String] = []
-            for one in stocks{
-                temp.append(one.theme)
-            }
-            let orderedSet = NSOrderedSet(array: temp)
-            let uniques = orderedSet.array as! [String]
-            var temp_2:[Idea_Stock] = []
-            for one_stocks in stocks{
-                var reFlag = false
-                for temp_2_one in temp_2{
-                    if temp_2_one.idea == one_stocks.idea
-                        && temp_2_one.theme == one_stocks.theme{
-                        reFlag = true
-                    }
-                }
-                if reFlag == false{
-                    temp_2.append(one_stocks)
-                }
-            }
-            for one_uniques in uniques{
-                print("------------------------------")
-                print("theme:" + one_uniques)
-                for one_temp_2 in temp_2{
-                    if one_uniques == one_temp_2.theme{
-                        print("・" + one_temp_2.idea)
-                    }
-                }
-            }
-        }
-        // DB関係の操作
-        if false{
-            var hint_Db_s :[Hint_Db] = []
-            for one in simple_hint_1{
-                let hint_Db = Hint_Db()
-                hint_Db.theme = simple_hint_1_theme
-                hint_Db.content  = one
-                hint_Db_s.append(hint_Db)
-            }
-            for one in triz_1{
-                let hint_Db = Hint_Db()
-                hint_Db.theme = triz_1_theme
-                hint_Db.content  = one
-                hint_Db_s.append(hint_Db)
-            }
-            for one in braneStearing_1{
-                let hint_Db = Hint_Db()
-                hint_Db.theme = braneStearing_1_theme
-                hint_Db.content  = one
-                hint_Db_s.append(hint_Db)
-            }
-            for one in osborneChecklist_1{
-                let hint_Db = Hint_Db()
-                hint_Db.theme = osborneChecklist_1_theme
-                hint_Db.content  = one
-                hint_Db_s.append(hint_Db)
-            }
-            for one in not_related_hint_1{
-                let hint_Db = Hint_Db()
-                hint_Db.theme = not_related_hint_1_theme
-                hint_Db.content  = one
-                hint_Db_s.append(hint_Db)
-            }
-            try! realm.write() {
-                realm.add(hint_Db_s)
-            }
-            print("test-----")
-            let hint_Db_select = realm.objects(Hint_Db.self)//
-            for one in hint_Db_select{
-                print("^^^^^^")
-                print(one.theme)
-                print(one.content)
-                print("^^^^^^")
-            }
-            print("test-----")
-        }
-        if false{
-            var hint_Db_s :[Hint_Db] = []
-            for one in myThemes_1{
-                let hint_Db = Hint_Db()
-                hint_Db.theme = myThemes_1_theme
-                hint_Db.content  = one
-                hint_Db_s.append(hint_Db)
-            }
-            try! realm.write() {
-                realm.add(hint_Db_s)
-            }
-            let themeSelect = realm.objects(Hint_Db.self).filter("theme == %@", myThemes_1_theme)
-            var idea_Stock = Idea_Stock()
-            var idea_Stock_s:[Idea_Stock] = []
-            for one in themeSelect{
-                var idea_Stock = Idea_Stock()
-                idea_Stock.theme = one.theme
-                idea_Stock.idea = one.content
-                idea_Stock_s.append(idea_Stock)
-            }
-            try! realm.write() {
-                realm.add(idea_Stock_s)
-            }
-        }
+        m_HintCategory = UserDefaults.standard.object(forKey: "mHintCategory") as! String
         super.viewDidLoad()
         
-        var theme = UserDefaults.standard.object(forKey: "theme") as! String
+        m_theme = UserDefaults.standard.object(forKey: "theme") as! String
         
-        self.view.frame = CGRect(x:10, y:10 , width:500, height:675);
+        self.view.frame = CGRect(x:SELF_X, y:SELF_Y , width:SELF_WIDTH, height:SELF_HEITHT);
         self.view.wantsLayer = true
         self.view.layer?.backgroundColor = NSColor.white.cgColor
+    U().text_generate(nsText:theme_title,view:self.view,x:THEME_TITLE_X,y:THEME_TITLE_Y,width:THEME_TITLE_WIDTH,height:THEME_TITLE_HEITHT,st:THEME_TITLE_ST,input_flag:false,fontSize:THEME_TITLE_FONT_SIZE,ajust_flag:false,border_flag:true)
+    U().text_generate(nsText:theme_content,view:self.view,x:THEME_CONTENT_X,y:THEME_CONTENT_Y,width:THEME_CONTENT_WIDTH,height:THEME_CONTENT_HEITHT,st:m_theme,input_flag:false,fontSize:0,ajust_flag:true,border_flag:false)
+    U().text_generate(nsText:hint_title,view:self.view,x:HINT_TITLE_X,y:HINT_TITLE_Y,width:HINT_TITLE_WIDTH,height:HINT_TITLE_HEITHT,st:HINT_TITLE_ST,input_flag:false,fontSize:HINT_TITLE_FONT_SIZE,ajust_flag:false,border_flag:true)
+   
+        U().random_hint_disp(ns_content : hint_content ,view : self.view, realm: realm,x:HINT_CONTENT_X,y:HINT_CONTENT_Y,width:HINT_CONTENT_WIDTH,height:HINT_CONTENT_HEITHT,key_content:m_HintCategory)
+    U().text_generate(nsText:idea_title,view:self.view,x:IDEA_TITLE_X,y:IDEA_TITLE_Y,width:IDEA_TITLE_WIDTH,height:IDEA_TITLE_HEITHT,st:IDEA_TITLE_ST,input_flag:false,fontSize:IDEA_TITLE_FONT_SIZE,ajust_flag:false,border_flag:true)
+    U().text_generate(nsText:idea_input,view:self.view,x:IDEA_INPUT_X,y:IDEA_INPUT_Y,width:IDEA_INPUT_WIDTH,height:IDEA_INPUT_HEITHT,st:"",input_flag:true,fontSize:IDEA_INPUT_FONT_SIZE,ajust_flag:false,border_flag:true)
         
-        theme_title.frame = CGRect(x:20, y:600 , width:100, height:50);
-        theme_title.stringValue = "テーマ"
-        theme_title.font = NSFont.systemFont(ofSize: CGFloat(30))
-        theme_title.isEditable = false
-        theme_title.isSelectable = false
-        theme_title.backgroundColor = NSColor.white
-        self.view.addSubview(theme_title)
+        U().idea_count_disp(ns_content : theme_content ,ns_count : idea_count ,view : self.view, realm: realm,x:IDEA_COUNT_X,y:IDEA_COUNT_Y,width:IDEA_COUNT_WIDTH,height:IDEA_COUNT_HEITHT,key:IDEA_COUNT_SERCH_KEY,fontSize:IDEA_COUNT_FONT_SIZE,dbObj:Idea_Stock.self)
         
-        theme_change_btn = NSButton(title: "テーマ変更", target: self, action: #selector(theme_change_click))
-        theme_change_btn.frame = CGRect(x: 140, y: 600 , width: 150, height: 50)
-        theme_change_btn.font = NSFont.systemFont(ofSize: 22)
-        view.self.addSubview(theme_change_btn)
+        U().button_generate(viewCon : self ,view:self.view,x:THEME_CHANGE_BTN_X,y:THEME_CHANGE_BTN_Y,width:THEME_CHANGE_BTN_WIDTH,height:THEME_CHANGE_BTN_HEIGHT,st:THEME_CHANGE_BTN_ST,fontSize:THEME_CHANGE_BTN_FONT,action: THEME_CHANGE_BTN_CLICK)
 
-        theme_select_btn = NSButton(title: "テーマ選択", target: self, action: #selector(theme_select_click))
-        theme_select_btn.frame = CGRect(x: 300, y: 600 , width: 150, height: 50)
-        theme_select_btn.font = NSFont.systemFont(ofSize: 22)
-        view.self.addSubview(theme_select_btn)
+        U().button_generate(viewCon : self ,view:self.view,x:THEME_SELECT_BTN_X,y:THEME_SELECT_BTN_Y,width:THEME_SELECT_BTN_WIDTH,height:THEME_SELECT_BTN_HEIGHT,st:THEME_SELECT_BTN_ST,fontSize:THEME_SELECT_BTN_FONT,action: THEME_SELECT_BTN_CLICK)
         
-        theme_content.frame = CGRect(x:50, y:500 , width:400, height:50);
-        theme_content.stringValue = theme
-        theme_content.font = NSFont.systemFont(ofSize: CGFloat(30))
-        theme_content.isEditable = false
-        theme_content.isSelectable = false
-        theme_content.isBordered = false
-        theme_content.backgroundColor = NSColor.white
-        self.view.addSubview(theme_content)
-        
-        hint_title.frame = CGRect(x:20, y:400 , width:100, height:50);
-        hint_title.stringValue = "ヒント"
-        hint_title.font = NSFont.systemFont(ofSize: CGFloat(30))
-        hint_title.isEditable = false
-        hint_title.isSelectable = false
-        hint_title.backgroundColor = NSColor.white
-        self.view.addSubview(hint_title)
-        
-        idea_title.frame = CGRect(x:20, y:200 , width:125, height:50);
-        idea_title.stringValue = "アイデア"
-        idea_title.font = NSFont.systemFont(ofSize: CGFloat(30))
-        idea_title.isEditable = false
-        idea_title.isSelectable = false
-        idea_title.backgroundColor = NSColor.white
-        self.view.addSubview(idea_title)
-        
-        idea_input.frame = CGRect(x:50, y:75 , width:400, height:100);
-        idea_input.stringValue = ""
-        idea_input.font = NSFont.systemFont(ofSize: CGFloat(20))
-        idea_input.backgroundColor = NSColor.white
-        self.view.addSubview(idea_input)
-        
-        randam_store_btn = NSButton(title: "ランダム&保存", target: self, action: #selector(randam_store_click))
-        randam_store_btn.frame = CGRect(x: 300, y: 25 , width: 180, height: 50)
-        randam_store_btn.font = NSFont.systemFont(ofSize: 22)
-        view.self.addSubview(randam_store_btn)
-        
-        random_hint_disp_part_1()
-        idea_count_disp()
+        U().button_generate(viewCon : self ,view:self.view,x:RANDOM_STORE_BTN_X,y:RANDOM_STORE_BTN_Y,width:RANDOM_STORE_BTN_WIDTH,height:RANDOM_STORE_BTN_HEIGHT,st:RANDOM_STORE_BTN_ST,fontSize:RANDOM_STORE_BTN_FONT,action: RANDOM_STORE_BTN_CLICK)
     }
-    func random_hint_disp_part_1(){
-        
-        let dbSelect = realm.objects(Hint_Db.self).filter("theme == %@",mHintCategory)
-        hintArray = Array(dbSelect)
-        let ranInt_2 = Int.random(in: 0 ... hintArray.count - 1)
-        hint_content.lineBreakMode = .byWordWrapping
-        hint_content.maximumNumberOfLines = 0
-        var word_2 = ""
-        var char_count_4 = 0
-        for one in hintArray[ranInt_2].content{
-            if char_count_4 % 22 == 0 && char_count_4 != 0{
-                word_2 = word_2 + "\n" + String(one)
-            }else{
-                word_2 = word_2 + String(one)
-            }
-            char_count_4 = char_count_4 + 1
-        }
-        hint_content.stringValue = word_2
-        hint_content.frame = CGRect(x: 50, y: 250 , width: 400, height: 100)
-        if hintArray[ranInt_2].content.count < 10{
-            hint_content.font = NSFont.systemFont(ofSize: CGFloat(50))
-        }else{
-            hint_content.font = NSFont.systemFont(ofSize: CGFloat(30))
-        }
-        hint_content.isBordered = false
-        hint_content.isEditable = false
-        hint_content.isBordered = false
-        view.self.addSubview(hint_content)
-    }
+
     @objc func randam_store_click(_ sender: NSButton) {
         if idea_input.stringValue != ""{
-            let exitstIt = realm.objects(Idea_Stock.self).filter("theme == %@",theme_content.stringValue).filter("idea == %@",idea_input.stringValue)
+            let exitstIt = realm.objects(Idea_Stock.self).filter("theme == %@",U().line_break_delete(in_st:theme_content.stringValue)).filter("idea == %@",U().line_break_delete(in_st:idea_input.stringValue))
             if exitstIt.count == 0{
                 let idea_Stock = Idea_Stock()
-                idea_Stock.theme  = theme_content.stringValue
-                idea_Stock.hint = hint_content.stringValue
-                idea_Stock.idea = idea_input.stringValue
+                idea_Stock.theme  = U().line_break_delete(in_st:theme_content.stringValue)
+                idea_Stock.hint = U().line_break_delete(in_st:hint_content.stringValue)
+                idea_Stock.idea = U().line_break_delete(in_st:idea_input.stringValue)
                 try! realm.write() {
                     realm.add(idea_Stock)
                 }
-                random_hint_disp_part_1()
-                idea_count_disp()
+                U().random_hint_disp(ns_content : hint_content ,view : self.view, realm: realm,x:HINT_CONTENT_X,y:HINT_CONTENT_Y,width:HINT_CONTENT_WIDTH,height:HINT_CONTENT_HEITHT,key_content:m_HintCategory)
+                U().idea_count_disp(ns_content : theme_content ,ns_count : idea_count ,view : self.view, realm: realm,x:IDEA_COUNT_X,y:IDEA_COUNT_Y,width:IDEA_COUNT_WIDTH,height:IDEA_COUNT_HEITHT,key:IDEA_COUNT_SERCH_KEY,fontSize:IDEA_COUNT_FONT_SIZE,dbObj:Idea_Stock.self)
                 idea_input.stringValue = ""
             }else{
                 let alert = NSAlert()
@@ -263,49 +150,17 @@ class ViewController: NSViewController {
                 let response = alert.runModal()
             }
         }else{
-            random_hint_disp_part_1()
+            U().random_hint_disp(ns_content : hint_content ,view : self.view, realm: realm,x:50,y:270,width:400,height:100,key_content:m_HintCategory)
         }
     }
     @objc func theme_change_click(_ sender: NSButton) {
-        let alert = NSAlert()
-        let textField = NSTextField(frame: NSRect(x:0,y: 0,width:  400,height:  24))
-
-        alert.accessoryView = textField
-        alert.messageText = "テーマの入力"
-        alert.addButton(withTitle: "OK")
-        alert.addButton(withTitle: "キャンセル")
-        let response = alert.runModal()
-        switch response {
-        case .alertFirstButtonReturn:
-            theme_content.stringValue = (alert.accessoryView as!
-            NSTextField).stringValue
-        case .alertSecondButtonReturn:
-            print("キャンセル")
-        default:
-            break
-        }
+        U().theme_change(nstext: theme_content, view: self.view)
     }
     
     @objc func theme_select_click(_ sender: NSButton) {
-        UserDefaults.standard.set(theme_content.stringValue, forKey: "theme")
+        UserDefaults.standard.set(U().line_break_delete(in_st:theme_content.stringValue), forKey: "theme")
         UserDefaults.standard.synchronize()
-        self.dismiss(nil)
-        let next = storyboard?.instantiateController(withIdentifier: "second")
-        self.presentAsModalWindow(next! as! NSViewController)        
-    }
-    func idea_count_disp(){
-        if theme_content.stringValue != ""{
-            let ideaSelect = realm.objects(Idea_Stock.self).filter("theme == %@",theme_content.stringValue)
-            theme_idea_count.frame = CGRect(x: 320, y: 70 , width: 30, height: 30)
-            theme_idea_count.frame = CGRect(x:450, y:600 , width:50, height:50);
-            theme_idea_count.stringValue = String(ideaSelect.count)
-            theme_idea_count.font = NSFont.systemFont(ofSize: CGFloat(30))
-            theme_idea_count.isEditable = false
-            theme_idea_count.isSelectable = false
-            theme_idea_count.isBordered = false
-            theme_idea_count.backgroundColor = NSColor.white
-            self.view.addSubview(theme_idea_count)
-        }
+        U().screen_next(viewCon : self ,id:"second" , storyboard:storyboard!)
     }
 }
 

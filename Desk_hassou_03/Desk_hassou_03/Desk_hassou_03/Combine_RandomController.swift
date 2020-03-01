@@ -96,7 +96,7 @@ class Combine_RandomController: NSViewController {
                 category_1_content.stringValue = hint_content
                 category_1_content.font =  NSFont.systemFont(ofSize: CGFloat(15))
                 category_1_content.isEditable = false
-                category_1_content.isSelectable = false
+                category_1_content.isSelectable = true
                 category_1_content.backgroundColor = NSColor.white
                 self.view.addSubview(category_1_content)
                 randomFlag_1 = false
@@ -118,7 +118,7 @@ class Combine_RandomController: NSViewController {
                 category_2_content.stringValue = hint_content
                 category_2_content.font =  NSFont.systemFont(ofSize: CGFloat(15))
                 category_2_content.isEditable = false
-                category_2_content.isSelectable = false
+                category_2_content.isSelectable = true
                 category_2_content.backgroundColor = NSColor.white
                 self.view.addSubview(category_2_content)
                 randomFlag_2 = false
@@ -140,7 +140,7 @@ class Combine_RandomController: NSViewController {
                 category_3_content.stringValue = hint_content
                 category_3_content.font =  NSFont.systemFont(ofSize: CGFloat(15))
                 category_3_content.isEditable = false
-                category_3_content.isSelectable = false
+                category_3_content.isSelectable = true
                 category_3_content.backgroundColor = NSColor.white
                 self.view.addSubview(category_3_content)
                 randomFlag_3 = false
@@ -153,15 +153,6 @@ class Combine_RandomController: NSViewController {
         // Do view setup here.
         self.view.frame = CGRect(x: 50, y: 50 , width: 900, height: 550)
         
-//        var theme_title = NSTextField()
-//        theme_title.frame = CGRect(x:50, y:550 , width:100, height:50);
-//        theme_title.stringValue = "テーマ"
-//        theme_title.font = NSFont.systemFont(ofSize: CGFloat(30))
-//        theme_title.isEditable = false
-//        theme_title.isSelectable = false
-//        theme_title.backgroundColor = NSColor.white
-//        self.view.addSubview(theme_title)
-        
         category_1.frame = CGRect(x:50, y:450 , width:100, height:50);
         UserDefaults.standard.register(defaults:["hint_theme_1" : "hint_theme_1"])
         var hint_theme_1 = UserDefaults.standard.object(forKey: "hint_theme_1") as! String
@@ -169,7 +160,7 @@ class Combine_RandomController: NSViewController {
         m_randamo_hint_category_1 = hint_theme_1
         category_1.font = NSFont.systemFont(ofSize: CGFloat(15))
         category_1.isEditable = false
-        category_1.isSelectable = false
+        category_1.isSelectable = true
         category_1.backgroundColor = NSColor.white
         self.view.addSubview(category_1)
         
@@ -180,7 +171,7 @@ class Combine_RandomController: NSViewController {
         m_randamo_hint_category_2 = hint_theme_2
         category_2.font = NSFont.systemFont(ofSize: CGFloat(15))
         category_2.isEditable = false
-        category_2.isSelectable = false
+        category_2.isSelectable = true
         category_2.backgroundColor = NSColor.white
         self.view.addSubview(category_2)
         
@@ -191,7 +182,7 @@ class Combine_RandomController: NSViewController {
         m_randamo_hint_category_3 = hint_theme_3
         category_3.font = NSFont.systemFont(ofSize: CGFloat(15))
         category_3.isEditable = false
-        category_3.isSelectable = false
+        category_3.isSelectable = true
         category_3.backgroundColor = NSColor.white
         self.view.addSubview(category_3)
         
@@ -236,18 +227,9 @@ class Combine_RandomController: NSViewController {
         think_idea.stringValue = "思い付いた事\n考えた事など"
         think_idea.font = NSFont.systemFont(ofSize: CGFloat(15))
         think_idea.isEditable = false
-        think_idea.isSelectable = false
+        think_idea.isSelectable = true
         think_idea.backgroundColor = NSColor.white
         self.view.addSubview(think_idea)
-        
-//        var theme_title_content = NSTextField()
-//        theme_title_content.frame = CGRect(x:200, y:550 , width:300, height:50);
-//        theme_title_content.stringValue = "テーマ"
-//        theme_title_content.font = NSFont.systemFont(ofSize: CGFloat(30))
-//        theme_title_content.isEditable = false
-//        theme_title_content.isSelectable = false
-//        theme_title_content.backgroundColor = NSColor.white
-//        self.view.addSubview(theme_title_content)
         
         randam_disp()
         
@@ -323,7 +305,7 @@ class Combine_RandomController: NSViewController {
             category_1_content.stringValue = m_randamo_hint_1
             category_1_content.font = NSFont.systemFont(ofSize: CGFloat(15))
             category_1_content.isEditable = false
-            category_1_content.isSelectable = false
+            category_1_content.isSelectable = true
             category_1_content.backgroundColor = NSColor.white
             self.view.addSubview(category_1_content)
         }
@@ -336,7 +318,7 @@ class Combine_RandomController: NSViewController {
             category_2_content.stringValue = m_randamo_hint_2
             category_2_content.font = NSFont.systemFont(ofSize: CGFloat(15))
             category_2_content.isEditable = false
-            category_2_content.isSelectable = false
+            category_2_content.isSelectable = true
             category_2_content.backgroundColor = NSColor.white
             self.view.addSubview(category_2_content)
         }
@@ -349,7 +331,7 @@ class Combine_RandomController: NSViewController {
             category_3_content.stringValue = m_randamo_hint_3
             category_3_content.font = NSFont.systemFont(ofSize: CGFloat(15))
             category_3_content.isEditable = false
-            category_3_content.isSelectable = false
+            category_3_content.isSelectable = true
             category_3_content.backgroundColor = NSColor.white
             self.view.addSubview(category_3_content)
         }

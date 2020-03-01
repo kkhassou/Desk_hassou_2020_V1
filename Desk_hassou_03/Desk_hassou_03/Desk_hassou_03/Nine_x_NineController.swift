@@ -17,7 +17,13 @@ class Nine_x_NineController: NSViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do view setup here.
+        let myView = MyView()
+        myView.translatesAutoresizingMaskIntoConstraints = false
+        self.view.addSubview(myView)
+        myView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+        myView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        myView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
+        myView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
         for x in 0..<9{
             for y in 0..<9{
                 var textField = NSTextField()
@@ -634,4 +640,35 @@ class Nine_x_NineController: NSViewController {
         }
     }
     
+}
+class MyView: NSView {
+    
+    override func draw(_ dirtyRect: NSRect) {
+        super.draw(dirtyRect)
+        addLine()
+    }
+    
+    func addLine() {
+        let path_1 = NSBezierPath()
+        path_1.move(to: NSPoint(x: 10.0, y: 275.0))
+        path_1.line(to: NSPoint(x: 1190.0, y: 275.0))
+        path_1.close()
+        path_1.stroke()
+        let path_2 = NSBezierPath()
+        path_2.move(to: NSPoint(x: 10.0, y: 455.0))
+        path_2.line(to: NSPoint(x: 1190.0, y: 455.0))
+        path_2.close()
+        path_2.stroke()
+        let path_3 = NSBezierPath()
+        path_3.move(to: NSPoint(x: 405.0, y: 100.0))
+        path_3.line(to: NSPoint(x: 405.0, y: 640.0))
+        path_3.close()
+        path_3.stroke()
+        let path_4 = NSBezierPath()
+        path_4.move(to: NSPoint(x: 795.0, y: 100.0))
+        path_4.line(to: NSPoint(x: 795.0, y: 640.0))
+        path_4.close()
+        path_4.stroke()
+
+    }
 }

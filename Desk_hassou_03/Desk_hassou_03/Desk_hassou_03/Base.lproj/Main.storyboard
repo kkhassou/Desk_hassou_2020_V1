@@ -6,6 +6,19 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
+        <!--Group Divide Controller-->
+        <scene sceneID="vFC-qV-jn0">
+            <objects>
+                <viewController identifier="Group_Divide" storyboardIdentifier="Group_Divide" id="hYv-GA-jRM" customClass="Group_DivideController" customModule="Desk_hassou_03" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" id="9C5-KS-ReS">
+                        <rect key="frame" x="0.0" y="0.0" width="450" height="300"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </view>
+                </viewController>
+                <customObject id="1Gp-qM-TmD" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="8" y="-246"/>
+        </scene>
         <!--View0 Controller-->
         <scene sceneID="Qv2-tC-dWb">
             <objects>

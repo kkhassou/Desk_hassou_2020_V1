@@ -11,6 +11,7 @@
 		2025D08924010541003A05A7 /* List_Theme_Combine_RandomController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2025D08824010541003A05A7 /* List_Theme_Combine_RandomController.swift */; };
 		2025D08B24024C8A003A05A7 /* List_Content_Combine_RandomController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2025D08A24024C8A003A05A7 /* List_Content_Combine_RandomController.swift */; };
 		2025D08D24026878003A05A7 /* List_Combine_RandomController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2025D08C24026878003A05A7 /* List_Combine_RandomController.swift */; };
+		2025D08F240359E0003A05A7 /* Group_DivideController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2025D08E240359E0003A05A7 /* Group_DivideController.swift */; };
 		2040631723BF1B19001D0BB5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2040631623BF1B19001D0BB5 /* AppDelegate.swift */; };
 		2040631923BF1B19001D0BB5 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2040631823BF1B19001D0BB5 /* ViewController.swift */; };
 		2040631B23BF1B1B001D0BB5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2040631A23BF1B1B001D0BB5 /* Assets.xcassets */; };
@@ -23,6 +24,7 @@
 		208C4E5923F8F25700A586FD /* Nine_x_NineController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 208C4E5823F8F25700A586FD /* Nine_x_NineController.swift */; };
 		208C4E5B23F9D7E600A586FD /* List_Nine_x_NineController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 208C4E5A23F9D7E600A586FD /* List_Nine_x_NineController.swift */; };
 		208C4E6123FB450100A586FD /* EnlergeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 208C4E6023FB450100A586FD /* EnlergeController.swift */; };
+		20BCD3C9240B6DDD00E12208 /* U.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20BCD3C8240B6DDD00E12208 /* U.swift */; };
 		DA9466CD84644D35069409B7 /* Pods_Desk_hassou_03.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5096009E41F9DC3468606082 /* Pods_Desk_hassou_03.framework */; };
 /* End PBXBuildFile section */
 
@@ -32,6 +34,7 @@
 		2025D08824010541003A05A7 /* List_Theme_Combine_RandomController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = List_Theme_Combine_RandomController.swift; sourceTree = "<group>"; };
 		2025D08A24024C8A003A05A7 /* List_Content_Combine_RandomController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = List_Content_Combine_RandomController.swift; sourceTree = "<group>"; };
 		2025D08C24026878003A05A7 /* List_Combine_RandomController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = List_Combine_RandomController.swift; sourceTree = "<group>"; };
+		2025D08E240359E0003A05A7 /* Group_DivideController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Group_DivideController.swift; sourceTree = "<group>"; };
 		2040631323BF1B19001D0BB5 /* Desk_hassou_03.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Desk_hassou_03.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2040631623BF1B19001D0BB5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		2040631823BF1B19001D0BB5 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -47,6 +50,7 @@
 		208C4E5823F8F25700A586FD /* Nine_x_NineController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Nine_x_NineController.swift; sourceTree = "<group>"; };
 		208C4E5A23F9D7E600A586FD /* List_Nine_x_NineController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = List_Nine_x_NineController.swift; sourceTree = "<group>"; };
 		208C4E6023FB450100A586FD /* EnlergeController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnlergeController.swift; sourceTree = "<group>"; };
+		20BCD3C8240B6DDD00E12208 /* U.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = U.swift; sourceTree = "<group>"; };
 		5096009E41F9DC3468606082 /* Pods_Desk_hassou_03.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Desk_hassou_03.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		760DF83D57A10A4EA4824EF5 /* Pods-Desk_hassou_03.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Desk_hassou_03.release.xcconfig"; path = "Target Support Files/Pods-Desk_hassou_03/Pods-Desk_hassou_03.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -95,9 +99,11 @@
 				2040632C23BF4923001D0BB5 /* View_2_Controller.swift */,
 				2040634023BF8877001D0BB5 /* View_4_Controller.swift */,
 				2040633223BF7B54001D0BB5 /* View_0_Controller.swift */,
+				2025D08E240359E0003A05A7 /* Group_DivideController.swift */,
 				2040633A23BF8370001D0BB5 /* View_3_Controller.swift */,
 				2040631823BF1B19001D0BB5 /* ViewController.swift */,
 				2040632623BF2335001D0BB5 /* SetV.swift */,
+				20BCD3C8240B6DDD00E12208 /* U.swift */,
 				2040631A23BF1B1B001D0BB5 /* Assets.xcassets */,
 				2040631C23BF1B1B001D0BB5 /* Main.storyboard */,
 				2040631F23BF1B1B001D0BB5 /* Info.plist */,
@@ -242,7 +248,9 @@
 				2025D08D24026878003A05A7 /* List_Combine_RandomController.swift in Sources */,
 				2025D08924010541003A05A7 /* List_Theme_Combine_RandomController.swift in Sources */,
 				2040632D23BF4923001D0BB5 /* View_2_Controller.swift in Sources */,
+				2025D08F240359E0003A05A7 /* Group_DivideController.swift in Sources */,
 				2040634123BF8877001D0BB5 /* View_4_Controller.swift in Sources */,
+				20BCD3C9240B6DDD00E12208 /* U.swift in Sources */,
 				208C4E5B23F9D7E600A586FD /* List_Nine_x_NineController.swift in Sources */,
 				2025D08723FF3830003A05A7 /* Combine_RandomController.swift in Sources */,
 				2025D08B24024C8A003A05A7 /* List_Content_Combine_RandomController.swift in Sources */,

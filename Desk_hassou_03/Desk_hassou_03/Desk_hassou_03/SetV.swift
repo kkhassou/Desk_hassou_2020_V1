@@ -10,7 +10,21 @@ import Foundation
 import RealmSwift
 import Cocoa
 
+
+class Group_Divide_Db: Object{
+    @objc dynamic var theme = ""
+    @objc dynamic var idea = ""
+    @objc dynamic var gourp_label = ""
+    @objc dynamic var comment = ""
+}
+
+class Group_Label_Db: Object{
+    @objc dynamic var gourp_label = ""
+}
+
 class Rnadom_Conb_Db: Object{
+    // hint_1には、テーマを入れようかと思う。
+    // DBを作り直すのが面倒なので、このままいこうかなと思う。
     @objc dynamic var hint_1 = ""
     @objc dynamic var hint_2 = ""
     @objc dynamic var hint_3 = ""
