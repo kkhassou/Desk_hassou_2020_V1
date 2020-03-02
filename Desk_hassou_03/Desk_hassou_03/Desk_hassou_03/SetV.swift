@@ -14,10 +14,27 @@ class Param{
     var st = ""
     var x = 0
     var y = 0
-    init(st_ :String,x_:Int,y_:Int) {
+    var width = 0
+    var height = 0
+    var fontSize = 0
+    var backColor = NSColor.white
+    var serchSt = ""
+    init(st_ :String,x_:Int,y_:Int,width_:Int,height_:Int,fontSize_:Int) {
         self.st = st_
         self.x = x_
         self.y = y_
+        self.width = width_
+        self.height = height_
+        self.fontSize = fontSize_
+    }
+    init(st_ :String,x_:Int,y_:Int,width_:Int,height_:Int,fontSize_:Int,backColor_:NSColor) {
+        self.st = st_
+        self.x = x_
+        self.y = y_
+        self.width = width_
+        self.height = height_
+        self.fontSize = fontSize_
+        self.backColor = backColor_
     }
 }
 

@@ -12,27 +12,27 @@ import Realm
 import RealmSwift
 
 class U {
-    func text_generate(nsText:NSTextField,view:NSView,x:Int,y:Int,width:Int,height:Int,st:String,input_flag:Bool,fontSize:Int,ajust_flag:Bool,border_flag:Bool){
-        nsText.frame = CGRect(x:x, y:y , width:width, height:height)
-        if ajust_flag{
-            nsText.stringValue = U().disp_adjust(in_st: st,nstext :nsText)
+    func text_generate(param_:Param,nsText_:NSTextField,view_:NSView,input_flag_:Bool,ajust_flag_:Bool,border_flag_:Bool){
+        nsText_.frame = CGRect(x:param_.x, y:param_.y , width:param_.width, height:param_.height)
+        if ajust_flag_{
+            nsText_.stringValue = U().disp_adjust(in_st: param_.st,nstext :nsText_)
         }else{
-            nsText.stringValue = st
-            nsText.font = NSFont.systemFont(ofSize: CGFloat(fontSize))
+            nsText_.stringValue = param_.st
+            nsText_.font = NSFont.systemFont(ofSize: CGFloat(param_.fontSize))
         }
-        if input_flag{
-            nsText.isEditable = true
+        if input_flag_{
+            nsText_.isEditable = true
         }else{
-            nsText.isEditable = false
+            nsText_.isEditable = false
         }
-        if border_flag{
-            nsText.isBordered = true
+        if border_flag_{
+            nsText_.isBordered = true
         }else{
-            nsText.isBordered = false
+            nsText_.isBordered = false
         }
-        nsText.isSelectable = true
-        nsText.backgroundColor = NSColor.white
-        view.addSubview(nsText)
+        nsText_.isSelectable = true
+        nsText_.backgroundColor = NSColor.white
+        view_.addSubview(nsText_)
     }
     // ボタンを動かす事が出来ないので、不便。
     func button_generate(viewCon : NSViewController ,view:NSView,x:Int,y:Int,width:Int,height:Int,st:String,fontSize:Int,action: Selector){
@@ -47,17 +47,23 @@ class U {
         viewCon.presentAsModalWindow(next as! NSViewController)
     }
     // Hint_Dbでしか使えないのがいまいち！！！
-    func random_hint_disp(ns_content : NSTextField ,view : NSView, realm: Realm,x:Int,y:Int,width:Int,height:Int,key_content:String){
-        let dbSelect = realm.objects(Hint_Db.self).filter("theme == %@",key_content)
+//    func random_hint_disp(ns_content : NSTextField ,view : NSView, realm: Realm,x:Int,y:Int,width:Int,height:Int,key_content:String){
+    func random_hint_disp(param_:Param,hint_key_:String,ns_content_ : NSTextField ,view_ : NSView, realm_: Realm){
+        let dbSelect = realm_.objects(Hint_Db.self).filter("theme == %@",hint_key_)
         let hintArray:[Hint_Db] = Array(dbSelect) as! [Hint_Db]
         let ranInt_2 = Int.random(in: 0 ... Array(dbSelect).count - 1)
-    U().text_generate(nsText:ns_content,view:view,x:x,y:y,width:width,height:height,st:hintArray[ranInt_2].content,input_flag:false,fontSize:0,ajust_flag:true,border_flag:false)
+   
+        param_.st = hintArray[ranInt_2].content
+        text_generate(param_:param_,nsText_:ns_content_,view_:view_,input_flag_:false,ajust_flag_:true,border_flag_:false)
     }
     // 引数が多いが、便利に使えるようにしよう。
-    func idea_count_disp(ns_content : NSTextField ,ns_count : NSTextField ,view : NSView, realm: Realm,x:Int,y:Int,width:Int,height:Int,key:String,fontSize:Int,dbObj:Object.Type){
-        if ns_content.stringValue != ""{
-            let ideaSelect = realm.objects(dbObj).filter(key + " == %@",U().line_break_delete(in_st:ns_content.stringValue))
-        U().text_generate(nsText:ns_count,view:view,x:x,y:y,width:width,height:height,st:String(ideaSelect.count),input_flag:false,fontSize:fontSize,ajust_flag:false,border_flag:false)
+    func idea_count_disp(param_:Param,theme_st_ : String ,ns_count_ : NSTextField ,view_ : NSView, realm_: Realm,dbObj_:Object.Type){
+        if theme_st_ != ""{
+            print(param_.st)
+            print(theme_st_)
+            let ideaSelect = realm_.objects(dbObj_).filter("theme == %@",U().line_break_delete(in_st:theme_st_))
+            param_.st = String(ideaSelect.count)
+            text_generate(param_:param_,nsText_:ns_count_ ,view_:view_,input_flag_:false,ajust_flag_:false,border_flag_:false)
         }
     }
     func theme_change(nstext : NSTextField ,view : NSView) -> NSTextField{
