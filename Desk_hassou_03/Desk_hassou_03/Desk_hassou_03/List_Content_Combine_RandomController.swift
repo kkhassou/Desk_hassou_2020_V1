@@ -15,11 +15,6 @@ class List_Content_Combine_RandomController: NSViewController, NSTableViewDelega
     let realm = try! Realm()
     var unique_stocks:[String] = []
     
-    var return_btn = NSButton()
-    var select_btn = NSButton()
-    var nine_x_nine_btn = NSButton()
-    var delete_btn = NSButton()
-    
     @IBOutlet weak var tableView: NSTableView!
     
     var select_stock = ""
@@ -45,20 +40,15 @@ class List_Content_Combine_RandomController: NSViewController, NSTableViewDelega
         let orderedSet = NSOrderedSet(array: temp)
         unique_stocks = orderedSet.array as! [String]
         
-        delete_btn = NSButton(title: "削除", target: self, action: #selector(delete_db))
-        delete_btn.frame = CGRect(x: 300, y: 30 , width: 75, height: 50)
-        delete_btn.font = NSFont.systemFont(ofSize: 22)
-        view.self.addSubview(delete_btn)
+        var return_btn_p = Param(st_ :"戻る",x_:25,y_:30,width_:75,height_:50,fontSize_:22)
+        U().button_generate(param_:return_btn_p,viewCon_:self,view_:self.view,action: #selector(return_disp))
+
+        var select_btn_p = Param(st_ :"決定",x_:375,y_:30,width_:75,height_:50,fontSize_:22)
+        U().button_generate(param_:select_btn_p,viewCon_:self,view_:self.view,action: #selector(select_theme))
         
-        return_btn = NSButton(title: "戻る", target: self, action: #selector(return_disp))
-        return_btn.frame = CGRect(x: 25, y: 30 , width: 75, height: 50)
-        return_btn.font = NSFont.systemFont(ofSize: 22)
-        view.self.addSubview(return_btn)
+        var delete_btn_p = Param(st_ :"削除",x_:300,y_:30,width_:75,height_:50,fontSize_:22)
+        U().button_generate(param_:delete_btn_p,viewCon_:self,view_:self.view,action: #selector(delete_db))
         
-        select_btn = NSButton(title: "決定", target: self, action: #selector(select_theme))
-        select_btn.frame = CGRect(x: 375, y: 30 , width: 75, height: 50)
-        select_btn.font = NSFont.systemFont(ofSize: 22)
-        view.self.addSubview(select_btn)
         
         m_hint_theme_num = UserDefaults.standard.object(forKey: "hint_content_num") as! Int
     }

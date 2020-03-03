@@ -15,12 +15,6 @@ class View_2_Controller: NSViewController, NSTableViewDelegate, NSTableViewDataS
     let realm = try! Realm()
     var unique_stocks:[String] = []
     
-    var return_btn = NSButton()
-    var detail_disp_btn = NSButton()
-    var select_btn = NSButton()
-    var delete_btn = NSButton()
-    var nine_x_nine_btn = NSButton()
-    var enlarge_btn = NSButton()
     var select_stock = ""
     
     @IBOutlet weak var tableview: NSTableView!
@@ -31,36 +25,19 @@ class View_2_Controller: NSViewController, NSTableViewDelegate, NSTableViewDataS
         self.view.layer?.backgroundColor = NSColor.white.cgColor
         
         tableview.action = #selector(onItemClicked)
-        
-        return_btn = NSButton(title: "戻る", target: self, action: #selector(return_disp))
-        return_btn.frame = CGRect(x: 25, y: 30 , width: 75, height: 50)
-        return_btn.font = NSFont.systemFont(ofSize: 22)
-        view.self.addSubview(return_btn)
-
-        nine_x_nine_btn = NSButton(title: "9x9へ", target: self, action: #selector(select_nine_x_nine))
-        nine_x_nine_btn.frame = CGRect(x: 25, y: 0 , width: 100, height: 50)
-        nine_x_nine_btn.font = NSFont.systemFont(ofSize: 22)
-        view.self.addSubview(nine_x_nine_btn)
-
-        enlarge_btn = NSButton(title: "アイデア増幅", target: self, action: #selector(select_enlarge))
-        enlarge_btn.frame = CGRect(x: 150, y: 0 , width: 200, height: 50)
-        enlarge_btn.font = NSFont.systemFont(ofSize: 22)
-        view.self.addSubview(enlarge_btn)
-        
-        select_btn = NSButton(title: "そのアイデアを見る", target: self, action: #selector(detail_disp))
-        select_btn.frame = CGRect(x: 100, y: 30 , width: 200, height: 50)
-        select_btn.font = NSFont.systemFont(ofSize: 22)
-        view.self.addSubview(select_btn)
-        
-        delete_btn = NSButton(title: "削除", target: self, action: #selector(delete_db))
-        delete_btn.frame = CGRect(x: 300, y: 30 , width: 75, height: 50)
-        delete_btn.font = NSFont.systemFont(ofSize: 22)
-        view.self.addSubview(delete_btn)
-        
-        select_btn = NSButton(title: "決定", target: self, action: #selector(select_theme))
-        select_btn.frame = CGRect(x: 375, y: 30 , width: 75, height: 50)
-        select_btn.font = NSFont.systemFont(ofSize: 22)
-        view.self.addSubview(select_btn)
+  
+        var return_btn_p = Param(st_ :"戻る",x_:25,y_:30,width_:75,height_:50,fontSize_:22)
+        U().button_generate(param_:return_btn_p,viewCon_:self,view_:self.view,action: #selector(return_disp))
+        var nine_x_nine_btn_p = Param(st_ :"9x9へ",x_:25,y_:0,width_:100,height_:50,fontSize_:22)
+        U().button_generate(param_:nine_x_nine_btn_p,viewCon_:self,view_:self.view,action: #selector(select_nine_x_nine))
+        var enlarge_btn_p = Param(st_ :"アイデア増幅",x_:150,y_:0,width_:200,height_:50,fontSize_:22)
+        U().button_generate(param_:enlarge_btn_p,viewCon_:self,view_:self.view,action: #selector(select_enlarge))
+        var detail_disp_btn_p = Param(st_ :"そのアイデアを見る",x_:100,y_:30,width_:200,height_:50,fontSize_:22)
+        U().button_generate(param_:detail_disp_btn_p,viewCon_:self,view_:self.view,action: #selector(detail_disp))
+        var delete_btn_p = Param(st_ :"削除",x_:300,y_:30,width_:75,height_:50,fontSize_:22)
+        U().button_generate(param_:delete_btn_p,viewCon_:self,view_:self.view,action: #selector(delete_db))
+        var select_btn_p = Param(st_ :"決定",x_:375,y_:30,width_:75,height_:50,fontSize_:22)
+        U().button_generate(param_:select_btn_p,viewCon_:self,view_:self.view,action: #selector(select_theme))
         
         let stocks = realm.objects(Idea_Stock.self)
         var temp :[String] = []

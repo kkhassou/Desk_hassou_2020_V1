@@ -53,29 +53,9 @@ class Group_DivideController: NSViewController, NSComboBoxDataSource{
     
     var comboBox = NSComboBox()
     
-    let GROUP_INPUT_BTN_ST = "リストにセット"
-    let GROUP_INPUT_BTN_X = 380
-    let GROUP_INPUT_BTN_Y = 205
-    let GROUP_INPUT_BTN_WIDTH = 120
-    let GROUP_INPUT_BTN_HEIGHT = 30
-    let GROUP_INPUT_BTN_FONT_SIZE = 10
-    let GROUP_INPUT_BTN_CLICK = #selector(group_input_click)
-    
-    let NEXT_IDEA_BTN_ST = "次へ"
-    let NEXT_IDEA_BTN_X = 135
-    let NEXT_IDEA_BTN_Y = 0
-    let NEXT_IDEA_BTN_WIDTH = 100
-    let NEXT_IDEA_BTN_HEIGHT = 50
-    let NEXT_IDEA_BTN_FONT_SIZE = 22
-    let NEXT_IDEA_BTN_CLICK = #selector(next_idea_click)
-    
-    let RETURN_IDEA_BTN_ST = "前へ"
-    let RETURN_IDEA_BTN_X = 25
-    let RETURN_IDEA_BTN_Y = 0
-    let RETURN_IDEA_BTN_WIDTH = 100
-    let RETURN_IDEA_BTN_HEIGHT = 50
-    let RETURN_IDEA_BTN_FONT_SIZE = 22
-    let RETURN_IDEA_BTN_CLICK = #selector(return_idea_click)
+    var group_input_btn_p  =   Param(st_:"リストにセット",x_:380,y_:205,width_:120,height_:30,fontSize_:10)
+    var next_idea_btn_p  = Param(st_ :"次へ",x_:135,y_:0,width_:100,height_:50,fontSize_:22)
+    var return_idea_btn_p  = Param(st_ :"前へ",x_:25,y_:0,width_:100,height_:50,fontSize_:22)
     
     var m_stock_num = 0
     var m_theme = ""
@@ -90,13 +70,14 @@ class Group_DivideController: NSViewController, NSComboBoxDataSource{
         
         m_theme = UserDefaults.standard.object(forKey: "theme") as! String
    
-        U().text_generate(param_:theme_title_p,nsText_:theme_title,view_:self.view,input_flag_:false,ajust_flag_:false,border_flag_:true)
+    U().text_generate(param_:theme_title_p,nsText_:theme_title,view_:self.view,input_flag_:false,ajust_flag_:false,border_flag_:true)
+        
         theme_content_p.st = m_theme
-        U().text_generate(param_:theme_content_p,nsText_:theme_content,view_:self.view,input_flag_:false,ajust_flag_:true,border_flag_:false)
-        U().text_generate(param_:idea_title_p,nsText_:idea_title,view_:self.view,input_flag_:false,ajust_flag_:false,border_flag_:true)
-        U().text_generate(param_:group_title_p,nsText_:group_title,view_:self.view,input_flag_:false,ajust_flag_:false,border_flag_:true)
-        U().text_generate(param_:comment_title_p,nsText_:comment_title,view_:self.view,input_flag_:false,ajust_flag_:false,border_flag_:true)
-        U().text_generate(param_:group_input_p,nsText_:group_input,view_:self.view,input_flag_:true,ajust_flag_:false,border_flag_:true)
+    U().text_generate(param_:theme_content_p,nsText_:theme_content,view_:self.view,input_flag_:false,ajust_flag_:true,border_flag_:false)
+    U().text_generate(param_:idea_title_p,nsText_:idea_title,view_:self.view,input_flag_:false,ajust_flag_:false,border_flag_:true)
+    U().text_generate(param_:group_title_p,nsText_:group_title,view_:self.view,input_flag_:false,ajust_flag_:false,border_flag_:true)
+    U().text_generate(param_:comment_title_p,nsText_:comment_title,view_:self.view,input_flag_:false,ajust_flag_:false,border_flag_:true)
+    U().text_generate(param_:group_input_p,nsText_:group_input,view_:self.view,input_flag_:true,ajust_flag_:false,border_flag_:true)
         
         let stocks = realm.objects(Idea_Stock.self).filter("theme == %@",m_theme)
         var temp :[String] = []
@@ -105,8 +86,9 @@ class Group_DivideController: NSViewController, NSComboBoxDataSource{
         }
         let orderedSet = NSOrderedSet(array: temp)
         m_unique_stocks = orderedSet.array as! [String]
+        m_idea = m_unique_stocks[m_stock_num]
         idea_content_p.st = m_idea
-        U().text_generate(param_:idea_content_p,nsText_:idea_content,view_:self.view,input_flag_:true,ajust_flag_:true,border_flag_:false)
+    U().text_generate(param_:idea_content_p,nsText_:idea_content,view_:self.view,input_flag_:false,ajust_flag_:true,border_flag_:false)
         
         let group_label_s = realm.objects(Group_Label_Db.self)
         var temp_2 :[String] = []
@@ -115,7 +97,6 @@ class Group_DivideController: NSViewController, NSComboBoxDataSource{
         }
         let orderedSet_2 = NSOrderedSet(array: temp_2)
         m_dataArray = orderedSet_2.array as! [String]
-        m_idea = m_unique_stocks[m_stock_num]
         
         comboBox.usesDataSource = true
         comboBox.dataSource = self
@@ -127,13 +108,18 @@ class Group_DivideController: NSViewController, NSComboBoxDataSource{
         // 値があれば、上書きする
         db_select_and_disp()
         
-        U().button_generate(viewCon : self ,view:self.view,x:GROUP_INPUT_BTN_X,y:GROUP_INPUT_BTN_Y,width:GROUP_INPUT_BTN_WIDTH,height:GROUP_INPUT_BTN_HEIGHT,st:GROUP_INPUT_BTN_ST,fontSize:GROUP_INPUT_BTN_FONT_SIZE,action: GROUP_INPUT_BTN_CLICK)
+        U().button_generate(param_:group_input_btn_p,viewCon_:self,view_:self.view,action:
+            #selector(group_input_click))
         
-        U().button_generate(viewCon : self ,view:self.view,x:NEXT_IDEA_BTN_X,y:NEXT_IDEA_BTN_Y,width:NEXT_IDEA_BTN_WIDTH,height:NEXT_IDEA_BTN_HEIGHT,st:NEXT_IDEA_BTN_ST,fontSize:NEXT_IDEA_BTN_FONT_SIZE,action: NEXT_IDEA_BTN_CLICK)
+        U().button_generate(param_:next_idea_btn_p,viewCon_:self,view_:self.view,action: #selector(next_idea_click))
         
-        U().button_generate(viewCon : self ,view:self.view,x:RETURN_IDEA_BTN_X,y:RETURN_IDEA_BTN_Y,width:RETURN_IDEA_BTN_WIDTH,height:RETURN_IDEA_BTN_HEIGHT,st:RETURN_IDEA_BTN_ST,fontSize:RETURN_IDEA_BTN_FONT_SIZE,action: RETURN_IDEA_BTN_CLICK)
+        U().button_generate(param_:return_idea_btn_p,viewCon_:self,view_:self.view,action: #selector(return_idea_click))
+
     }
     func db_select_and_disp(){
+        idea_content_p.st = m_idea
+    U().text_generate(param_:idea_content_p,nsText_:idea_content,view_:self.view,input_flag_:false,ajust_flag_:true,border_flag_:false)
+        
         var temp =
             realm.objects(Group_Divide_Db.self).filter(" theme == %@",m_theme).filter(" idea == %@",m_idea).last
         if temp != nil{
@@ -143,6 +129,7 @@ class Group_DivideController: NSViewController, NSComboBoxDataSource{
             comment_input_p.st = temp!.comment
             U().text_generate(param_:comment_input_p,nsText_:comment_input,view_:self.view,input_flag_:true,ajust_flag_:false,border_flag_:true)
         }else{
+
             group_content_p.st = ""
             U().text_generate(param_:group_content_p,nsText_:group_content,view_:self.view,input_flag_:true,ajust_flag_:false,border_flag_:false)
         

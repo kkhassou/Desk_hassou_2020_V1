@@ -45,15 +45,11 @@ class View_0_Controller: NSViewController, NSComboBoxDataSource{
                 realm.add(hint_Db_s)
             }
         }
+        self.view.wantsLayer = true
+        self.view.layer?.backgroundColor = NSColor.white.cgColor
         
-        
-        category_title.frame = CGRect(x: 50, y: 200 , width: 150, height: 20)
-        category_title.stringValue = "ランダムヒントカテゴリ"
-        category_title.isEditable = false
-        category_title.isSelectable = false
-        category_title.isBordered = false
-        category_title.backgroundColor = NSColor.green
-        self.view.addSubview(category_title)
+        var category_title_p = Param(st_ :"ランダムヒントカテゴリ",x_:50,y_:250,width_:150,height_:20,fontSize_:20)
+    U().text_generate(param_:category_title_p,nsText_:category_title,view_:self.view,input_flag_:false,ajust_flag_:false,border_flag_:false)
         
         comboBox.usesDataSource = true
         comboBox.dataSource = self
@@ -74,20 +70,15 @@ class View_0_Controller: NSViewController, NSComboBoxDataSource{
         mHintCategory = self.dataArray[0]
         comboBox.addItems(withObjectValues: self.dataArray)
         self.view.addSubview(comboBox)
-        randam_brest_btn = NSButton(title: "ランダム ブレスト", target: self, action: #selector(randam_brest_click))
-        randam_brest_btn.frame = CGRect(x: 50, y: 50 , width: 250, height: 50)
-        randam_brest_btn.font = NSFont.systemFont(ofSize: 22)
-        self.view.addSubview(randam_brest_btn)
         
-        randam_9x9_btn = NSButton(title: "9x9 ブレスト", target: self, action: #selector(nine_x_nine_brest_click))
-        randam_9x9_btn.frame = CGRect(x: 50, y: 100 , width: 250, height: 50)
-        randam_9x9_btn.font = NSFont.systemFont(ofSize: 22)
-        self.view.addSubview(randam_9x9_btn)
+        var randam_brest_p = Param(st_ :"ランダム ブレスト",x_:50,y_:50,width_:250,height_:50,fontSize_:22)
+        U().button_generate(param_:randam_brest_p,viewCon_:self,view_:self.view,action: #selector(randam_brest_click))
         
-        combine_random_btn = NSButton(title: "ランダム組み合わせ", target: self, action: #selector(combine_random_click))
-        combine_random_btn.frame = CGRect(x: 50, y: 0 , width: 250, height: 50)
-        combine_random_btn.font = NSFont.systemFont(ofSize: 22)
-        self.view.addSubview(combine_random_btn)
+        var randam_9x9_p = Param(st_ :"9x9 ブレスト",x_:50,y_:100,width_:250,height_:50,fontSize_:22)
+        U().button_generate(param_:randam_9x9_p,viewCon_:self,view_:self.view,action: #selector(nine_x_nine_brest_click))
+                
+        var combine_random_p = Param(st_ :"ランダム組み合わせ",x_:50,y_:0,width_:250,height_:50,fontSize_:22)
+        U().button_generate(param_:combine_random_p,viewCon_:self,view_:self.view,action: #selector(combine_random_click))
     }
     @objc func randam_brest_click(_ sender: NSButton) {
         UserDefaults.standard.set(mHintCategory, forKey: "mHintCategory")

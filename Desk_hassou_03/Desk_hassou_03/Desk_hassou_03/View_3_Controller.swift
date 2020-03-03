@@ -16,51 +16,12 @@ class View_3_Controller: NSViewController, NSTableViewDelegate, NSTableViewDataS
     
     var unique_stocks:[String] = []
     
-    var return_btn = NSButton()
-    let RETURN_BTN_ST = "戻る"
-    let RETURN_BTN_X = 25
-    let RETURN_BTN_Y = 30
-    let RETURN_BTN_WIDTH = 75
-    let RETURN_BTN_HEIGHT = 50
-    let RETURN_BTN_FONT = 22
-    let RETURN_BTN_CLICK = #selector(return_disp)
-    
-    var select_btn = NSButton()
-    let SELECT_BTN_ST = "決定"
-    let SELECT_BTN_X = 375
-    let SELECT_BTN_Y = 30
-    let SELECT_BTN_WIDTH = 75
-    let SELECT_BTN_HEIGHT = 50
-    let SELECT_BTN_FONT = 22
-    let SELECT_BTN_CLICK = #selector(select_theme)
-    
-    var nine_x_nine_btn = NSButton()
-    let NINE_X_NINE_BTN_ST = "9x9へ"
-    let NINE_X_NINE_BTN_X = 25
-    let NINE_X_NINE_BTN_Y = 0
-    let NINE_X_NINE_BTN_WIDTH = 100
-    let NINE_X_NINE_BTN_HEIGHT = 50
-    let NINE_X_NINE_BTN_FONT = 22
-    let NINE_X_NINE_BTN_CLICK = #selector(select_nine_x_nine)
-    
-    var group_divide_btn = NSButton()
-    let GROUP_DIVIDE_BTN_ST = "グループ分け"
-    let GROUP_DIVIDE_BTN_X = 150
-    let GROUP_DIVIDE_BTN_Y = 0
-    let GROUP_DIVIDE_BTN_WIDTH = 150
-    let GROUP_DIVIDE_BTN_HEIGHT = 50
-    let GROUP_DIVIDE_BTN_FONT = 22
-    let GROUP_DIVIDE_BTN_CLICK = #selector(group_divide)
-    
-    var delete_btn = NSButton()
-    let DELETE_BTN_ST = "削除"
-    let DELETE_BTN_X = 300
-    let DELETE_BTN_Y = 30
-    let DELETE_BTN_WIDTH = 75
-    let DELETE_BTN_HEIGHT = 50
-    let DELETE_BTN_FONT = 22
-    let DELETE_BTN_CLICK = #selector(delete_db)
-    
+    var return_btn_p = Param(st_ :"戻る",x_:25,y_:30,width_:75,height_:50,fontSize_:22)
+    var select_btn_p = Param(st_ :"決定",x_:375,y_:30,width_:75,height_:50,fontSize_:22)
+    var nine_x_nine_btn_p = Param(st_ :"9x9へ",x_:25,y_:0,width_:100,height_:50,fontSize_:22)
+    var group_btn_p = Param(st_ :"グループ分け",x_:150,y_:0,width_:150,height_:50,fontSize_:22)
+    var delete_btn_p = Param(st_ :"削除",x_:300,y_:30,width_:75,height_:50,fontSize_:22)
+
     @IBOutlet weak var tableView: NSTableView!
 
     var m_select_stock = ""
@@ -81,16 +42,17 @@ class View_3_Controller: NSViewController, NSTableViewDelegate, NSTableViewDataS
         }
         let orderedSet = NSOrderedSet(array: temp)
         unique_stocks = orderedSet.array as! [String]
+    
+        U().button_generate(param_:return_btn_p,viewCon_:self,view_:self.view,action: #selector(return_disp))
+    
+        U().button_generate(param_:select_btn_p,viewCon_:self,view_:self.view,action: #selector(select_theme))
+    
+        U().button_generate(param_:nine_x_nine_btn_p,viewCon_:self,view_:self.view,action: #selector(select_nine_x_nine))
+    
+        U().button_generate(param_:group_btn_p,viewCon_:self,view_:self.view,action: #selector(group_divide))
         
-        U().button_generate(viewCon : self ,view:self.view,x:RETURN_BTN_X,y:RETURN_BTN_Y,width:RETURN_BTN_WIDTH,height:RETURN_BTN_HEIGHT,st:RETURN_BTN_ST,fontSize:RETURN_BTN_FONT,action: RETURN_BTN_CLICK)
-        
-        U().button_generate(viewCon : self ,view:self.view,x:SELECT_BTN_X,y:SELECT_BTN_Y,width:SELECT_BTN_WIDTH,height:SELECT_BTN_HEIGHT,st:SELECT_BTN_ST,fontSize:SELECT_BTN_FONT,action: SELECT_BTN_CLICK)
-        
-        U().button_generate(viewCon : self ,view:self.view,x:NINE_X_NINE_BTN_X,y:NINE_X_NINE_BTN_Y,width:NINE_X_NINE_BTN_WIDTH,height:NINE_X_NINE_BTN_HEIGHT,st:NINE_X_NINE_BTN_ST,fontSize:NINE_X_NINE_BTN_FONT,action: NINE_X_NINE_BTN_CLICK)
+        U().button_generate(param_:delete_btn_p,viewCon_:self,view_:self.view,action: #selector(delete_db))
 
-        U().button_generate(viewCon : self ,view:self.view,x:GROUP_DIVIDE_BTN_X,y:GROUP_DIVIDE_BTN_Y,width:GROUP_DIVIDE_BTN_WIDTH,height:GROUP_DIVIDE_BTN_HEIGHT,st:GROUP_DIVIDE_BTN_ST,fontSize:GROUP_DIVIDE_BTN_FONT,action: GROUP_DIVIDE_BTN_CLICK)
-        
-        U().button_generate(viewCon : self ,view:self.view,x:DELETE_BTN_X,y:DELETE_BTN_Y,width:DELETE_BTN_WIDTH,height:DELETE_BTN_HEIGHT,st:DELETE_BTN_ST,fontSize:DELETE_BTN_FONT,action: DELETE_BTN_CLICK)
     }
     
     func numberOfRows(in tableView: NSTableView) -> Int {

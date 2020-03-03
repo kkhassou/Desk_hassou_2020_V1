@@ -35,11 +35,18 @@ class U {
         view_.addSubview(nsText_)
     }
     // ボタンを動かす事が出来ないので、不便。
-    func button_generate(viewCon : NSViewController ,view:NSView,x:Int,y:Int,width:Int,height:Int,st:String,fontSize:Int,action: Selector){
+    func button_generate_before_change(viewCon : NSViewController ,view:NSView,x:Int,y:Int,width:Int,height:Int,st:String,fontSize:Int,action: Selector){
         var nsButton  = NSButton(title: st, target: viewCon, action: action)
         nsButton.frame = CGRect(x:x, y:y , width:width, height:height)
         nsButton.font = NSFont.systemFont(ofSize: CGFloat(fontSize))
         view.addSubview(nsButton)
+    }
+    
+    func button_generate(param_:Param,viewCon_:NSViewController,view_:NSView,action: Selector){
+        var nsButton  = NSButton(title: param_.st, target: viewCon_, action: action)
+        nsButton.frame = CGRect(x:param_.x, y:param_.y , width:param_.width, height:param_.height)
+        nsButton.font = NSFont.systemFont(ofSize: CGFloat(param_.fontSize))
+        view_.addSubview(nsButton)
     }
     func screen_next(viewCon : NSViewController ,id:String , storyboard:NSStoryboard){
         viewCon.dismiss(nil)

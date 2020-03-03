@@ -19,11 +19,6 @@ class List_Nine_x_NineController: NSViewController, NSTableViewDelegate, NSTable
     var select_stock = ""
     let realm = try! Realm()
     
-    var select_btn = NSButton()
-    var return_btn = NSButton()
-    var delete_btn = NSButton()
-    var new_btn = NSButton()
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         let stocks = realm.objects(Nine_x_Nine_Stock.self)
@@ -35,25 +30,18 @@ class List_Nine_x_NineController: NSViewController, NSTableViewDelegate, NSTable
         unique_stocks = orderedSet.array as! [String]
         tableview.action = #selector(onItemClicked)
         
-        select_btn = NSButton(title: "決定", target: self, action: #selector(select_theme))
-        select_btn.frame = CGRect(x: 375, y: 30 , width: 75, height: 50)
-        select_btn.font = NSFont.systemFont(ofSize: 22)
-        view.self.addSubview(select_btn)
+        var return_btn_p = Param(st_ :"戻る",x_:25,y_:30,width_:75,height_:50,fontSize_:22)
+        U().button_generate(param_:return_btn_p,viewCon_:self,view_:self.view,action: #selector(return_disp))
+
+        var select_btn_p = Param(st_ :"決定",x_:375,y_:30,width_:75,height_:50,fontSize_:22)
+        U().button_generate(param_:select_btn_p,viewCon_:self,view_:self.view,action: #selector(select_theme))
         
-        delete_btn = NSButton(title: "削除", target: self, action: #selector(delete_db))
-        delete_btn.frame = CGRect(x: 300, y: 30 , width: 75, height: 50)
-        delete_btn.font = NSFont.systemFont(ofSize: 22)
-        view.self.addSubview(delete_btn)
+        var delete_btn_p = Param(st_ :"削除",x_:300,y_:30,width_:75,height_:50,fontSize_:22)
+        U().button_generate(param_:delete_btn_p,viewCon_:self,view_:self.view,action: #selector(delete_db))
         
-        new_btn = NSButton(title: "新規作成", target: self, action: #selector(new_db))
-        new_btn.frame = CGRect(x: 130, y: 30 , width: 150, height: 50)
-        new_btn.font = NSFont.systemFont(ofSize: 22)
-        view.self.addSubview(new_btn)
-        
-        return_btn = NSButton(title: "戻る", target: self, action: #selector(return_disp))
-        return_btn.frame = CGRect(x: 25, y: 30 , width: 75, height: 50)
-        return_btn.font = NSFont.systemFont(ofSize: 22)
-        view.self.addSubview(return_btn)
+        var new_btn_p = Param(st_ :"新規作成",x_:130,y_:30,width_:150,height_:50,fontSize_:22)
+        U().button_generate(param_:new_btn_p,viewCon_:self,view_:self.view,action: #selector(new_db))
+
     }
     func numberOfRows(in tableView: NSTableView) -> Int {
         return unique_stocks.count
