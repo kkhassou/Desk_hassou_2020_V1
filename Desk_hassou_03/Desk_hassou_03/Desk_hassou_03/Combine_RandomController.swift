@@ -81,10 +81,9 @@ class Combine_RandomController: NSViewController {
             if hint_content_num == 11{
                 print("from_con_1")
                 category_1_content_btn = NSButton(title: "ランダム選択に戻す", target: self, action: #selector(randam_or_fix_switch_click))
-                category_1_content_btn.frame = CGRect(x:600, y:470 , width:180, height:50);
-                category_1_content_btn.font = NSFont.systemFont(ofSize: CGFloat(15))
-                category_1_content_btn.tag = 11
-                self.view.addSubview(category_1_content_btn)
+                var category_1_content_btn_p = Param(x_:600,y_:470,width_:180,height_:50,fontSize_:15,tag_: 11)
+                U().button_generate(param_:category_1_content_btn_p,nsButton_:category_1_content_btn,view_:self.view)
+                
                 randam_or_fix_1.frame = CGRect(x:610, y:450 , width:75, height:20);
                 randam_or_fix_1.stringValue = "固定表示"
                 randam_or_fix_1.font = NSFont.systemFont(ofSize: CGFloat(15))
@@ -103,10 +102,9 @@ class Combine_RandomController: NSViewController {
             }else if hint_content_num == 22{
                 print("from_con_2")
                 category_2_content_btn = NSButton(title: "ランダム選択に戻す", target: self, action: #selector(randam_or_fix_switch_click))
-                category_2_content_btn.frame = CGRect(x:600, y:370 , width:180, height:50);
-                category_2_content_btn.font = NSFont.systemFont(ofSize: CGFloat(15))
-                category_2_content_btn.tag = 22
-                self.view.addSubview(category_2_content_btn)
+                var category_2_content_btn_p = Param(x_:600,y_:370,width_:180,height_:50,fontSize_:15,tag_: 22)
+                U().button_generate(param_:category_2_content_btn_p,nsButton_:category_2_content_btn,view_:self.view)
+
                 randam_or_fix_2.frame = CGRect(x:610, y:350 , width:75, height:20);
                 randam_or_fix_2.stringValue = "固定表示"
                 randam_or_fix_2.font = NSFont.systemFont(ofSize: CGFloat(15))
@@ -125,10 +123,9 @@ class Combine_RandomController: NSViewController {
             }else if hint_content_num == 33{
                 print("from_con_3")
                 category_3_content_btn = NSButton(title: "ランダム選択に戻す", target: self, action: #selector(randam_or_fix_switch_click))
-                category_3_content_btn.frame = CGRect(x:600, y:270 , width:180, height:50);
-                category_3_content_btn.font = NSFont.systemFont(ofSize: CGFloat(15))
-                category_3_content_btn.tag = 33
-                self.view.addSubview(category_3_content_btn)
+                var category_3_content_btn_p = Param(x_:600,y_:270,width_:180,height_:50,fontSize_:15,tag_: 33)
+                U().button_generate(param_:category_3_content_btn_p,nsButton_:category_3_content_btn,view_:self.view)
+
                 randam_or_fix_3.frame = CGRect(x:610, y:250 , width:75, height:20);
                 randam_or_fix_3.stringValue = "固定表示"
                 randam_or_fix_3.font = NSFont.systemFont(ofSize: CGFloat(15))
@@ -241,10 +238,8 @@ class Combine_RandomController: NSViewController {
         think_idea_content.backgroundColor = NSColor.white
         self.view.addSubview(think_idea_content)
         
-        category_1_content_btn.frame = CGRect(x:600, y:470 , width:180, height:50);
-        category_1_content_btn.font = NSFont.systemFont(ofSize: CGFloat(15))
-        category_1_content_btn.tag = 11
-        self.view.addSubview(category_1_content_btn)
+        var category_1_content_btn_p = Param(x_:600,y_:470,width_:180,height_:50,fontSize_:15,tag_: 11)
+        U().button_generate(param_:category_1_content_btn_p,nsButton_:category_1_content_btn,view_:self.view)
         if randomFlag_1 == true{
             randam_or_fix_1.frame = CGRect(x:610, y:450 , width:100, height:20);
             randam_or_fix_1.stringValue = "ランダム選択"
@@ -254,10 +249,8 @@ class Combine_RandomController: NSViewController {
             randam_or_fix_1.backgroundColor = NSColor.white
             self.view.addSubview(randam_or_fix_1)
         }
-        category_2_content_btn.frame = CGRect(x:600, y:370 , width:180, height:50);
-        category_2_content_btn.font = NSFont.systemFont(ofSize: CGFloat(15))
-        category_2_content_btn.tag = 22
-        self.view.addSubview(category_2_content_btn)
+        var category_2_content_btn_p = Param(x_:600,y_:370,width_:180,height_:50,fontSize_:15,tag_: 22)
+        U().button_generate(param_:category_2_content_btn_p,nsButton_:category_2_content_btn,view_:self.view)
         if randomFlag_2 == true{
             randam_or_fix_2.frame = CGRect(x:610, y:350 , width:100, height:20);
             randam_or_fix_2.stringValue = "ランダム選択"
@@ -267,9 +260,8 @@ class Combine_RandomController: NSViewController {
             randam_or_fix_2.backgroundColor = NSColor.white
             self.view.addSubview(randam_or_fix_2)
         }
-        category_3_content_btn.frame = CGRect(x:600, y:270 , width:180, height:50);
-        category_3_content_btn.font = NSFont.systemFont(ofSize: CGFloat(15))
-        category_3_content_btn.tag = 33
+        var category_3_content_btn_p = Param(x_:600,y_:270,width_:180,height_:50,fontSize_:15,tag_: 33)
+        U().button_generate(param_:category_3_content_btn_p,nsButton_:category_3_content_btn,view_:self.view)
         self.view.addSubview(category_3_content_btn)
         if randomFlag_3 == true{
             randam_or_fix_3.frame = CGRect(x:610, y:250 , width:100, height:20);

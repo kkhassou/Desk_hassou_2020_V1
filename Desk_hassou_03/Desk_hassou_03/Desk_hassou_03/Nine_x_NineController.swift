@@ -307,7 +307,7 @@ class Nine_x_NineController: NSViewController {
         
         var expansion_btn = NSButton()
         expansion_btn = NSButton(title:"軸を展開", target: self, action: #selector(expansion_btn_click))
-        expansion_btn.frame = CGRect(x: 900, y: 20 , width: 100, height: 50)
+        expansion_btn.frame = CGRect(x: 800, y: 20 , width: 200, height: 50)
         expansion_btn.font = NSFont.systemFont(ofSize: 22)
         self.view.addSubview(expansion_btn)
     }

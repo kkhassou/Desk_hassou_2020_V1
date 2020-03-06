@@ -34,14 +34,14 @@ class U {
         nsText_.backgroundColor = NSColor.white
         view_.addSubview(nsText_)
     }
-    // ボタンを動かす事が出来ないので、不便。
-    func button_generate_before_change(viewCon : NSViewController ,view:NSView,x:Int,y:Int,width:Int,height:Int,st:String,fontSize:Int,action: Selector){
-        var nsButton  = NSButton(title: st, target: viewCon, action: action)
-        nsButton.frame = CGRect(x:x, y:y , width:width, height:height)
-        nsButton.font = NSFont.systemFont(ofSize: CGFloat(fontSize))
-        view.addSubview(nsButton)
+    // ボタンの表示を変えられるversion
+    func button_generate(param_:Param,nsButton_:NSButton,view_:NSView){
+        nsButton_.frame = CGRect(x:param_.x, y:param_.y , width:param_.width, height:param_.height)
+        nsButton_.font = NSFont.systemFont(ofSize: CGFloat(param_.fontSize))
+        nsButton_.tag = param_.tag
+        view_.addSubview(nsButton_)
     }
-    
+    // ボタンを動かす事が出来ないので、不便。
     func button_generate(param_:Param,viewCon_:NSViewController,view_:NSView,action: Selector){
         var nsButton  = NSButton(title: param_.st, target: viewCon_, action: action)
         nsButton.frame = CGRect(x:param_.x, y:param_.y , width:param_.width, height:param_.height)

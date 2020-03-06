@@ -19,6 +19,15 @@ class Param{
     var fontSize = 0
     var backColor = NSColor.white
     var serchSt = ""
+    var tag = 0
+    init(x_:Int,y_:Int,width_:Int,height_:Int,fontSize_:Int,tag_:Int) {
+        self.x = x_
+        self.y = y_
+        self.width = width_
+        self.height = height_
+        self.fontSize = fontSize_
+        self.tag = tag_
+    }
     init(st_ :String,x_:Int,y_:Int,width_:Int,height_:Int,fontSize_:Int) {
         self.st = st_
         self.x = x_
