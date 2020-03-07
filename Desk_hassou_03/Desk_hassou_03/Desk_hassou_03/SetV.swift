@@ -10,6 +10,11 @@ import Foundation
 import RealmSwift
 import Cocoa
 
+class St_Set_Num{
+    var st = ""
+    var num = -999
+}
+
 class Param{
     var st = ""
     var x = 0
@@ -47,6 +52,11 @@ class Param{
     }
 }
 
+class group_set_color{
+    var group = ""
+    var backColor:NSColor = NSColor.clear
+}
+
 class Group_Divide_Db: Object{
     @objc dynamic var theme = ""
     @objc dynamic var idea = ""
@@ -77,6 +87,12 @@ class Rnadom_Conb_Db: Object{
 class Hint_Db: Object{
     @objc dynamic var theme = the_theme
     @objc dynamic var content = ""
+}
+
+class Grouped_Stock: Object{
+    @objc dynamic var theme = ""
+    @objc dynamic var group = ""
+    @objc dynamic var idea = ""
 }
 
 class Idea_Stock: Object{
