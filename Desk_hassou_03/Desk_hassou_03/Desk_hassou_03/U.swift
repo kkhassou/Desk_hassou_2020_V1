@@ -31,7 +31,9 @@ class U {
             nsText_.isBordered = false
         }
         nsText_.isSelectable = true
-        nsText_.backgroundColor = NSColor.white
+        if nsText_.backgroundColor == nil{
+            nsText_.backgroundColor = NSColor.white
+        }
         view_.addSubview(nsText_)
     }
     // ボタンの表示を変えられるversion

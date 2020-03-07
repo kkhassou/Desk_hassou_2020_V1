@@ -54,7 +54,14 @@ class Group_Divide_Db: Object{
     @objc dynamic var comment = ""
 }
 
+// これ、最初からテーマを持たせるべきだった。。。
 class Group_Label_Db: Object{
+    @objc dynamic var gourp_label = ""
+}
+
+// でも元のを変更すると壊れる確率が高いので、やらない。
+class Group_Label_Db_ver3: Object{
+    @objc dynamic var theme = ""
     @objc dynamic var gourp_label = ""
 }
 
@@ -71,11 +78,13 @@ class Hint_Db: Object{
     @objc dynamic var theme = the_theme
     @objc dynamic var content = ""
 }
+
 class Idea_Stock: Object{
     @objc dynamic var theme = ""
     @objc dynamic var hint = ""
     @objc dynamic var idea = ""
 }
+
 class Nine_x_Nine_Stock: Object{
     @objc dynamic var y0_x0 = ""
     @objc dynamic var y0_x1 = ""

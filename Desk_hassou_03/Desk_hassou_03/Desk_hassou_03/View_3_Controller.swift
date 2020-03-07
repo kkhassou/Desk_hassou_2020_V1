@@ -19,7 +19,8 @@ class View_3_Controller: NSViewController, NSTableViewDelegate, NSTableViewDataS
     var return_btn_p = Param(st_ :"戻る",x_:25,y_:30,width_:75,height_:50,fontSize_:22)
     var select_btn_p = Param(st_ :"決定",x_:375,y_:30,width_:75,height_:50,fontSize_:22)
     var nine_x_nine_btn_p = Param(st_ :"9x9へ",x_:25,y_:0,width_:100,height_:50,fontSize_:22)
-    var group_btn_p = Param(st_ :"グループ分け",x_:150,y_:0,width_:150,height_:50,fontSize_:22)
+    var group_btn_p = Param(st_ :"グループ分け＆コメント",x_:150,y_:0,width_:250,height_:50,fontSize_:22)
+    var index_group_btn_p = Param(st_ :"一覧からグループ分け",x_:425,y_:0,width_:225,height_:50,fontSize_:22)
     var delete_btn_p = Param(st_ :"削除",x_:300,y_:30,width_:75,height_:50,fontSize_:22)
 
     @IBOutlet weak var tableView: NSTableView!
@@ -51,6 +52,8 @@ class View_3_Controller: NSViewController, NSTableViewDelegate, NSTableViewDataS
         U().button_generate(param_:nine_x_nine_btn_p,viewCon_:self,view_:self.view,action: #selector(select_nine_x_nine))
     
         U().button_generate(param_:group_btn_p,viewCon_:self,view_:self.view,action: #selector(group_divide))
+        
+        U().button_generate(param_:index_group_btn_p,viewCon_:self,view_:self.view,action: #selector(index_group_divide))
         
         U().button_generate(param_:delete_btn_p,viewCon_:self,view_:self.view,action: #selector(delete_db))
 
@@ -92,6 +95,9 @@ class View_3_Controller: NSViewController, NSTableViewDelegate, NSTableViewDataS
     }
     @objc func group_divide(){
         U().screen_next(viewCon : self ,id:"Group_Divide" , storyboard:storyboard!)
+    }
+    @objc func index_group_divide(){
+        U().screen_next(viewCon : self ,id:"Index_Group_Divide" , storyboard:storyboard!)
     }
     @objc func delete_db(){
         if m_select_stock != ""{
