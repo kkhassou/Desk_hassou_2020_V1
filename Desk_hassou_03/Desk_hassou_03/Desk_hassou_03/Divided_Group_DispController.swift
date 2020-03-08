@@ -24,8 +24,6 @@ class Divided_Group_DispController: NSViewController {
         m_theme = UserDefaults.standard.object(forKey: "theme") as! String
         let stocks = realm.objects(Grouped_Stock.self).filter("theme == %@",m_theme)
         var stocs_array = Array(stocks)
-//        print("stocks")
-//        print(stocks)
         var temp :[String] = []
         for one in stocks{
             if one.group != ""{
