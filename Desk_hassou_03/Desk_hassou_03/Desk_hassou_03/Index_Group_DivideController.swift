@@ -23,11 +23,9 @@ class Index_Group_DivideController: NSViewController , NSComboBoxDataSource{
     var comboBox = NSComboBox()
     var group_input_content = NSTextField()
     var group_set_content = NSTextField()
-    var border_color_array:[NSColor] = [NSColor.green,NSColor.blue,NSColor.yellow,NSColor.orange,NSColor.purple,NSColor.gray,NSColor.red,NSColor.lightGray,NSColor.linkColor,NSColor.headerColor]
+    var border_color_array:[NSColor] = [NSColor.green,NSColor.blue,NSColor.orange,NSColor.purple,NSColor.gray,NSColor.red,NSColor.lightGray,NSColor.linkColor,NSColor.headerColor,NSColor.yellow]
     
     override func viewDidLoad() {
-
-        
         super.viewDidLoad()
         self.view.wantsLayer = true
         self.view.layer?.backgroundColor = NSColor.white.cgColor
@@ -35,13 +33,16 @@ class Index_Group_DivideController: NSViewController , NSComboBoxDataSource{
                 
         m_theme = UserDefaults.standard.object(forKey: "theme") as! String
         let stocks = realm.objects(Idea_Stock.self).filter("theme == %@",m_theme)
+        print("stocks 36")
+        print(stocks)
         var temp :[String] = []
         for one in stocks{
             temp.append(one.idea)
         }
         let orderedSet = NSOrderedSet(array: temp)
         unique_stocks = orderedSet.array as! [String]
-        
+        print("unique_stocks 43")
+        print(unique_stocks)
         // 一旦、目一杯、画面に、縦横にマスを並べてみよう。
         // 空の文字列を用意
         var index = 0
@@ -135,8 +136,6 @@ class Index_Group_DivideController: NSViewController , NSComboBoxDataSource{
     @objc func group_set_click(){
         var st = group_set_content.stringValue
         let arr:[String] = st.components(separatedBy: " ")
-        print("上 unique_stocks.count")
-        print(unique_stocks.count)
         var index = 0
         for y in 0..<8{
             for x in 0..<8{
@@ -192,25 +191,31 @@ class Index_Group_DivideController: NSViewController , NSComboBoxDataSource{
         comboBox.reloadData()
     }
     @objc func store_next_click(){
-        // グループを含めて、保存を行う。
-        var grouped_stock_s:[Grouped_Stock] = []
-        print("下 unique_stocks.count")
+        // 更新なので、削除してから追加
+        let deleting = realm.objects(Grouped_Stock.self).filter("theme == %@",m_theme)
+        try! realm.write {
+            realm.delete(deleting)
+        }
+        var group_stock_s:[Grouped_Stock] = []
         print(unique_stocks.count)
         var index = 0
         for y in 0..<8{
             for x in 0..<8{
                 if  index < unique_stocks.count {
                     
-                    var one_grouped_stock = Grouped_Stock()
-                    one_grouped_stock.theme = m_theme
-                    one_grouped_stock.idea = unique_stocks[index]
-                    one_grouped_stock.group = group_stocks[index]
-                    grouped_stock_s.append(one_grouped_stock)
+                    var one_group_stock = Grouped_Stock()
+                    one_group_stock.theme = m_theme
+                    one_group_stock.idea = unique_stocks[index]
+                    one_group_stock.group = group_stocks[index]
+                    group_stock_s.append(one_group_stock)
                 }
                 index = index + 1
             }
         }
-        print(grouped_stock_s)
+        print(group_stock_s)
+        try! realm.write() {
+            realm.add(group_stock_s)
+        }
         U().screen_next(viewCon : self ,id:"Divided_Group_Disp" , storyboard:storyboard!)
     }
 }

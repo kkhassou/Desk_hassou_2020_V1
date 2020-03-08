@@ -89,6 +89,9 @@ class Hint_Db: Object{
     @objc dynamic var content = ""
 }
 
+// これGroup_Divide_Dbと一緒だからいらないね。。。
+// コメントは、その画面ではつけないけども。
+// と思ったが、色々ややこしくなりそうなので、DBを分ける。
 class Grouped_Stock: Object{
     @objc dynamic var theme = ""
     @objc dynamic var group = ""
