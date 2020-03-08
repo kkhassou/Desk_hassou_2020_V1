@@ -10,9 +10,9 @@ import Foundation
 import RealmSwift
 import Cocoa
 
-class St_Set_Num{
-    var st = ""
-    var num = -999
+class St_Set_group{
+    var idea = ""
+    var group = ""
 }
 
 class Param{
