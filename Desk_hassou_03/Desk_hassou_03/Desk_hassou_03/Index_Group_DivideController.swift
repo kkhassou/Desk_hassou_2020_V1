@@ -30,6 +30,8 @@ class Index_Group_DivideController: NSViewController , NSComboBoxDataSource{
     
     var m_page_total = -999
     var m_page_now = 1
+    var first_flag = true
+    var first_db_store_flag = true
     override func viewDidLoad() {
         first_appear()
     }
@@ -104,7 +106,40 @@ class Index_Group_DivideController: NSViewController , NSComboBoxDataSource{
             for v in view.subviews {
                 v.removeFromSuperview()
             }
+            page_move_db_store()
             first_appear()
+        }
+    }
+    func page_move_db_store(){
+        var index = 0
+        for y in 0..<Y_LENGTH{
+            for x in 0..<X_LENGTH{
+                if  index < unique_stocks.count {
+                    if group_stocks[index] != "" {
+                        var one_group_stock = Grouped_Stock()
+                        one_group_stock.theme = m_theme
+                        one_group_stock.idea = unique_stocks[index]
+                        one_group_stock.group = group_stocks[index]
+                        let results = realm.objects(Grouped_Stock.self).filter("theme == %@",m_theme).filter("idea == %@",unique_stocks[index])
+                        if results.count == 0{
+                            var one_group_stock = Grouped_Stock()
+                            one_group_stock.theme = m_theme
+                            one_group_stock.idea = unique_stocks[index]
+                            one_group_stock.group = group_stocks[index]
+                            try! realm.write {
+                                realm.add(one_group_stock)
+                            }
+                        }else{
+                            try! realm.write {
+                                results[0].theme = m_theme
+                                results[0].idea = unique_stocks[index]
+                                results[0].group = group_stocks[index]
+                            }
+                        }
+                    }
+                }
+                index = index + 1
+            }
         }
     }
     @objc func return_page_click(){
@@ -114,17 +149,24 @@ class Index_Group_DivideController: NSViewController , NSComboBoxDataSource{
             for v in view.subviews {
                 v.removeFromSuperview()
             }
+            page_move_db_store()
             first_appear()
         }
     }
     @objc func store_next_click(){
+        delet_DB()
+        store_DB()
+        U().screen_next(viewCon : self ,id:"Divided_Group_Disp" , storyboard:storyboard!)
+    }
+    func delet_DB(){
         // 更新なので、削除してから追加
         let deleting = realm.objects(Grouped_Stock.self).filter("theme == %@",m_theme)
         try! realm.write {
             realm.delete(deleting)
         }
+    }
+    func store_DB(){
         var group_stock_s:[Grouped_Stock] = []
-        print(unique_stocks.count)
         var index = 0
         for y in 0..<Y_LENGTH{
             for x in 0..<X_LENGTH{
@@ -140,8 +182,6 @@ class Index_Group_DivideController: NSViewController , NSComboBoxDataSource{
                 index = index + 1
             }
         }
-        print("group_stock_s")
-        print(group_stock_s)
         // 単純に追加すると、被ったところで、どっちが採用されるか分からないので、
         // 被っているところは、initial_grouped_stock_sのほうは、追加しない。
         for one_initial_grouped_stock in initial_grouped_stock_s{
@@ -158,14 +198,41 @@ class Index_Group_DivideController: NSViewController , NSComboBoxDataSource{
         try! realm.write() {
             realm.add(group_stock_s)
         }
-        U().screen_next(viewCon : self ,id:"Divided_Group_Disp" , storyboard:storyboard!)
+        // 別のページの保存が出来ないので、この処理を入れてみるが、うまくいくかな？
+        // なんか、凄い、重複しまくっている気がするが。
+        var fill_difference_db_s = realm.objects(Grouped_Stock.self).filter("theme == %@",m_theme)
+        var arry_fill_difference_db_s = Array(fill_difference_db_s)
+        for one in arry_fill_difference_db_s{
+            var temp_falg = true
+            for one_2 in group_stock_s{
+                if one_2.idea == one.idea{
+                    temp_falg = false
+                }
+            }
+            if temp_falg == true{
+                // 追加
+                var in_one = Grouped_Stock()
+                in_one.theme = m_theme
+                in_one.idea = one.idea
+                in_one.group = one.group
+                try! realm.write() {
+                    realm.add(in_one)
+                }
+            }else{
+                // 更新
+                var temp_db_s = realm.objects(Grouped_Stock.self).filter("theme == %@",m_theme).filter("idea == %@",one.idea)
+                try! realm.write {
+                    temp_db_s[0].group = one.group
+                }
+            }
+        }
+
     }
     func first_appear(){
         super.viewDidLoad()
         self.view.wantsLayer = true
         self.view.layer?.backgroundColor = NSColor.white.cgColor
         self.view.frame = CGRect(x:10, y:10 , width:1200, height:650);
-        
         
         m_theme = UserDefaults.standard.object(forKey: "theme") as! String
         let stocks = realm.objects(Idea_Stock.self).filter("theme == %@",m_theme)
@@ -175,22 +242,14 @@ class Index_Group_DivideController: NSViewController , NSComboBoxDataSource{
         }
         let orderedSet = NSOrderedSet(array: temp)
         unique_stocks = orderedSet.array as! [String]
-//        print("unique_stocks 170")
-//        print(unique_stocks)
         m_page_total = Int(unique_stocks.count / (Y_LENGTH * X_LENGTH)) + 1
         if m_page_now == 1{
             //そのままでOKのはず
         }else{
-            print("---kake")
             for i in 0..<((m_page_now - 1) * 56) {
-                print("i")
-                print(i)
-                print(unique_stocks[0])
                 unique_stocks.remove(at: 0)
             }
         }
-        print("unique_stocks 184")
-        print(unique_stocks)
         // page番号の表示
         var page_title = NSTextField()
         var page_title_p = Param(st_ :"ページ",x_:880,y_: 35,width_:50,height_:20,fontSize_:14)
@@ -201,9 +260,9 @@ class Index_Group_DivideController: NSViewController , NSComboBoxDataSource{
         var page_cotent_p = Param(st_ :String(m_page_now) + " / " + String(m_page_total) ,x_:930,y_: 35,width_:50,height_:20,fontSize_:14)
         U().text_generate(param_:page_cotent_p,nsText_:page_cotent,view_:self.view,input_flag_:false,ajust_flag_:false,border_flag_:false)
 
-        var next_page_btn_p = Param(st_ :"次のページ",x_:960,y_:35,width_:90,height_:20,fontSize_:13)
+        var next_page_btn_p = Param(st_ :"次のページ",x_:1060,y_:35,width_:90,height_:20,fontSize_:13)
               U().button_generate(param_:next_page_btn_p,viewCon_:self,view_:self.view,action: #selector(next_page_click))
-        var return_page_btn_p = Param(st_ :"前のページ",x_:1060,y_:35,width_:90,height_:20,fontSize_:13)
+        var return_page_btn_p = Param(st_ :"前のページ",x_:960,y_:35,width_:90,height_:20,fontSize_:13)
               U().button_generate(param_:return_page_btn_p,viewCon_:self,view_:self.view,action: #selector(return_page_click))
         
         let group_label_s = realm.objects(Group_Label_Db_ver3.self).filter("theme == %@",m_theme)
@@ -244,15 +303,21 @@ class Index_Group_DivideController: NSViewController , NSComboBoxDataSource{
             }else{
                 one_st_set_group.group = serched[0].group
                 one_st_set_group.idea = one
-                var one_grouped_stock = Grouped_Stock()
-                one_grouped_stock.theme = m_theme
-                one_grouped_stock.group = serched[0].group
-                one_grouped_stock.idea = one
-                initial_grouped_stock_s.append(one_grouped_stock)
+                // これを入れないと、おかしな事になるので注意。
+                if first_flag == true{
+                    var one_grouped_stock = Grouped_Stock()
+                    one_grouped_stock.theme = m_theme
+                    one_grouped_stock.group = serched[0].group
+                    one_grouped_stock.idea = one
+                    initial_grouped_stock_s.append(one_grouped_stock)
+                }else{
+
+                }
             }
             group_seted_stocks_s.append(one_st_set_group)
         }
-        print("----------")
+        first_flag = false
+//        print("----------")
 //        print(group_seted_stocks_s)
         // 一旦、目一杯、画面に、縦横にマスを並べてみよう。
         // 空の文字列を用意
@@ -261,10 +326,7 @@ class Index_Group_DivideController: NSViewController , NSComboBoxDataSource{
             for x in 0..<X_LENGTH{
                 if  index < group_seted_stocks_s.count {
                     var indea_one_content = NSTextField()
-
                     var idea_one = group_seted_stocks_s[index].idea
-                    print("idea_one 258")
-                    print(idea_one)
                     var indea_one_content_p = Param(st_ :idea_one,x_:18 + x*148,y_:550 - y*80,width_:130,height_:60,fontSize_:9)
                     indea_one_content.tag = y*10 + x
                     U().text_generate(param_:indea_one_content_p,nsText_:indea_one_content,view_:self.view,input_flag_:false,ajust_flag_:false,border_flag_:true)
