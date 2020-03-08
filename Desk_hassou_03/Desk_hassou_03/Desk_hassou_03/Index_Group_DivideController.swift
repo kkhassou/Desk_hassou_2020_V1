@@ -96,6 +96,27 @@ class Index_Group_DivideController: NSViewController , NSComboBoxDataSource{
         }
         comboBox.reloadData()
     }
+    
+    @objc func next_page_click(){
+        if m_page_now < m_page_total{
+            m_page_now = m_page_now + 1
+            group_seted_stocks_s.removeAll()
+            for v in view.subviews {
+                v.removeFromSuperview()
+            }
+            first_appear()
+        }
+    }
+    @objc func return_page_click(){
+        if m_page_now > 1{
+            m_page_now = m_page_now - 1
+            group_seted_stocks_s.removeAll()
+            for v in view.subviews {
+                v.removeFromSuperview()
+            }
+            first_appear()
+        }
+    }
     @objc func store_next_click(){
         // 更新なので、削除してから追加
         let deleting = realm.objects(Grouped_Stock.self).filter("theme == %@",m_theme)
@@ -154,23 +175,36 @@ class Index_Group_DivideController: NSViewController , NSComboBoxDataSource{
         }
         let orderedSet = NSOrderedSet(array: temp)
         unique_stocks = orderedSet.array as! [String]
+//        print("unique_stocks 170")
+//        print(unique_stocks)
+        m_page_total = Int(unique_stocks.count / (Y_LENGTH * X_LENGTH)) + 1
         if m_page_now == 1{
             //そのままでOKのはず
         }else{
-            for i in 0..<(m_page_now * 55) {
-                unique_stocks.remove(at: i)
+            print("---kake")
+            for i in 0..<((m_page_now - 1) * 56) {
+                print("i")
+                print(i)
+                print(unique_stocks[0])
+                unique_stocks.remove(at: 0)
             }
         }
+        print("unique_stocks 184")
+        print(unique_stocks)
         // page番号の表示
         var page_title = NSTextField()
-        var page_title_p = Param(st_ :"ページ",x_:1000,y_: 35,width_:50,height_:20,fontSize_:14)
+        var page_title_p = Param(st_ :"ページ",x_:880,y_: 35,width_:50,height_:20,fontSize_:14)
         U().text_generate(param_:page_title_p,nsText_:page_title,view_:self.view,input_flag_:false,ajust_flag_:false,border_flag_:false)
         
-        m_page_total = Int(unique_stocks.count / (Y_LENGTH * X_LENGTH)) + 1
+        
         var page_cotent = NSTextField()
-        var page_cotent_p = Param(st_ :String(m_page_now) + " / " + String(m_page_total) ,x_:1050,y_: 35,width_:50,height_:20,fontSize_:14)
+        var page_cotent_p = Param(st_ :String(m_page_now) + " / " + String(m_page_total) ,x_:930,y_: 35,width_:50,height_:20,fontSize_:14)
         U().text_generate(param_:page_cotent_p,nsText_:page_cotent,view_:self.view,input_flag_:false,ajust_flag_:false,border_flag_:false)
 
+        var next_page_btn_p = Param(st_ :"次のページ",x_:960,y_:35,width_:90,height_:20,fontSize_:13)
+              U().button_generate(param_:next_page_btn_p,viewCon_:self,view_:self.view,action: #selector(next_page_click))
+        var return_page_btn_p = Param(st_ :"前のページ",x_:1060,y_:35,width_:90,height_:20,fontSize_:13)
+              U().button_generate(param_:return_page_btn_p,viewCon_:self,view_:self.view,action: #selector(return_page_click))
         
         let group_label_s = realm.objects(Group_Label_Db_ver3.self).filter("theme == %@",m_theme)
         var temp_2 :[String] = []
@@ -218,7 +252,8 @@ class Index_Group_DivideController: NSViewController , NSComboBoxDataSource{
             }
             group_seted_stocks_s.append(one_st_set_group)
         }
-        
+        print("----------")
+//        print(group_seted_stocks_s)
         // 一旦、目一杯、画面に、縦横にマスを並べてみよう。
         // 空の文字列を用意
         var index = 0
@@ -228,7 +263,8 @@ class Index_Group_DivideController: NSViewController , NSComboBoxDataSource{
                     var indea_one_content = NSTextField()
 
                     var idea_one = group_seted_stocks_s[index].idea
-                    
+                    print("idea_one 258")
+                    print(idea_one)
                     var indea_one_content_p = Param(st_ :idea_one,x_:18 + x*148,y_:550 - y*80,width_:130,height_:60,fontSize_:9)
                     indea_one_content.tag = y*10 + x
                     U().text_generate(param_:indea_one_content_p,nsText_:indea_one_content,view_:self.view,input_flag_:false,ajust_flag_:false,border_flag_:true)
@@ -286,17 +322,17 @@ class Index_Group_DivideController: NSViewController , NSComboBoxDataSource{
         U().button_generate(param_:group_set_btn_p,viewCon_:self,view_:self.view,action: #selector(group_set_click))
         
         var group_input_titel = NSTextField()
-        var group_input_titel_p = Param(st_ :"追加するグループを入力",x_: 680, y_: 38 , width_: 270, height_:13,fontSize_:9)
+        var group_input_titel_p = Param(st_ :"追加するグループを入力",x_: 680, y_: 38 , width_: 70, height_:13,fontSize_:9)
         U().text_generate(param_:group_input_titel_p,nsText_:group_input_titel,view_:self.view,input_flag_:false,ajust_flag_:false,border_flag_:false)
 
 
         var group_input_content_p = Param(st_ :"",x_:680,y_:10,width_:180,height_:28,fontSize_:13)
         U().text_generate(param_:group_input_content_p,nsText_:group_input_content,view_:self.view,input_flag_:true,ajust_flag_:false,border_flag_:true)
         
-        var group_input_btn_p = Param(st_ :"グループを追加",x_:860,y_:12,width_:130,height_:20,fontSize_:13)
+        var group_input_btn_p = Param(st_ :"グループを追加",x_:860,y_:8,width_:130,height_:20,fontSize_:13)
               U().button_generate(param_:group_input_btn_p,viewCon_:self,view_:self.view,action: #selector(group_input_click))
         
-        var store_next_btn_p = Param(st_ :"保存&整理後を表示",x_:1000,y_:12,width_:160,height_:20,fontSize_:13)
+        var store_next_btn_p = Param(st_ :"保存&整理後を表示",x_:1000,y_:8,width_:160,height_:20,fontSize_:13)
               U().button_generate(param_:store_next_btn_p,viewCon_:self,view_:self.view,action: #selector(store_next_click))
     }
 }
