@@ -35,7 +35,6 @@ class Divided_Group_DispController: NSViewController {
         }
         let orderedSet = NSOrderedSet(array: temp)
         unique_group = orderedSet.array as! [String]
-//        print(unique_group)
         for y in 0..<8{
             var temp_max_x = 0
                 if y < unique_group.count{
@@ -46,8 +45,6 @@ class Divided_Group_DispController: NSViewController {
                     var x = 1
                     for one_stocks in stocs_array{
                         if one_stocks.group == unique_group[y] {
-//                            print("one_stocks.idea")
-//                            print(one_stocks.idea)
                             var indea_one_content = NSTextField()
                             var idea_one = one_stocks.idea
                             var indea_one_content_p = Param(st_ :idea_one,x_:18 + x*148,y_:550 - y*80,width_:130,height_:60,fontSize_:9)
@@ -62,8 +59,6 @@ class Divided_Group_DispController: NSViewController {
                 m_max_x = temp_max_x
             }
         }
-//        print("m_max_x")
-//        print(m_max_x)
         // page番号の表示
         var page_title = NSTextField()
         var page_title_p = Param(st_ :"ページ",x_:880,y_: 35,width_:50,height_:20,fontSize_:14)

@@ -68,8 +68,6 @@ class U {
     // 引数が多いが、便利に使えるようにしよう。
     func idea_count_disp(param_:Param,theme_st_ : String ,ns_count_ : NSTextField ,view_ : NSView, realm_: Realm,dbObj_:Object.Type){
         if theme_st_ != ""{
-            print(param_.st)
-            print(theme_st_)
             let ideaSelect = realm_.objects(dbObj_).filter("theme == %@",U().line_break_delete(in_st:theme_st_))
             param_.st = String(ideaSelect.count)
             text_generate(param_:param_,nsText_:ns_count_ ,view_:view_,input_flag_:false,ajust_flag_:false,border_flag_:false)
@@ -95,7 +93,7 @@ class U {
             nstext.backgroundColor = NSColor.white
             view.addSubview(nstext)
         case .alertSecondButtonReturn:
-            print("キャンセル")
+            break
         default:
             break
         }

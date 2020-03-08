@@ -40,7 +40,6 @@ class View_3_Controller: NSViewController, NSTableViewDelegate, NSTableViewDataS
         var temp :[String] = []
         for one in stocks{
             temp.append(one.idea)
-            print(one.idea)
         }
         let orderedSet = NSOrderedSet(array: temp)
         unique_stocks = orderedSet.array as! [String]
@@ -122,7 +121,6 @@ class View_3_Controller: NSViewController, NSTableViewDelegate, NSTableViewDataS
                 tableView.reloadData()
                 break
             case .alertSecondButtonReturn:
-                print("キャンセル")
                 break
             default:
                 break

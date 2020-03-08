@@ -145,7 +145,6 @@ class View_2_Controller: NSViewController, NSTableViewDelegate, NSTableViewDataS
                 tableview.reloadData()
                 break
             case .alertSecondButtonReturn:
-                print("キャンセル")
                 break
             default:
                 break

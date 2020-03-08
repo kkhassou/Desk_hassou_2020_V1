@@ -210,7 +210,7 @@ class EnlergeController: NSViewController {
             theme_content.stringValue = (alert.accessoryView as!
             NSTextField).stringValue
         case .alertSecondButtonReturn:
-            print("キャンセル")
+            break
         default:
             break
         }

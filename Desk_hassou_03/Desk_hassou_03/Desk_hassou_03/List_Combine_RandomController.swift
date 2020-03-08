@@ -34,7 +34,6 @@ class List_Combine_RandomController: NSViewController, NSTableViewDelegate, NSTa
         var temp :[String] = []
         for one in stocks{
             temp.append(one.think)
-            print(one.think)
         }
         let orderedSet = NSOrderedSet(array: temp)
         unique_stocks = orderedSet.array as! [String]

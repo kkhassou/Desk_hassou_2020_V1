@@ -106,7 +106,6 @@ class List_Content_Combine_RandomController: NSViewController, NSTableViewDelega
                 tableView.reloadData()
                 break
             case .alertSecondButtonReturn:
-                print("キャンセル")
                 break
             default:
                 break

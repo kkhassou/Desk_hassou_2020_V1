@@ -76,10 +76,7 @@ class Combine_RandomController: NSViewController {
             var hint_content_num = UserDefaults.standard.object(forKey: "hint_content_num") as! Int
             UserDefaults.standard.register(defaults:["hint_content" : ""])
             var hint_content = UserDefaults.standard.object(forKey: "hint_content") as! String
-            print("hint_content_num")
-            print(hint_content_num)
             if hint_content_num == 11{
-                print("from_con_1")
                 category_1_content_btn = NSButton(title: "ランダム選択に戻す", target: self, action: #selector(randam_or_fix_switch_click))
                 var category_1_content_btn_p = Param(x_:600,y_:470,width_:180,height_:50,fontSize_:15,tag_: 11)
                 U().button_generate(param_:category_1_content_btn_p,nsButton_:category_1_content_btn,view_:self.view)
@@ -100,7 +97,6 @@ class Combine_RandomController: NSViewController {
                 self.view.addSubview(category_1_content)
                 randomFlag_1 = false
             }else if hint_content_num == 22{
-                print("from_con_2")
                 category_2_content_btn = NSButton(title: "ランダム選択に戻す", target: self, action: #selector(randam_or_fix_switch_click))
                 var category_2_content_btn_p = Param(x_:600,y_:370,width_:180,height_:50,fontSize_:15,tag_: 22)
                 U().button_generate(param_:category_2_content_btn_p,nsButton_:category_2_content_btn,view_:self.view)
@@ -121,7 +117,6 @@ class Combine_RandomController: NSViewController {
                 self.view.addSubview(category_2_content)
                 randomFlag_2 = false
             }else if hint_content_num == 33{
-                print("from_con_3")
                 category_3_content_btn = NSButton(title: "ランダム選択に戻す", target: self, action: #selector(randam_or_fix_switch_click))
                 var category_3_content_btn_p = Param(x_:600,y_:270,width_:180,height_:50,fontSize_:15,tag_: 33)
                 U().button_generate(param_:category_3_content_btn_p,nsButton_:category_3_content_btn,view_:self.view)
@@ -401,7 +396,6 @@ class Combine_RandomController: NSViewController {
 
             break
         case .alertSecondButtonReturn:
-            print("キャンセル")
             break
         default:
             break

@@ -13,10 +13,7 @@ import RealmSwift
 class Index_Group_DivideController: NSViewController , NSComboBoxDataSource{
 
     let realm = try! Realm()
-    var unique_stocks:[String] = []
-    var group_seted_stocks_s:[St_Set_group] = []
-    var group_stocks:[String] = []
-    var initial_grouped_stock_s:[Grouped_Stock] = []
+    var unique_idea_st_s:[String] = []
     
     var unique_group_stocks:[String] = []
     var group_set_color_s:[group_set_color] = []
@@ -47,16 +44,16 @@ class Index_Group_DivideController: NSViewController , NSComboBoxDataSource{
         var index = 0
         for y in 0..<Y_LENGTH{
             for x in 0..<X_LENGTH{
-                if  index < unique_stocks.count {
+                if  index < unique_idea_st_s.count {
                     for one in arr{
                         if  index == Int(one)! - 1{
+                            // グループを追加・変更する
                             var idea_group_content = NSTextField()
                             var idea_group_content_p = Param(st_ :comboBox.stringValue,x_:18 + x*148,y_: 612 - y*80,width_:130,height_:13,fontSize_:9)
                             idea_group_content.tag = y*10 + x
+                        U().text_generate(param_:idea_group_content_p,nsText_:idea_group_content,view_:self.view,input_flag_:false,ajust_flag_:false,border_flag_:true)
                             
-                            // 後で取り出せるように、グループを配列に格納
-                            group_stocks[index] = comboBox.stringValue
-                            U().text_generate(param_:idea_group_content_p,nsText_:idea_group_content,view_:self.view,input_flag_:false,ajust_flag_:false,border_flag_:true)
+                            // カラーの枠を追加・変更する
                             var color_frame = NSTextField()
                             var color_frame_p = Param(st_ :"",x_:18 + x*148,y_: 546 - y*80,width_:130,height_:81,fontSize_:9)
                             color_frame.tag = y*10 + x
@@ -70,7 +67,23 @@ class Index_Group_DivideController: NSViewController , NSComboBoxDataSource{
                             }
                             color_frame.layer?.borderColor = set_color
                             color_frame.layer?.borderWidth = 2.0
-                            U().text_generate(param_:color_frame_p,nsText_:color_frame,view_:self.view,input_flag_:false,ajust_flag_:false,border_flag_:true)
+                        U().text_generate(param_:color_frame_p,nsText_:color_frame,view_:self.view,input_flag_:false,ajust_flag_:false,border_flag_:true)
+                            
+                            // DBに追加・変更する　DB処理はここだけでOK!!!
+                            let serched = realm.objects(Grouped_Stock.self).filter("theme == %@",m_theme).filter("idea == %@",unique_idea_st_s[index])
+                            if serched.count == 0{
+                                let one_grouped_stock = Grouped_Stock()
+                                one_grouped_stock.theme  = m_theme
+                                one_grouped_stock.group = comboBox.stringValue
+                                one_grouped_stock.idea = unique_idea_st_s[index]
+                                try! realm.write() {
+                                    realm.add(one_grouped_stock)
+                                }
+                            }else{
+                                try! realm.write() {
+                                    serched[0].group = comboBox.stringValue
+                                }
+                            }
                         }
                     }
                 }
@@ -102,131 +115,32 @@ class Index_Group_DivideController: NSViewController , NSComboBoxDataSource{
     @objc func next_page_click(){
         if m_page_now < m_page_total{
             m_page_now = m_page_now + 1
-            group_seted_stocks_s.removeAll()
             for v in view.subviews {
                 v.removeFromSuperview()
             }
-            page_move_db_store()
             first_appear()
-        }
-    }
-    func page_move_db_store(){
-        var index = 0
-        for y in 0..<Y_LENGTH{
-            for x in 0..<X_LENGTH{
-                if  index < unique_stocks.count {
-                    if group_stocks[index] != "" {
-                        var one_group_stock = Grouped_Stock()
-                        one_group_stock.theme = m_theme
-                        one_group_stock.idea = unique_stocks[index]
-                        one_group_stock.group = group_stocks[index]
-                        let results = realm.objects(Grouped_Stock.self).filter("theme == %@",m_theme).filter("idea == %@",unique_stocks[index])
-                        if results.count == 0{
-                            var one_group_stock = Grouped_Stock()
-                            one_group_stock.theme = m_theme
-                            one_group_stock.idea = unique_stocks[index]
-                            one_group_stock.group = group_stocks[index]
-                            try! realm.write {
-                                realm.add(one_group_stock)
-                            }
-                        }else{
-                            try! realm.write {
-                                results[0].theme = m_theme
-                                results[0].idea = unique_stocks[index]
-                                results[0].group = group_stocks[index]
-                            }
-                        }
-                    }
-                }
-                index = index + 1
-            }
         }
     }
     @objc func return_page_click(){
         if m_page_now > 1{
             m_page_now = m_page_now - 1
-            group_seted_stocks_s.removeAll()
             for v in view.subviews {
                 v.removeFromSuperview()
             }
-            page_move_db_store()
             first_appear()
         }
     }
     @objc func store_next_click(){
-        delet_DB()
-        store_DB()
         U().screen_next(viewCon : self ,id:"Divided_Group_Disp" , storyboard:storyboard!)
     }
-    func delet_DB(){
-        // 更新なので、削除してから追加
-        let deleting = realm.objects(Grouped_Stock.self).filter("theme == %@",m_theme)
-        try! realm.write {
-            realm.delete(deleting)
-        }
-    }
     func store_DB(){
-        var group_stock_s:[Grouped_Stock] = []
-        var index = 0
-        for y in 0..<Y_LENGTH{
-            for x in 0..<X_LENGTH{
-                if  index < unique_stocks.count {
-                    if group_stocks[index] != "" {
-                        var one_group_stock = Grouped_Stock()
-                        one_group_stock.theme = m_theme
-                        one_group_stock.idea = unique_stocks[index]
-                        one_group_stock.group = group_stocks[index]
-                        group_stock_s.append(one_group_stock)
-                    }
-                }
-                index = index + 1
-            }
-        }
-        // 単純に追加すると、被ったところで、どっちが採用されるか分からないので、
-        // 被っているところは、initial_grouped_stock_sのほうは、追加しない。
-        for one_initial_grouped_stock in initial_grouped_stock_s{
-            var exist_flag = false
-            for one_group_stock in group_stock_s{
-                if one_group_stock.idea == one_initial_grouped_stock.idea{
-                    exist_flag = true
-                }
-            }
-            if exist_flag == false{
-                group_stock_s.append(contentsOf: initial_grouped_stock_s)
-            }
-        }
-        try! realm.write() {
-            realm.add(group_stock_s)
-        }
-        // 別のページの保存が出来ないので、この処理を入れてみるが、うまくいくかな？
-        // なんか、凄い、重複しまくっている気がするが。
-        var fill_difference_db_s = realm.objects(Grouped_Stock.self).filter("theme == %@",m_theme)
-        var arry_fill_difference_db_s = Array(fill_difference_db_s)
-        for one in arry_fill_difference_db_s{
-            var temp_falg = true
-            for one_2 in group_stock_s{
-                if one_2.idea == one.idea{
-                    temp_falg = false
-                }
-            }
-            if temp_falg == true{
-                // 追加
-                var in_one = Grouped_Stock()
-                in_one.theme = m_theme
-                in_one.idea = one.idea
-                in_one.group = one.group
-                try! realm.write() {
-                    realm.add(in_one)
-                }
-            }else{
-                // 更新
-                var temp_db_s = realm.objects(Grouped_Stock.self).filter("theme == %@",m_theme).filter("idea == %@",one.idea)
-                try! realm.write {
-                    temp_db_s[0].group = one.group
-                }
-            }
-        }
-
+        // 単純に考えると、ここで保存する必要はない。移動だけすれば、良いのでは。
+        // この画面で変化するのは、グループだけなのだから。
+        // setを押さない場合は、最初の初期画面で、保存をすれば良いわけだし。
+        // ページを移動する時の保存も不要。セットする時に、更新をすればいいだけ。
+        // いや、よく考えると、最初の表示の時もいらない。最初に変わる可能性があるのは、表示の部分だけ。
+        // グループ分けされた、グループがセットされたDB、Grouped_Stockが変わるのは、タイトルをセットする時だけ。
+        // その時に、既にあるものを更新するのか？追加するのか？の違いだけ。
     }
     func first_appear(){
         super.viewDidLoad()
@@ -234,20 +148,22 @@ class Index_Group_DivideController: NSViewController , NSComboBoxDataSource{
         self.view.layer?.backgroundColor = NSColor.white.cgColor
         self.view.frame = CGRect(x:10, y:10 , width:1200, height:650);
         
+        // ①ここで、重複のない、Idea_Stockのアイデアの文字列を取得
         m_theme = UserDefaults.standard.object(forKey: "theme") as! String
-        let stocks = realm.objects(Idea_Stock.self).filter("theme == %@",m_theme)
+        let idea_stock_s = realm.objects(Idea_Stock.self).filter("theme == %@",m_theme)
         var temp :[String] = []
-        for one in stocks{
+        for one in idea_stock_s{
             temp.append(one.idea)
         }
         let orderedSet = NSOrderedSet(array: temp)
-        unique_stocks = orderedSet.array as! [String]
-        m_page_total = Int(unique_stocks.count / (Y_LENGTH * X_LENGTH)) + 1
+        unique_idea_st_s = orderedSet.array as! [String]
+        
+        m_page_total = Int(unique_idea_st_s.count / (Y_LENGTH * X_LENGTH)) + 1
         if m_page_now == 1{
             //そのままでOKのはず
         }else{
             for i in 0..<((m_page_now - 1) * 56) {
-                unique_stocks.remove(at: 0)
+                unique_idea_st_s.remove(at: 0)
             }
         }
         // page番号の表示
@@ -292,53 +208,26 @@ class Index_Group_DivideController: NSViewController , NSComboBoxDataSource{
         comboBox.isEditable = false
         comboBox.stringValue = ""
         self.view.addSubview(comboBox)
-        
-        //ここから、グループを検索してセットする
-        for one in unique_stocks {
-            let serched = realm.objects(Grouped_Stock.self).filter("theme == %@",m_theme).filter("idea == %@",one)
-            var one_st_set_group = St_Set_group()
-            if serched.count == 0{
-                one_st_set_group.group = ""
-                one_st_set_group.idea = one
-            }else{
-                one_st_set_group.group = serched[0].group
-                one_st_set_group.idea = one
-                // これを入れないと、おかしな事になるので注意。
-                if first_flag == true{
-                    var one_grouped_stock = Grouped_Stock()
-                    one_grouped_stock.theme = m_theme
-                    one_grouped_stock.group = serched[0].group
-                    one_grouped_stock.idea = one
-                    initial_grouped_stock_s.append(one_grouped_stock)
-                }else{
-
-                }
-            }
-            group_seted_stocks_s.append(one_st_set_group)
-        }
-        first_flag = false
-//        print("----------")
-//        print(group_seted_stocks_s)
-        // 一旦、目一杯、画面に、縦横にマスを並べてみよう。
         // 空の文字列を用意
         var index = 0
         for y in 0..<Y_LENGTH{
             for x in 0..<X_LENGTH{
-                if  index < group_seted_stocks_s.count {
+                if  index < unique_idea_st_s.count {
+                    // ここは、順番に並べるだけ。
                     var indea_one_content = NSTextField()
-                    var idea_one = group_seted_stocks_s[index].idea
+                    var idea_one = unique_idea_st_s[index]
                     var indea_one_content_p = Param(st_ :idea_one,x_:18 + x*148,y_:550 - y*80,width_:130,height_:60,fontSize_:9)
                     indea_one_content.tag = y*10 + x
                     U().text_generate(param_:indea_one_content_p,nsText_:indea_one_content,view_:self.view,input_flag_:false,ajust_flag_:false,border_flag_:true)
                     var indea_group_content = NSTextField()
+                    let serched = realm.objects(Grouped_Stock.self).filter("theme == %@",m_theme).filter("idea == %@",unique_idea_st_s[index])
                     var group_st = "グループ"
-                    if group_seted_stocks_s[index].group == ""{
+                    if serched.count == 0{
                         var indea_group_content_p = Param(st_ :group_st,x_:18 + x*148,y_: 612 - y*80,width_:130,height_:13,fontSize_:9)
                         indea_group_content.tag = y*10 + x
                         U().text_generate(param_:indea_group_content_p,nsText_:indea_group_content,view_:self.view,input_flag_:false,ajust_flag_:false,border_flag_:true)
-                        
                     }else{
-                        group_st = group_seted_stocks_s[index].group
+                        group_st = serched[0].group
                         var indea_group_content_p = Param(st_ :group_st,x_:18 + x*148,y_: 612 - y*80,width_:130,height_:13,fontSize_:9)
                         indea_group_content.tag = y*10 + x
                         U().text_generate(param_:indea_group_content_p,nsText_:indea_group_content,view_:self.view,input_flag_:false,ajust_flag_:false,border_flag_:true)
@@ -362,8 +251,6 @@ class Index_Group_DivideController: NSViewController , NSComboBoxDataSource{
                     var indea_index_p = Param(st_ :String(index + 1),x_:2 + x*148,y_: 611 - y*80,width_:16,height_:13,fontSize_:9)
                     indea_index.tag = y*10 + x
                     U().text_generate(param_:indea_index_p,nsText_:indea_index,view_:self.view,input_flag_:false,ajust_flag_:false,border_flag_:false)
-                    // 空の文字列を用意
-                    group_stocks.append("")
                 }
                 index = index + 1
             }

@@ -315,10 +315,7 @@ class Nine_x_NineController: NSViewController {
 //        var stock_s:[Nine_x_Nine_Stock] = []
         var stock = Nine_x_Nine_Stock()
         var deletting_theme = ""
-        for one in textField_s{
-//            print("one.tag")
-//            print(one.tag)
-            
+        for one in textField_s{            
             switch one.tag {
             case 0:
                 stock.y0_x0 = one.stringValue

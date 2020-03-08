@@ -107,7 +107,6 @@ class List_Theme_Combine_RandomController: NSViewController, NSTableViewDelegate
                 tableView.reloadData()
                 break
             case .alertSecondButtonReturn:
-                print("キャンセル")
                 break
             default:
                 break

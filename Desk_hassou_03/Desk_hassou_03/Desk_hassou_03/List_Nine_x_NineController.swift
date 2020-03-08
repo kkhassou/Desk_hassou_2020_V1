@@ -51,13 +51,8 @@ class List_Nine_x_NineController: NSViewController, NSTableViewDelegate, NSTable
         return unique_stocks[row]
     }
     @objc func onItemClicked() {
-        print("tableview.clickedRow")
-        print(tableview.clickedRow)
-        print("unique_stocks.count")
-        print(unique_stocks.count)
         if tableview.clickedRow > -1{
             select_stock = unique_stocks[tableview.clickedRow]
-            print(select_stock)
         }else{
             print("配列の範囲外")
         }
@@ -103,7 +98,6 @@ class List_Nine_x_NineController: NSViewController, NSTableViewDelegate, NSTable
                 tableview.reloadData()
                 break
             case .alertSecondButtonReturn:
-                print("キャンセル")
                 break
             default:
                 break
