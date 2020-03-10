@@ -97,6 +97,13 @@ class Grouped_Stock: Object{
     @objc dynamic var group = ""
     @objc dynamic var idea = ""
 }
+class Grouped_Stock_Num: Object{
+    @objc dynamic var theme = ""
+    @objc dynamic var group = ""
+    @objc dynamic var idea = ""
+    // 横から何番目に表示されるかを記録する
+    @objc dynamic var num = -999
+}
 
 class Idea_Stock: Object{
     @objc dynamic var theme = ""
