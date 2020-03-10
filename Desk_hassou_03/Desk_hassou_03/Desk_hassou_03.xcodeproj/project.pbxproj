@@ -26,6 +26,7 @@
 		20AA6D6324131F56006D59C3 /* Index_Group_DivideController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20AA6D6224131F56006D59C3 /* Index_Group_DivideController.swift */; };
 		20AA6D6524139AEB006D59C3 /* Divided_Group_DispController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20AA6D6424139AEB006D59C3 /* Divided_Group_DispController.swift */; };
 		20AA6D6724165316006D59C3 /* Txt_DispController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20AA6D6624165316006D59C3 /* Txt_DispController.swift */; };
+		20AA6D692417A8AA006D59C3 /* Hierarchy_ThemeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20AA6D682417A8AA006D59C3 /* Hierarchy_ThemeController.swift */; };
 		20BCD3C9240B6DDD00E12208 /* U.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20BCD3C8240B6DDD00E12208 /* U.swift */; };
 		DA9466CD84644D35069409B7 /* Pods_Desk_hassou_03.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5096009E41F9DC3468606082 /* Pods_Desk_hassou_03.framework */; };
 /* End PBXBuildFile section */
@@ -54,6 +55,7 @@
 		20AA6D6224131F56006D59C3 /* Index_Group_DivideController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Index_Group_DivideController.swift; sourceTree = "<group>"; };
 		20AA6D6424139AEB006D59C3 /* Divided_Group_DispController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Divided_Group_DispController.swift; sourceTree = "<group>"; };
 		20AA6D6624165316006D59C3 /* Txt_DispController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Txt_DispController.swift; sourceTree = "<group>"; };
+		20AA6D682417A8AA006D59C3 /* Hierarchy_ThemeController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Hierarchy_ThemeController.swift; sourceTree = "<group>"; };
 		20BCD3C8240B6DDD00E12208 /* U.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = U.swift; sourceTree = "<group>"; };
 		5096009E41F9DC3468606082 /* Pods_Desk_hassou_03.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Desk_hassou_03.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		760DF83D57A10A4EA4824EF5 /* Pods-Desk_hassou_03.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Desk_hassou_03.release.xcconfig"; path = "Target Support Files/Pods-Desk_hassou_03/Pods-Desk_hassou_03.release.xcconfig"; sourceTree = "<group>"; };
@@ -107,6 +109,7 @@
 				20AA6D6224131F56006D59C3 /* Index_Group_DivideController.swift */,
 				2040631823BF1B19001D0BB5 /* ViewController.swift */,
 				20AA6D6424139AEB006D59C3 /* Divided_Group_DispController.swift */,
+				20AA6D682417A8AA006D59C3 /* Hierarchy_ThemeController.swift */,
 				20AA6D6624165316006D59C3 /* Txt_DispController.swift */,
 				2040632623BF2335001D0BB5 /* SetV.swift */,
 				20BCD3C8240B6DDD00E12208 /* U.swift */,
@@ -249,6 +252,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				20AA6D692417A8AA006D59C3 /* Hierarchy_ThemeController.swift in Sources */,
 				2040631923BF1B19001D0BB5 /* ViewController.swift in Sources */,
 				20AA6D6524139AEB006D59C3 /* Divided_Group_DispController.swift in Sources */,
 				2040633423BF7B54001D0BB5 /* View_0_Controller.swift in Sources */,

@@ -1,0 +1,120 @@
+//
+//  Hierarchy_ThemeController.swift
+//  Desk_hassou_03
+//
+//  Created by kakegawa kouichi on 2020/03/10.
+//  Copyright © 2020 kakegawa kouichi. All rights reserved.
+//
+
+import Cocoa
+import Realm
+import RealmSwift
+
+class Hierarchy_ThemeController: NSViewController {
+    
+    let realm = try! Realm()
+    var m_theme = ""
+    var theme_stocks:[String] = []
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        self.view.wantsLayer = true
+        self.view.layer?.backgroundColor = NSColor.white.cgColor
+        self.view.frame = CGRect(x:10, y:10 , width:1200, height:650);
+        
+        let contentWidth: CGFloat = 2400
+        let contentHeight: CGFloat = 1300
+        let margin: CGFloat = 50
+         
+        // scrollContentView の中身
+        let viewForContent = NSView(frame:
+            NSRect(x: 0, y: 0, width: contentWidth, height: contentHeight))
+         
+        // これで、画面枠width1200,height650より大きなサイズもスクロールして表示出来るようになった。
+        // とりあえず、縦横倍だが、もっと、大きくてもいけるようだ。
+        
+        m_theme = UserDefaults.standard.object(forKey: "theme") as! String
+        
+        
+        db_serch(theme_: m_theme,index_count_: 1)
+        
+        var text_content = NSTextField()
+        text_content.stringValue = m_theme
+        text_content.frame = CGRect(x:10, y:10 , width:100, height:100);
+        text_content.font = NSFont.systemFont(ofSize: 30)
+        viewForContent.addSubview(text_content)
+        
+        // NSScrollView 内の領域
+        let scrollContentView = NSClipView(frame:
+            NSRect(x: 0, y: 0, width: contentWidth, height: contentHeight))
+        scrollContentView.documentView = viewForContent
+        // ちょっと上が空くが気にしない。最初のスクロールの位置を上にする。
+        scrollContentView.scroll(to: NSPoint(x: 0, y: 650))
+        
+        // NSScrollView の本体
+        let scrollView = NSScrollView(frame: NSRect(x: 10, y: 10, width: 1180, height: 630))
+        scrollView.contentView = scrollContentView
+        scrollView.hasVerticalScroller = true
+        scrollView.hasHorizontalScroller = true
+        scrollView.autohidesScrollers = false
+        self.view.addSubview(scrollView)
+    }
+    var parent_theme = ""
+    var first_falg = true
+    var index_count = -999
+    var before_parent_theme = ""
+    func db_serch(theme_:String,index_count_:Int){
+        index_count = index_count_
+        // 再起処理で書かないと無理
+        let stocks = realm.objects(Idea_Stock.self).filter("theme == %@",theme_)
+        var arr = Array(stocks)
+        if arr.count != 0{
+            print("--------------")
+            print("parent_theme")
+            print(parent_theme)
+            print("theme_")
+            print(theme_)
+            if before_parent_theme != parent_theme{
+                index_count = 1
+            }
+            print("index_count")
+            print(index_count)
+            if first_falg == true{
+                let hierarchy_theme_db = Hierarchy_Theme_Db()
+                hierarchy_theme_db.self_theme  = m_theme
+                hierarchy_theme_db.parent_theme = ""
+                hierarchy_theme_db.x = 1
+                hierarchy_theme_db.y = 1
+                try! realm.write() {
+                    realm.add(hierarchy_theme_db)
+                }
+                first_falg = false
+            }else{
+                // この時点のparent_themeでDBのself_themeと突合して、
+                // その結果のyに＋1すれば、この時点のDBのyが判明する。
+                let serched = realm.objects(Hierarchy_Theme_Db.self).filter("self_theme == %@",parent_theme)
+                
+                let hierarchy_theme_db = Hierarchy_Theme_Db()
+                hierarchy_theme_db.self_theme  = theme_
+                hierarchy_theme_db.parent_theme = parent_theme
+                hierarchy_theme_db.x = index_count
+                hierarchy_theme_db.y = serched[0].y + 1
+                print("serched[0].y + 1")
+                print(serched[0].y + 1)
+                try! realm.write() {
+                    realm.add(hierarchy_theme_db)
+                }
+            }
+            index_count = index_count + 1
+            print("--------------")
+            before_parent_theme = parent_theme
+        }else{
+            
+        }
+        
+        for one in arr{
+            parent_theme = theme_
+            db_serch(theme_:one.idea,index_count_: index_count)
+        }
+    }
+}

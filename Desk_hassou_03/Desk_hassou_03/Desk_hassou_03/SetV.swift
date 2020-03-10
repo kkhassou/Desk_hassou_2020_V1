@@ -10,11 +10,6 @@ import Foundation
 import RealmSwift
 import Cocoa
 
-class St_Set_group{
-    var idea = ""
-    var group = ""
-}
-
 class Param{
     var st = ""
     var x = 0
@@ -55,6 +50,23 @@ class Param{
 class group_set_color{
     var group = ""
     var backColor:NSColor = NSColor.clear
+}
+
+class Hierarchy_Theme_Db: Object{
+    @objc dynamic var self_theme = ""
+    @objc dynamic var parent_theme = ""
+    @objc dynamic var x = -999
+    @objc dynamic var y = -999
+    @objc dynamic var levl_1_index = -999
+    @objc dynamic var levl_2_index = -999
+    @objc dynamic var levl_3_index = -999
+    @objc dynamic var levl_4_index = -999
+    @objc dynamic var levl_5_index = -999
+    @objc dynamic var levl_6_index = -999
+    @objc dynamic var levl_7_index = -999
+    @objc dynamic var levl_8_index = -999
+    @objc dynamic var levl_9_index = -999
+    @objc dynamic var levl_10_index = -999
 }
 
 class Group_Divide_Db: Object{

@@ -30,7 +30,9 @@ class View_2_Controller: NSViewController, NSTableViewDelegate, NSTableViewDataS
         U().button_generate(param_:return_btn_p,viewCon_:self,view_:self.view,action: #selector(return_disp))
         var nine_x_nine_btn_p = Param(st_ :"9x9へ",x_:25,y_:0,width_:100,height_:50,fontSize_:22)
         U().button_generate(param_:nine_x_nine_btn_p,viewCon_:self,view_:self.view,action: #selector(select_nine_x_nine))
-        var enlarge_btn_p = Param(st_ :"アイデア増幅",x_:150,y_:0,width_:200,height_:50,fontSize_:22)
+        var hierarchy_theme_btn_p = Param(st_ :"テーマの階層表示へ",x_:290,y_:0,width_:220,height_:50,fontSize_:22)
+        U().button_generate(param_:hierarchy_theme_btn_p,viewCon_:self,view_:self.view,action: #selector(hierarchy_theme))
+        var enlarge_btn_p = Param(st_ :"アイデア増幅",x_:120,y_:0,width_:160,height_:50,fontSize_:22)
         U().button_generate(param_:enlarge_btn_p,viewCon_:self,view_:self.view,action: #selector(select_enlarge))
         var detail_disp_btn_p = Param(st_ :"そのアイデアを見る",x_:100,y_:30,width_:200,height_:50,fontSize_:22)
         U().button_generate(param_:detail_disp_btn_p,viewCon_:self,view_:self.view,action: #selector(detail_disp))
@@ -100,6 +102,21 @@ class View_2_Controller: NSViewController, NSTableViewDelegate, NSTableViewDataS
             UserDefaults.standard.synchronize()
             self.dismiss(nil)
             let next = storyboard?.instantiateController(withIdentifier: "Nine_x_Nine")
+            self.presentAsModalWindow(next! as! NSViewController)
+        }else{
+            let alert = NSAlert()
+            alert.messageText = "テーマを選択してください"
+            alert.addButton(withTitle: "OK")
+            let response = alert.runModal()
+        }
+    }
+    
+    @objc func hierarchy_theme(){
+        if select_stock != ""{
+            UserDefaults.standard.set(select_stock, forKey: "theme")
+            UserDefaults.standard.synchronize()
+            self.dismiss(nil)
+            let next = storyboard?.instantiateController(withIdentifier: "Hierarchy_Theme")
             self.presentAsModalWindow(next! as! NSViewController)
         }else{
             let alert = NSAlert()
