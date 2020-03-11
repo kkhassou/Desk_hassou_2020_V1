@@ -35,21 +35,86 @@ class Hierarchy_ThemeController: NSViewController {
         
         m_theme = UserDefaults.standard.object(forKey: "theme") as! String
         
-        
+        // 一旦、削除してから追加しする。
+        let deleting = realm.objects(Hierarchy_Theme_Db_v4.self).filter("start_theme == %@",m_theme)
+        try! realm.write {
+            realm.delete(deleting)
+        }
         db_serch(theme_: m_theme,index_count_: 1)
         // db_serchでの再帰ループが終わった後に、リストは出来上がっているので、これを元に、
         // 表示をする。self_point_xだけは、全体との兼ね合いで決まるので、
         // ここで決めねばならない。
         // ちょっと、待てよ。全体をs取得するのに、スタートのテーマは、全体で持っておいたほうがいいな。
-        let hierarchy_theme_db = realm.objects(Hierarchy_Theme_Db_v2.self).filter("self_theme == %@",m_theme)
-        print("hierarchy_theme_db")
-        print(hierarchy_theme_db)
-        
-        var text_content = NSTextField()
-        text_content.stringValue = m_theme
-        text_content.frame = CGRect(x:10, y:10 , width:100, height:100);
-        text_content.font = NSFont.systemFont(ofSize: 30)
-        viewForContent.addSubview(text_content)
+        let hierarchy_theme_db = realm.objects(Hierarchy_Theme_Db_v4.self).filter("start_theme == %@",m_theme)
+
+        // last
+        // 狙いの値は取れたので、次に、self_point_xの値を設定する。ここが難所。
+        // その前に、ラストflagを取得せねばならない。
+        // last_flagの設定は、一旦、DBに格納した後でないと出来ないので、ここで行う。
+        // その際に、一緒に、
+        var hierarchy_theme_arr = Array(hierarchy_theme_db)
+        var last_index_count = 1
+        for one in hierarchy_theme_arr{
+            let last_decide = realm.objects(Hierarchy_Theme_Db_v4.self).filter("parent_theme == %@",one.self_theme)
+            if last_decide.count == 0{
+                try! realm.write {
+                    one.last_flag = true
+                    one.last_index = last_index_count
+                    one.self_point_x = last_index_count
+                }
+                last_index_count = last_index_count + 1
+            }else{
+                try! realm.write {
+                    one.last_flag = false
+                }
+            }
+        }
+
+        var end_flag = false
+        var mugen_stop = 0
+        while end_flag == false {
+            // self_point_xが-999以外で、かつ、self_xの子を持つ親は、その子のself_point_x
+            // を当てはめる。下からどんどん、適応されるので、1週で全部格納されない場合（縦が３以上の列がある場合）
+            var all_update = realm.objects(Hierarchy_Theme_Db_v4.self).filter("start_theme == %@",m_theme)
+            for one in all_update {
+                if one.self_point_x == -999{
+                    var child_s = realm.objects(Hierarchy_Theme_Db_v4.self).filter("parent_theme == %@",one.self_theme)
+                    for one_child in child_s{
+                        if one_child.self_point_x != -999 && one_child.self_x == 1{
+                            try! realm.write {
+                                one.self_point_x = one_child.self_point_x
+                            }
+                        }
+                    }
+                }
+            }
+            let all_serch = realm.objects(Hierarchy_Theme_Db_v4.self).filter("start_theme == %@",m_theme)
+            end_flag = true
+            for one in all_serch{
+                if one.self_point_x == -999{
+                    end_flag = false
+                }
+            }
+            mugen_stop = mugen_stop + 1
+            if mugen_stop == 100{
+                print("100")
+                break
+            }
+        }
+        let disp_arr = realm.objects(Hierarchy_Theme_Db_v4.self).filter("start_theme == %@",m_theme)
+        print("disp_arr")
+        print(disp_arr)
+        // 試した感じ、大丈夫そうなので、別途、
+        for one_disp in disp_arr{
+            var one_disp_content = NSTextField()
+            one_disp_content.font = NSFont.systemFont(ofSize: 11)
+            one_disp_content.stringValue = one_disp.self_theme
+            one_disp_content.frame = NSRect(x: 20 + ((one_disp.self_point_x - 1) * 175), y: 1250 - (one_disp.self_y * 100), width: 150, height: 75)
+            one_disp_content.isEditable = false
+            one_disp_content.isSelectable = true
+            one_disp_content.isBordered = true
+            viewForContent.addSubview(one_disp_content)
+        }
         
         // NSScrollView 内の領域
         let scrollContentView = NSClipView(frame:
@@ -74,25 +139,34 @@ class Hierarchy_ThemeController: NSViewController {
         index_count = index_count_
         // 再起処理で書かないと無理
         let stocks = realm.objects(Idea_Stock.self).filter("theme == %@",theme_)
+        if false{
+            let deleting = realm.objects(Hierarchy_Theme_Db_v4.self)
+            try! realm.write {
+                realm.delete(deleting)
+            }
+            exit(0)
+        }
+        
         var arr = Array(stocks)
         if arr.count != 0{
-            print("--------------")
-            print("parent_theme")
-            print(parent_theme)
-            print("theme_")
-            print(theme_)
+//            print("--------------")
+//            print("parent_theme")
+//            print(parent_theme)
+//            print("theme_")
+//            print(theme_)
             if before_parent_theme != parent_theme{
                 index_count = 1
             }
-            print("index_count")
-            print(index_count)
+//            print("index_count")
+//            print(index_count)
             if first_falg == true{
-                let hierarchy_theme_db = Hierarchy_Theme_Db_v2()
+                let hierarchy_theme_db = Hierarchy_Theme_Db_v4()
                 // 当たり前だが、最初は、start_themeとself_themeが同じ
                 hierarchy_theme_db.start_theme = m_theme
                 hierarchy_theme_db.self_theme  = m_theme
                 hierarchy_theme_db.parent_theme = ""
                 hierarchy_theme_db.self_x = 1
+                hierarchy_theme_db.self_y = 1
                 hierarchy_theme_db.self_y = 1
                 try! realm.write() {
                     realm.add(hierarchy_theme_db)
@@ -101,10 +175,23 @@ class Hierarchy_ThemeController: NSViewController {
             }else{
                 // この時点のparent_themeでDBのself_themeと突合して、
                 // その結果のyに＋1すれば、この時点のDBのyが判明する。
-                let serched = realm.objects(Hierarchy_Theme_Db_v2.self).filter("self_theme == %@",parent_theme)
-                print("serched")
-                print(serched)
-                let hierarchy_theme_db_2 = Hierarchy_Theme_Db_v2()
+                
+                let serched = realm.objects(Hierarchy_Theme_Db_v4.self).filter("self_theme == %@",parent_theme)
+
+//                print("parent_theme")
+//                print(parent_theme)
+//                print("theme_")
+//                print(theme_)
+//                print("theme_")
+//                print(theme_)
+//                print("serched[0].self_x")
+//                print(serched[0].self_x)
+//                print("serched[0].self_y")
+//                print(serched[0].self_y)
+//                print("index_count")
+//                print(index_count)
+                
+                let hierarchy_theme_db_2 = Hierarchy_Theme_Db_v4()
                 // 当たり前だが、start_themeはずっと同じで良いので、変わらず、m_themeを取得
                 hierarchy_theme_db_2.start_theme = m_theme
                 hierarchy_theme_db_2.parent_theme = parent_theme
@@ -114,14 +201,12 @@ class Hierarchy_ThemeController: NSViewController {
                 hierarchy_theme_db_2.self_theme  = theme_
                 hierarchy_theme_db_2.self_x = index_count
                 hierarchy_theme_db_2.self_y = serched[0].self_y + 1
-                print("serched[0].self_y + 1")
-                print(serched[0].self_y + 1)
                 try! realm.write() {
                     realm.add(hierarchy_theme_db_2)
                 }
             }
             index_count = index_count + 1
-            print("--------------")
+//            print("--------------")
             before_parent_theme = parent_theme
         }else{
             

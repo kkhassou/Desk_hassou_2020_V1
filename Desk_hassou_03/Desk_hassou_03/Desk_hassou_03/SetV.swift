@@ -51,7 +51,35 @@ class group_set_color{
     var group = ""
     var backColor:NSColor = NSColor.clear
 }
-
+class Hierarchy_Theme_Db_v4: Object{
+    @objc dynamic var start_theme = ""
+    @objc dynamic var parent_theme = ""
+    @objc dynamic var parent_x = -999
+    @objc dynamic var parent_y = -999
+    @objc dynamic var self_theme = ""
+    @objc dynamic var self_x = -999
+    @objc dynamic var self_y = -999
+    // これは、全体を取得してから再取得。
+    @objc dynamic var self_point_x = -999
+    @objc dynamic var last_flag : Bool = false
+    // これは、使うかまだ、分からないけど。
+    // last_flag trueの場合に順番を保持。
+    @objc dynamic var last_index = -999
+}
+class Hierarchy_Theme_Db_v3: Object{
+    @objc dynamic var start_theme = ""
+    @objc dynamic var parent_theme = ""
+    @objc dynamic var parent_x = -999
+    @objc dynamic var parent_y = -999
+    @objc dynamic var self_theme = ""
+    @objc dynamic var self_x = -999
+    @objc dynamic var self_y = -999
+    // これは、全体を取得してから再取得。
+    @objc dynamic var self_point_x = -999
+    @objc dynamic var last_flag : Bool = false
+    // これは、使うかまだ、分からないけど。
+    @objc dynamic var chain_x = -999
+}
 class Hierarchy_Theme_Db_v2: Object{
     @objc dynamic var start_theme = ""
     @objc dynamic var parent_theme = ""
