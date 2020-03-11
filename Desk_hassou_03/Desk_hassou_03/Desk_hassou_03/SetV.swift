@@ -52,6 +52,17 @@ class group_set_color{
     var backColor:NSColor = NSColor.clear
 }
 
+class Hierarchy_Theme_Db_v2: Object{
+    @objc dynamic var start_theme = ""
+    @objc dynamic var parent_theme = ""
+    @objc dynamic var parent_x = -999
+    @objc dynamic var parent_y = -999
+    @objc dynamic var self_theme = ""
+    @objc dynamic var self_x = -999
+    @objc dynamic var self_y = -999
+    // これは、全体を取得してから再取得。
+    @objc dynamic var self_point_x = -999
+}
 class Hierarchy_Theme_Db: Object{
     @objc dynamic var self_theme = ""
     @objc dynamic var parent_theme = ""

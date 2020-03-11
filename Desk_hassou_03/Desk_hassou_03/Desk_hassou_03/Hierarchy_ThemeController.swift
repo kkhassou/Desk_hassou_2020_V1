@@ -37,6 +37,13 @@ class Hierarchy_ThemeController: NSViewController {
         
         
         db_serch(theme_: m_theme,index_count_: 1)
+        // db_serchでの再帰ループが終わった後に、リストは出来上がっているので、これを元に、
+        // 表示をする。self_point_xだけは、全体との兼ね合いで決まるので、
+        // ここで決めねばならない。
+        // ちょっと、待てよ。全体をs取得するのに、スタートのテーマは、全体で持っておいたほうがいいな。
+        let hierarchy_theme_db = realm.objects(Hierarchy_Theme_Db_v2.self).filter("self_theme == %@",m_theme)
+        print("hierarchy_theme_db")
+        print(hierarchy_theme_db)
         
         var text_content = NSTextField()
         text_content.stringValue = m_theme
@@ -80,11 +87,13 @@ class Hierarchy_ThemeController: NSViewController {
             print("index_count")
             print(index_count)
             if first_falg == true{
-                let hierarchy_theme_db = Hierarchy_Theme_Db()
+                let hierarchy_theme_db = Hierarchy_Theme_Db_v2()
+                // 当たり前だが、最初は、start_themeとself_themeが同じ
+                hierarchy_theme_db.start_theme = m_theme
                 hierarchy_theme_db.self_theme  = m_theme
                 hierarchy_theme_db.parent_theme = ""
-                hierarchy_theme_db.x = 1
-                hierarchy_theme_db.y = 1
+                hierarchy_theme_db.self_x = 1
+                hierarchy_theme_db.self_y = 1
                 try! realm.write() {
                     realm.add(hierarchy_theme_db)
                 }
@@ -92,17 +101,23 @@ class Hierarchy_ThemeController: NSViewController {
             }else{
                 // この時点のparent_themeでDBのself_themeと突合して、
                 // その結果のyに＋1すれば、この時点のDBのyが判明する。
-                let serched = realm.objects(Hierarchy_Theme_Db.self).filter("self_theme == %@",parent_theme)
-                
-                let hierarchy_theme_db = Hierarchy_Theme_Db()
-                hierarchy_theme_db.self_theme  = theme_
-                hierarchy_theme_db.parent_theme = parent_theme
-                hierarchy_theme_db.x = index_count
-                hierarchy_theme_db.y = serched[0].y + 1
-                print("serched[0].y + 1")
-                print(serched[0].y + 1)
+                let serched = realm.objects(Hierarchy_Theme_Db_v2.self).filter("self_theme == %@",parent_theme)
+                print("serched")
+                print(serched)
+                let hierarchy_theme_db_2 = Hierarchy_Theme_Db_v2()
+                // 当たり前だが、start_themeはずっと同じで良いので、変わらず、m_themeを取得
+                hierarchy_theme_db_2.start_theme = m_theme
+                hierarchy_theme_db_2.parent_theme = parent_theme
+                // parent_xが最重要。これで、どこからきたかが分かる。yは(self_y-1)なので、あまり不要だが、分かりやすくするために保存。
+                hierarchy_theme_db_2.parent_x = serched[0].self_x
+                hierarchy_theme_db_2.parent_y = serched[0].self_y
+                hierarchy_theme_db_2.self_theme  = theme_
+                hierarchy_theme_db_2.self_x = index_count
+                hierarchy_theme_db_2.self_y = serched[0].self_y + 1
+                print("serched[0].self_y + 1")
+                print(serched[0].self_y + 1)
                 try! realm.write() {
-                    realm.add(hierarchy_theme_db)
+                    realm.add(hierarchy_theme_db_2)
                 }
             }
             index_count = index_count + 1
