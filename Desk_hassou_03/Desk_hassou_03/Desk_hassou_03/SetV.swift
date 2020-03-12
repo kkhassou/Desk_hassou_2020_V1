@@ -58,7 +58,7 @@ class group_set_color{
     var group = ""
     var backColor:NSColor = NSColor.clear
 }
-class Hierarchy_Theme_Db_v4: Object{
+class Hierarchy_Theme_Db_v5: Object{
     @objc dynamic var start_theme = ""
     @objc dynamic var parent_theme = ""
     @objc dynamic var parent_x = -999
@@ -72,47 +72,7 @@ class Hierarchy_Theme_Db_v4: Object{
     // これは、使うかまだ、分からないけど。
     // last_flag trueの場合に順番を保持。
     @objc dynamic var last_index = -999
-}
-class Hierarchy_Theme_Db_v3: Object{
-    @objc dynamic var start_theme = ""
-    @objc dynamic var parent_theme = ""
-    @objc dynamic var parent_x = -999
-    @objc dynamic var parent_y = -999
-    @objc dynamic var self_theme = ""
-    @objc dynamic var self_x = -999
-    @objc dynamic var self_y = -999
-    // これは、全体を取得してから再取得。
-    @objc dynamic var self_point_x = -999
-    @objc dynamic var last_flag : Bool = false
-    // これは、使うかまだ、分からないけど。
-    @objc dynamic var chain_x = -999
-}
-class Hierarchy_Theme_Db_v2: Object{
-    @objc dynamic var start_theme = ""
-    @objc dynamic var parent_theme = ""
-    @objc dynamic var parent_x = -999
-    @objc dynamic var parent_y = -999
-    @objc dynamic var self_theme = ""
-    @objc dynamic var self_x = -999
-    @objc dynamic var self_y = -999
-    // これは、全体を取得してから再取得。
-    @objc dynamic var self_point_x = -999
-}
-class Hierarchy_Theme_Db: Object{
-    @objc dynamic var self_theme = ""
-    @objc dynamic var parent_theme = ""
-    @objc dynamic var x = -999
-    @objc dynamic var y = -999
-    @objc dynamic var levl_1_index = -999
-    @objc dynamic var levl_2_index = -999
-    @objc dynamic var levl_3_index = -999
-    @objc dynamic var levl_4_index = -999
-    @objc dynamic var levl_5_index = -999
-    @objc dynamic var levl_6_index = -999
-    @objc dynamic var levl_7_index = -999
-    @objc dynamic var levl_8_index = -999
-    @objc dynamic var levl_9_index = -999
-    @objc dynamic var levl_10_index = -999
+    @objc dynamic var child_idea_num = -999
 }
 
 class Group_Divide_Db: Object{

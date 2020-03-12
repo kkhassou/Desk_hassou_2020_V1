@@ -1371,5 +1371,18 @@
             </objects>
             <point key="canvasLocation" x="-136" y="1772"/>
         </scene>
+        <!--Randam Location Controller-->
+        <scene sceneID="eRu-aj-YrY">
+            <objects>
+                <viewController identifier="Randam_Location" storyboardIdentifier="Randam_Location" id="k4n-04-Kf1" customClass="Randam_LocationController" customModule="Desk_hassou_03" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" id="Fgo-3Q-6tT">
+                        <rect key="frame" x="0.0" y="0.0" width="450" height="300"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </view>
+                </viewController>
+                <customObject id="fVU-5K-MEp" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="148" y="1811"/>
+        </scene>
     </scenes>
 </document>

@@ -37,7 +37,7 @@ class Hierarchy_ThemeController: NSViewController {
         m_theme = UserDefaults.standard.object(forKey: "theme") as! String
         
         // 一旦、削除してから追加しする。
-        let deleting = realm.objects(Hierarchy_Theme_Db_v4.self).filter("start_theme == %@",m_theme)
+        let deleting = realm.objects(Hierarchy_Theme_Db_v5.self).filter("start_theme == %@",m_theme)
         try! realm.write {
             realm.delete(deleting)
         }
@@ -46,7 +46,7 @@ class Hierarchy_ThemeController: NSViewController {
         // 表示をする。self_point_xだけは、全体との兼ね合いで決まるので、
         // ここで決めねばならない。
         // ちょっと、待てよ。全体をs取得するのに、スタートのテーマは、全体で持っておいたほうがいいな。
-        let hierarchy_theme_db = realm.objects(Hierarchy_Theme_Db_v4.self).filter("start_theme == %@",m_theme)
+        let hierarchy_theme_db = realm.objects(Hierarchy_Theme_Db_v5.self).filter("start_theme == %@",m_theme)
 
         // last
         // 狙いの値は取れたので、次に、self_point_xの値を設定する。ここが難所。
@@ -56,7 +56,7 @@ class Hierarchy_ThemeController: NSViewController {
         var hierarchy_theme_arr = Array(hierarchy_theme_db)
         var last_index_count = 1
         for one in hierarchy_theme_arr{
-            let last_decide = realm.objects(Hierarchy_Theme_Db_v4.self).filter("parent_theme == %@",one.self_theme)
+            let last_decide = realm.objects(Hierarchy_Theme_Db_v5.self).filter("parent_theme == %@",one.self_theme)
             if last_decide.count == 0{
                 try! realm.write {
                     one.last_flag = true
@@ -76,10 +76,10 @@ class Hierarchy_ThemeController: NSViewController {
         while end_flag == false {
             // self_point_xが-999以外で、かつ、self_xの子を持つ親は、その子のself_point_x
             // を当てはめる。下からどんどん、適応されるので、1週で全部格納されない場合（縦が３以上の列がある場合）
-            var all_update = realm.objects(Hierarchy_Theme_Db_v4.self).filter("start_theme == %@",m_theme)
+            var all_update = realm.objects(Hierarchy_Theme_Db_v5.self).filter("start_theme == %@",m_theme)
             for one in all_update {
                 if one.self_point_x == -999{
-                    var child_s = realm.objects(Hierarchy_Theme_Db_v4.self).filter("parent_theme == %@",one.self_theme)
+                    var child_s = realm.objects(Hierarchy_Theme_Db_v5.self).filter("parent_theme == %@",one.self_theme)
                     for one_child in child_s{
                         if one_child.self_point_x != -999 && one_child.self_x == 1{
                             try! realm.write {
@@ -89,7 +89,7 @@ class Hierarchy_ThemeController: NSViewController {
                     }
                 }
             }
-            let all_serch = realm.objects(Hierarchy_Theme_Db_v4.self).filter("start_theme == %@",m_theme)
+            let all_serch = realm.objects(Hierarchy_Theme_Db_v5.self).filter("start_theme == %@",m_theme)
             end_flag = true
             for one in all_serch{
                 if one.self_point_x == -999{
@@ -102,7 +102,7 @@ class Hierarchy_ThemeController: NSViewController {
                 break
             }
         }
-        let disp_arr = realm.objects(Hierarchy_Theme_Db_v4.self).filter("start_theme == %@",m_theme)
+        let disp_arr = realm.objects(Hierarchy_Theme_Db_v5.self).filter("start_theme == %@",m_theme)
         print("disp_arr")
         print(disp_arr)
         // 試した感じ、大丈夫そうなので、別途、
@@ -112,7 +112,7 @@ class Hierarchy_ThemeController: NSViewController {
             one_disp_content.font = NSFont.systemFont(ofSize: 11)
             one_disp_content.stringValue = one_disp.self_theme
             var point_x = 20 + ((one_disp.self_point_x - 1) * 175)
-            var point_y = 1250 - (one_disp.self_y * 100)
+            var point_y = 1250 - (one_disp.self_y * 110)
 
             one_disp_content.frame = NSRect(x: point_x, y: point_y, width: TEXT_WIDTH, height: TEXT_HEIGHT)
             one_disp_content.isEditable = false
@@ -126,6 +126,14 @@ class Hierarchy_ThemeController: NSViewController {
             add_button.font = NSFont.systemFont(ofSize: 8)
             viewForContent.addSubview(add_button)
             
+            var count_content = NSTextField()
+            count_content.stringValue = String(one_disp.child_idea_num)
+            count_content.frame = CGRect(x:point_x + 140, y:point_y - 20 , width:20, height:18);
+            count_content.font = NSFont.systemFont(ofSize: 10)
+            count_content.isEditable = false
+            count_content.isBordered = false
+            viewForContent.addSubview(count_content)
+            
             if one_disp.last_flag == false {
                 // これが、縦線下半分
                 let tate_ue = MyLine(frame: self.view.frame, x_: Double(point_x), y_: Double(point_y),direction_:Direction.tate)
@@ -138,7 +146,7 @@ class Hierarchy_ThemeController: NSViewController {
             }
             // これが、縦線上半分
             if one_disp.self_y != 1{
-                let tate_sita = MyLine(frame: self.view.frame, x_: Double(point_x), y_: Double(point_y) + 75 + 12.5,direction_:Direction.tate)
+                let tate_sita = MyLine(frame: self.view.frame, x_: Double(point_x), y_: Double(point_y) + 75 + 17.5,direction_:Direction.tate)
                 tate_sita.translatesAutoresizingMaskIntoConstraints = false
                 viewForContent.addSubview(tate_sita)
                 tate_sita.topAnchor.constraint(equalTo: viewForContent.topAnchor).isActive = true
@@ -148,7 +156,7 @@ class Hierarchy_ThemeController: NSViewController {
             }
             // これが、横線
             if one_disp.self_x != 1 {
-                let yoko = MyLine(frame: self.view.frame, x_: Double(point_x), y_: Double(point_y) + 75 + 12.5,direction_:Direction.yoko)
+                let yoko = MyLine(frame: self.view.frame, x_: Double(point_x), y_: Double(point_y) + 75 + 17.5,direction_:Direction.yoko)
                 yoko.translatesAutoresizingMaskIntoConstraints = false
                 viewForContent.addSubview(yoko)
                 yoko.topAnchor.constraint(equalTo: viewForContent.topAnchor).isActive = true
@@ -182,7 +190,7 @@ class Hierarchy_ThemeController: NSViewController {
         // 再起処理で書かないと無理
         let stocks = realm.objects(Idea_Stock.self).filter("theme == %@",theme_)
         if false{
-            let deleting = realm.objects(Hierarchy_Theme_Db_v4.self)
+            let deleting = realm.objects(Hierarchy_Theme_Db_v5.self)
             try! realm.write {
                 realm.delete(deleting)
             }
@@ -202,7 +210,7 @@ class Hierarchy_ThemeController: NSViewController {
 //            print("index_count")
 //            print(index_count)
             if first_falg == true{
-                let hierarchy_theme_db = Hierarchy_Theme_Db_v4()
+                let hierarchy_theme_db = Hierarchy_Theme_Db_v5()
                 // 当たり前だが、最初は、start_themeとself_themeが同じ
                 hierarchy_theme_db.start_theme = m_theme
                 hierarchy_theme_db.self_theme  = m_theme
@@ -210,6 +218,7 @@ class Hierarchy_ThemeController: NSViewController {
                 hierarchy_theme_db.self_x = 1
                 hierarchy_theme_db.self_y = 1
                 hierarchy_theme_db.self_y = 1
+                hierarchy_theme_db.child_idea_num = arr.count
                 try! realm.write() {
                     realm.add(hierarchy_theme_db)
                 }
@@ -218,7 +227,7 @@ class Hierarchy_ThemeController: NSViewController {
                 // この時点のparent_themeでDBのself_themeと突合して、
                 // その結果のyに＋1すれば、この時点のDBのyが判明する。
                 
-                let serched = realm.objects(Hierarchy_Theme_Db_v4.self).filter("self_theme == %@",parent_theme)
+                let serched = realm.objects(Hierarchy_Theme_Db_v5.self).filter("self_theme == %@",parent_theme)
 
 //                print("parent_theme")
 //                print(parent_theme)
@@ -233,7 +242,7 @@ class Hierarchy_ThemeController: NSViewController {
 //                print("index_count")
 //                print(index_count)
                 
-                let hierarchy_theme_db_2 = Hierarchy_Theme_Db_v4()
+                let hierarchy_theme_db_2 = Hierarchy_Theme_Db_v5()
                 // 当たり前だが、start_themeはずっと同じで良いので、変わらず、m_themeを取得
                 hierarchy_theme_db_2.start_theme = m_theme
                 hierarchy_theme_db_2.parent_theme = parent_theme
@@ -243,6 +252,7 @@ class Hierarchy_ThemeController: NSViewController {
                 hierarchy_theme_db_2.self_theme  = theme_
                 hierarchy_theme_db_2.self_x = index_count
                 hierarchy_theme_db_2.self_y = serched[0].self_y + 1
+                hierarchy_theme_db_2.child_idea_num = arr.count
                 try! realm.write() {
                     realm.add(hierarchy_theme_db_2)
                 }
@@ -260,9 +270,9 @@ class Hierarchy_ThemeController: NSViewController {
         }
     }
     @objc func randam_location(_ sender: CustomNSButton){
-        print("sender.st")
-        print(sender.st)
-//        self.dismiss(nil)
+        UserDefaults.standard.set(sender.st, forKey: "theme")
+        UserDefaults.standard.synchronize()
+        U().screen_next(viewCon : self ,id:"Randam_Location" , storyboard:storyboard!)
     }
 }
 class MyLine: NSView {
@@ -286,7 +296,7 @@ class MyLine: NSView {
         if self.derection == Direction.tate{
             let path = NSBezierPath()
             path.move(to: NSPoint(x: Double(x + (150 / 2)), y: Double(y)))
-            path.line(to: NSPoint(x: Double(x + (150 / 2)), y: Double(Double(y) - 12.5)))
+            path.line(to: NSPoint(x: Double(x + (150 / 2)), y: Double(Double(y) - 17.5)))
             path.close()
             path.stroke()
         }else if self.derection == Direction.yoko{
