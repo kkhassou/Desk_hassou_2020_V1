@@ -10,6 +10,11 @@ import Foundation
 import RealmSwift
 import Cocoa
 
+enum Direction {
+    case yoko
+    case tate
+    case none
+}
 class Param{
     var st = ""
     var x = 0

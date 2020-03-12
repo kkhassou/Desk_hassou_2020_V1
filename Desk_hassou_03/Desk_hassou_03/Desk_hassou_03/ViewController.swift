@@ -38,7 +38,7 @@ class ViewController: NSViewController {
     var idea_title_p = Param(st_ :"アイデア",x_:20,y_:200,width_:125,height_:50,fontSize_:30)
     
     var idea_input = NSTextField()
-    var idea_input_p = Param(st_ :"",x_:50,y_:75,width_:400,height_:100,fontSize_:20)
+    var idea_input_p = Param(st_ :"",x_:50,y_:75,width_:400,height_:100,fontSize_:15)
     
     var idea_count = NSTextField()
     var idea_count_p = Param(st_ :"",x_:450,y_:600,width_:50,height_:50,fontSize_:30)
@@ -70,7 +70,7 @@ class ViewController: NSViewController {
         
         U().random_hint_disp(param_:hint_content_p,hint_key_:m_HintCategory,ns_content_ : hint_content,view_ : self.view, realm_: realm)
         U().text_generate(param_:idea_title_p,nsText_:idea_title,view_:self.view,input_flag_:false,ajust_flag_:false,border_flag_:true)
-        U().text_generate(param_:idea_input_p,nsText_:idea_input,view_:self.view,input_flag_:true,ajust_flag_:true,border_flag_:true)
+        U().text_generate(param_:idea_input_p,nsText_:idea_input,view_:self.view,input_flag_:true,ajust_flag_:false,border_flag_:true)
         
         U().idea_count_disp(param_:idea_count_p,theme_st_ : m_theme ,ns_count_ : idea_count ,view_ : self.view, realm_: realm,dbObj_:Idea_Stock.self)
 

@@ -15,7 +15,8 @@ class Hierarchy_ThemeController: NSViewController {
     let realm = try! Realm()
     var m_theme = ""
     var theme_stocks:[String] = []
-    
+    var TEXT_WIDTH = 150
+    var TEXT_HEIGHT = 75
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.wantsLayer = true
@@ -106,14 +107,48 @@ class Hierarchy_ThemeController: NSViewController {
         print(disp_arr)
         // 試した感じ、大丈夫そうなので、別途、
         for one_disp in disp_arr{
+            // textの表示
             var one_disp_content = NSTextField()
             one_disp_content.font = NSFont.systemFont(ofSize: 11)
             one_disp_content.stringValue = one_disp.self_theme
-            one_disp_content.frame = NSRect(x: 20 + ((one_disp.self_point_x - 1) * 175), y: 1250 - (one_disp.self_y * 100), width: 150, height: 75)
+            var point_x = 20 + ((one_disp.self_point_x - 1) * 175)
+            var point_y = 1250 - (one_disp.self_y * 100)
+
+            one_disp_content.frame = NSRect(x: point_x, y: point_y, width: TEXT_WIDTH, height: TEXT_HEIGHT)
             one_disp_content.isEditable = false
             one_disp_content.isSelectable = true
             one_disp_content.isBordered = true
             viewForContent.addSubview(one_disp_content)
+            if one_disp.last_flag == false {
+                // これが、縦線下半分
+                let tate_ue = MyLine(frame: self.view.frame, x_: Double(point_x), y_: Double(point_y),direction_:Direction.tate)
+                tate_ue.translatesAutoresizingMaskIntoConstraints = false
+                viewForContent.addSubview(tate_ue)
+                tate_ue.topAnchor.constraint(equalTo: viewForContent.topAnchor).isActive = true
+                tate_ue.bottomAnchor.constraint(equalTo: viewForContent.bottomAnchor).isActive = true
+                tate_ue.leftAnchor.constraint(equalTo: viewForContent.leftAnchor).isActive = true
+                tate_ue.rightAnchor.constraint(equalTo: viewForContent.rightAnchor).isActive = true
+            }
+            // これが、縦線上半分
+            if one_disp.self_y != 1{
+                let tate_sita = MyLine(frame: self.view.frame, x_: Double(point_x), y_: Double(point_y) + 75 + 12.5,direction_:Direction.tate)
+                tate_sita.translatesAutoresizingMaskIntoConstraints = false
+                viewForContent.addSubview(tate_sita)
+                tate_sita.topAnchor.constraint(equalTo: viewForContent.topAnchor).isActive = true
+                tate_sita.bottomAnchor.constraint(equalTo: viewForContent.bottomAnchor).isActive = true
+                tate_sita.leftAnchor.constraint(equalTo: viewForContent.leftAnchor).isActive = true
+                tate_sita.rightAnchor.constraint(equalTo: viewForContent.rightAnchor).isActive = true
+            }
+            // これが、横線
+            if one_disp.self_x != 1 {
+                let yoko = MyLine(frame: self.view.frame, x_: Double(point_x), y_: Double(point_y) + 75 + 12.5,direction_:Direction.yoko)
+                yoko.translatesAutoresizingMaskIntoConstraints = false
+                viewForContent.addSubview(yoko)
+                yoko.topAnchor.constraint(equalTo: viewForContent.topAnchor).isActive = true
+                yoko.bottomAnchor.constraint(equalTo: viewForContent.bottomAnchor).isActive = true
+                yoko.leftAnchor.constraint(equalTo: viewForContent.leftAnchor).isActive = true
+                yoko.rightAnchor.constraint(equalTo: viewForContent.rightAnchor).isActive = true
+            }
         }
         
         // NSScrollView 内の領域
@@ -215,6 +250,40 @@ class Hierarchy_ThemeController: NSViewController {
         for one in arr{
             parent_theme = theme_
             db_serch(theme_:one.idea,index_count_: index_count)
+        }
+    }
+
+}
+class MyLine: NSView {
+    var x = 0.0
+    var y = 0.0
+    var derection = Direction.none
+    init(frame frameRect: NSRect, x_: Double, y_: Double,direction_:Direction) {
+        super.init(frame: frameRect)
+        self.x = x_
+        self.y = y_
+        self.derection = direction_
+    }
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    override func draw(_ dirtyRect: NSRect) {
+        super.draw(dirtyRect)
+        addLine()
+    }
+    func addLine() {
+        if self.derection == Direction.tate{
+            let path = NSBezierPath()
+            path.move(to: NSPoint(x: Double(x + (150 / 2)), y: Double(y)))
+            path.line(to: NSPoint(x: Double(x + (150 / 2)), y: Double(Double(y) - 12.5)))
+            path.close()
+            path.stroke()
+        }else if self.derection == Direction.yoko{
+            let path = NSBezierPath()
+            path.move(to: NSPoint(x: Double(x + (150 / 2)), y: Double(y)))
+            path.line(to: NSPoint(x: Double(x + (150 / 2) - 175), y: Double(y)))
+            path.close()
+            path.stroke()
         }
     }
 }
