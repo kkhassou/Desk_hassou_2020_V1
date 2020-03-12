@@ -119,6 +119,13 @@ class Hierarchy_ThemeController: NSViewController {
             one_disp_content.isSelectable = true
             one_disp_content.isBordered = true
             viewForContent.addSubview(one_disp_content)
+            
+            var add_button = CustomNSButton(title: "アイデア追加", target: self, action: #selector(randam_location))
+            add_button.st = one_disp.self_theme
+            add_button.frame = CGRect(x:point_x - 5, y:point_y - 20 , width:70, height:20);
+            add_button.font = NSFont.systemFont(ofSize: 8)
+            viewForContent.addSubview(add_button)
+            
             if one_disp.last_flag == false {
                 // これが、縦線下半分
                 let tate_ue = MyLine(frame: self.view.frame, x_: Double(point_x), y_: Double(point_y),direction_:Direction.tate)
@@ -252,7 +259,11 @@ class Hierarchy_ThemeController: NSViewController {
             db_serch(theme_:one.idea,index_count_: index_count)
         }
     }
-
+    @objc func randam_location(_ sender: CustomNSButton){
+        print("sender.st")
+        print(sender.st)
+//        self.dismiss(nil)
+    }
 }
 class MyLine: NSView {
     var x = 0.0

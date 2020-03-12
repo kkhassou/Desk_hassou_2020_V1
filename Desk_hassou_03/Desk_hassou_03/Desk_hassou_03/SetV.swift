@@ -9,7 +9,9 @@
 import Foundation
 import RealmSwift
 import Cocoa
-
+class CustomNSButton: NSButton {
+    var st = ""
+}
 enum Direction {
     case yoko
     case tate
