@@ -270,6 +270,8 @@ class Hierarchy_ThemeController: NSViewController {
         }
     }
     @objc func randam_location(_ sender: CustomNSButton){
+        print("sender.st")
+        print(sender.st)
         UserDefaults.standard.set(sender.st, forKey: "theme")
         UserDefaults.standard.synchronize()
         U().screen_next(viewCon : self ,id:"Randam_Location" , storyboard:storyboard!)

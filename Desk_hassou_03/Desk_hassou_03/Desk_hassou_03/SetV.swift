@@ -69,9 +69,10 @@ class Random_Loc_Idea: Object{
     @objc dynamic var x = -999.0
     @objc dynamic var y = -999.0
     @objc dynamic var disp_num = -999
+    // 追加したテキストボックスから文字列を取得するための変数
+    @objc dynamic var tag = -999
 }
 class Hierarchy_Theme_Db_v5: Object{
-    
     @objc dynamic var start_theme = ""
     @objc dynamic var parent_theme = ""
     @objc dynamic var parent_x = -999
