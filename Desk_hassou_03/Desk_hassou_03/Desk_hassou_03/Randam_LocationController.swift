@@ -16,7 +16,8 @@ class Randam_LocationController: NSViewController {
     var m_idea_Stock_s:[String] = []
     var m_added_text_s:[NSTextField] = []
     var m_x_y_Array:[Point_Store] = []
-    var m_disp_num = 1
+    var m_page_total = -999
+    var m_page_now = 1
     var m_tag_count = 10000
     let TB_WIDTH = 115.0
     let TB_HEIGHT = 65.0
@@ -24,6 +25,7 @@ class Randam_LocationController: NSViewController {
     var idea_count = 0
     let IDEA_ONE_DISP_UPPER_LIMIT = 25
     var first_falg = false
+    var retrun_falg = false
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.wantsLayer = true
@@ -43,29 +45,20 @@ class Randam_LocationController: NSViewController {
             }
             let orderedSet = NSOrderedSet(array: temp)
             m_idea_Stock_s = orderedSet.array as! [String]
+            // 削除して、0から追加する。
+            let deleting = realm.objects(Random_Loc_Idea.self).filter("theme == %@",m_theme)
+            try! realm.write {
+                realm.delete(deleting)
+            }
             first_falg = true
         }
         first_appear()
     }
     func first_appear(){
-       // テーマを左上に表示する
-       // アイデアの個数によって、ページ数を決める
-       // アイデアを、各位置にランダムに配置する
-       // テキストと一緒にボタンを付ける。追加ボタンと深掘りボタン。
-       // そして、DB保存のための、保存ボタンを作る。深掘りボタンを押したタイミングでもDB保存は行う。
-       // 戻った時の処理を行う。保存ボタンを押した時だけ、元の階層表示に戻る。その時は、追加された状況を反映して戻る。
-       // 戻った時の反映をする処理は、ここではなく、Hierarchy_ThemeControllerでするが、
-       // この画面から戻った、という事を伝えるために、ローカルに保存したものを渡す必要はある。
-       // これらを一からでなく、元作ったのを参考に作る
-       // 残りやる事
-       // アイデアの数が◯以上の時に、次のページを作る事。
-       // １画面で収まらない時に、次の場所に行く事。
-       // これ、新しいDBを作ったほうが楽だな。配列に収めるとまた、面倒な事になる。
-       // x y 画面番号 テーマ アイデア これだけあれば、大丈夫だね。
        
        var theme_content = NSTextField()
        var theme_content_p = Param(st_ :m_theme,x_:20,y_:575,width_:200,height_:50,fontSize_:9)
-    U().text_generate(param_:theme_content_p,nsText_:theme_content,view_:self.view,input_flag_:false,ajust_flag_:false,border_flag_:true)
+     U().text_generate(param_:theme_content_p,nsText_:theme_content,view_:self.view,input_flag_:false,ajust_flag_:false,border_flag_:true)
        
        // NSButtonの色の付け方が分からないので、NSClickGestureRecognizerで対応
        let retrun_button = NSTextField()
@@ -98,33 +91,43 @@ class Randam_LocationController: NSViewController {
        clickDetection_2.action = #selector(self.store_button_click)
        store_button.addGestureRecognizer(clickDetection_2)
        self.view.addSubview(store_button)
+       // page番号の表示
+       var page_title = NSTextField()
+       var page_title_p = Param(st_ :"ページ",x_:880,y_: 35,width_:50,height_:20,fontSize_:14)
+       U().text_generate(param_:page_title_p,nsText_:page_title,view_:self.view,input_flag_:false,ajust_flag_:false,border_flag_:false)
        
-        // 削除して、0から追加する。
-        let deleting = realm.objects(Random_Loc_Idea.self).filter("theme == %@",m_theme)
-        try! realm.write {
-            realm.delete(deleting)
-        }
-        var count = 0
-        for one_idea_Stock in m_idea_Stock_s{
-            count = count + 1
-            if 0 + 20 * (m_disp_num - 1) < count && count < 20 * m_disp_num + 1{
-                randam_generate(st_:one_idea_Stock)
+       m_page_total = Int(m_idea_Stock_s.count/21) + 1
+       var page_cotent = NSTextField()
+        var page_cotent_p = Param(st_ :String(m_page_now) + " / " + String(m_page_total) ,x_:930,y_: 35,width_:50,height_:20,fontSize_:14)
+       U().text_generate(param_:page_cotent_p,nsText_:page_cotent,view_:self.view,input_flag_:false,ajust_flag_:false,border_flag_:false)
+        var next_page_btn_p = Param(st_ :"次のページ",x_:1060,y_:35,width_:90,height_:20,fontSize_:13)
+              U().button_generate(param_:next_page_btn_p,viewCon_:self,view_:self.view,action: #selector(next_page_click))
+        var return_page_btn_p = Param(st_ :"前のページ",x_:960,y_:35,width_:90,height_:20,fontSize_:13)
+              U().button_generate(param_:return_page_btn_p,viewCon_:self,view_:self.view,action: #selector(return_page_click))
+
+        if retrun_falg == false{
+            var count = 0
+            for one_idea_Stock in m_idea_Stock_s{
+                count = count + 1
+                if 0 + 20 * (m_page_now - 1) < count && count < 20 * m_page_now + 1{
+                    randam_generate(st_:one_idea_Stock)
+                }
             }
         }
-        let disp_s = realm.objects(Random_Loc_Idea.self).filter("theme == %@",m_theme).filter("disp_num == %@",m_disp_num)
+        print("m_page_now")
+        print(m_page_now)
+        let disp_s = realm.objects(Random_Loc_Idea.self).filter("theme == %@",m_theme).filter("disp_num == %@",m_page_now)
+        print("disp_s")
+        print(disp_s)
         var disp_arr = Array(disp_s)
         var count_2 = 0
         for one in disp_arr{
+            print("one in disp_arr")
             count_2 = count_2 + 1
-            print("count")
-            print(count)
-            if 0 + 20 * (m_disp_num - 1) < count_2 && count_2 < 20 * m_disp_num + 1{
-                randam_obj_disp(ran_loc_idea_: one)
-            }
+            randam_obj_disp(ran_loc_idea_: one)
         }
     }
     @objc func add_button_click(_ sender: CustomNSButton){
-        print("add_button_click")
         randam_generate(st_:"")
     }
     @objc func next_button_click(_ sender: CustomNSButton){
@@ -132,8 +135,8 @@ class Randam_LocationController: NSViewController {
     }
     @objc func store_button_click(_ sender: CustomNSButton){
         for one in m_added_text_s{
-            print("one.stringValue")
-            print(one.stringValue)
+//            print("one.stringValue")
+//            print(one.stringValue)
         }
     }
     @objc func return_button_click(_ sender: CustomNSButton){
@@ -171,6 +174,7 @@ class Randam_LocationController: NSViewController {
             existFlag = false
         }
         if existFlag == false {
+//            print("existFlag == false")
             print("existFlag == false")
             m_tag_count = m_tag_count + 1
             var random_loc_idea = Random_Loc_Idea()
@@ -181,13 +185,11 @@ class Randam_LocationController: NSViewController {
             idea_count = idea_count + 1
             // 新しく追加したものに関しては、この時には、インサート出来ない。
             if st_ != ""{
-                print("st_ != ")
                 random_loc_idea.tag = m_tag_count + 10000
-                random_loc_idea.disp_num = Int(idea_count / 21) + 1
-                
+                random_loc_idea.disp_num = m_page_now
             }else{
                 random_loc_idea.tag = m_tag_count
-                random_loc_idea.disp_num = m_disp_num
+                random_loc_idea.disp_num = m_page_now
                 randam_obj_disp(ran_loc_idea_:random_loc_idea)
             }
             try! realm.write() {
@@ -195,11 +197,32 @@ class Randam_LocationController: NSViewController {
             }
         }
     }
+    @objc func next_page_click(){
+        print("next_page_click")
+        if m_page_now < m_page_total{
+            m_page_now = m_page_now + 1
+            for v in view.subviews {
+                v.removeFromSuperview()
+            }
+            m_x_y_Array.removeAll()
+            first_appear()
+        }
+    }
+    @objc func return_page_click(){
+        print("return_page_click")
+        if m_page_now > 1{
+            m_page_now = m_page_now - 1
+            for v in view.subviews {
+                v.removeFromSuperview()
+            }
+            m_x_y_Array.removeAll()
+            retrun_falg = true
+            first_appear()
+        }
+    }
     func randam_obj_disp(ran_loc_idea_:Random_Loc_Idea){
-        print("test")
         let random_content = NSTextField()
         var random_content_p = Param(st_ :ran_loc_idea_.idea,x_:Int(ran_loc_idea_.x),y_:Int(ran_loc_idea_.y),width_:Int(TB_WIDTH),height_:Int(TB_HEIGHT),fontSize_:9)
-    
         
         if ran_loc_idea_.idea != "" {
         U().text_generate(param_:random_content_p,nsText_:random_content,view_:self.view,input_flag_:false,ajust_flag_:false,border_flag_:true)

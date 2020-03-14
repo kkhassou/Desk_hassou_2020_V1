@@ -103,8 +103,8 @@ class Hierarchy_ThemeController: NSViewController {
             }
         }
         let disp_arr = realm.objects(Hierarchy_Theme_Db_v5.self).filter("start_theme == %@",m_theme)
-        print("disp_arr")
-        print(disp_arr)
+//        print("disp_arr")
+//        print(disp_arr)
         // 試した感じ、大丈夫そうなので、別途、
         for one_disp in disp_arr{
             // textの表示
@@ -270,8 +270,8 @@ class Hierarchy_ThemeController: NSViewController {
         }
     }
     @objc func randam_location(_ sender: CustomNSButton){
-        print("sender.st")
-        print(sender.st)
+//        print("sender.st")
+//        print(sender.st)
         UserDefaults.standard.set(sender.st, forKey: "theme")
         UserDefaults.standard.synchronize()
         U().screen_next(viewCon : self ,id:"Randam_Location" , storyboard:storyboard!)
