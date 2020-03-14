@@ -9,6 +9,11 @@
 import Foundation
 import RealmSwift
 import Cocoa
+
+class Point_Store {
+    var x = -999.0
+    var y = -999.0
+}
 class CustomNSButton: NSButton {
     var st = ""
 }
@@ -58,7 +63,15 @@ class group_set_color{
     var group = ""
     var backColor:NSColor = NSColor.clear
 }
+class Random_Loc_Idea: Object{
+    @objc dynamic var theme = ""
+    @objc dynamic var idea = ""
+    @objc dynamic var x = -999.0
+    @objc dynamic var y = -999.0
+    @objc dynamic var disp_num = -999
+}
 class Hierarchy_Theme_Db_v5: Object{
+    
     @objc dynamic var start_theme = ""
     @objc dynamic var parent_theme = ""
     @objc dynamic var parent_x = -999
