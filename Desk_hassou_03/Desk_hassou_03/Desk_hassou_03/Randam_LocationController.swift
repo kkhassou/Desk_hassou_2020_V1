@@ -14,7 +14,7 @@ class Randam_LocationController: NSViewController {
     let realm = try! Realm()
     var m_theme = ""
     var m_idea_Stock_s:[String] = []
-    var m_added_text_s:[NSTextField] = []
+    var m_added_text_s:[CustomNSTextField] = []
     var m_x_y_Array:[Point_Store] = []
     var m_page_total = -999
     var m_page_now = 1
@@ -134,10 +134,31 @@ class Randam_LocationController: NSViewController {
 
     }
     @objc func store_button_click(_ sender: CustomNSButton){
+        // これが、今いる場面で追加があった場合の追加
         for one in m_added_text_s{
-//            print("one.stringValue")
-//            print(one.stringValue)
+            var idea_stock = Idea_Stock()
+            idea_stock.theme = m_theme
+            idea_stock.idea = one.stringValue
+            try! realm.write() {
+                realm.add(idea_stock)
+            }
         }
+        // こっちは、追加画面があった場合の追加
+        let add_sock_s = realm.objects(Random_Loc_Idea.self).filter("theme == %@",m_theme)
+        var add_sock_arr = Array(add_sock_s)
+        for one in add_sock_arr{
+            // Idea_Stockになければ追加する
+            let serched = realm.objects(Idea_Stock.self).filter("theme == %@",m_theme).filter("idea == %@",one.idea)
+            if serched.count == 0{
+                var idea_stock = Idea_Stock()
+                idea_stock.theme = m_theme
+                idea_stock.idea = one.idea
+                try! realm.write() {
+                    realm.add(idea_stock)
+                }
+            }
+        }
+        self.dismiss(nil)
     }
     @objc func return_button_click(_ sender: CustomNSButton){
         self.dismiss(nil)
@@ -200,28 +221,58 @@ class Randam_LocationController: NSViewController {
     @objc func next_page_click(){
         print("next_page_click")
         if m_page_now < m_page_total{
+            // 追加されたテキストをDBに追加
+            for one in m_added_text_s{
+                var random_loc_idea = Random_Loc_Idea()
+                random_loc_idea.theme = m_theme
+                random_loc_idea.idea = one.stringValue
+                random_loc_idea.x = one.loc_x
+                random_loc_idea.y = one.loc_y
+                random_loc_idea.disp_num = m_page_now
+
+                try! realm.write() {
+                    realm.add(random_loc_idea)
+                }
+            }
+            
             m_page_now = m_page_now + 1
             for v in view.subviews {
                 v.removeFromSuperview()
             }
             m_x_y_Array.removeAll()
+            m_added_text_s.removeAll()
             first_appear()
         }
     }
     @objc func return_page_click(){
         print("return_page_click")
         if m_page_now > 1{
+            for one in m_added_text_s{
+                var random_loc_idea = Random_Loc_Idea()
+                random_loc_idea.theme = m_theme
+                random_loc_idea.idea = one.stringValue
+                random_loc_idea.x = one.loc_x
+                random_loc_idea.y = one.loc_y
+                random_loc_idea.disp_num = m_page_now
+
+                try! realm.write() {
+                    realm.add(random_loc_idea)
+                }
+            }
             m_page_now = m_page_now - 1
             for v in view.subviews {
                 v.removeFromSuperview()
             }
             m_x_y_Array.removeAll()
+            m_added_text_s.removeAll()
             retrun_falg = true
             first_appear()
         }
     }
     func randam_obj_disp(ran_loc_idea_:Random_Loc_Idea){
-        let random_content = NSTextField()
+        let random_content = CustomNSTextField()
+        random_content.loc_x = ran_loc_idea_.x
+        random_content.loc_y = ran_loc_idea_.y
         var random_content_p = Param(st_ :ran_loc_idea_.idea,x_:Int(ran_loc_idea_.x),y_:Int(ran_loc_idea_.y),width_:Int(TB_WIDTH),height_:Int(TB_HEIGHT),fontSize_:9)
         
         if ran_loc_idea_.idea != "" {

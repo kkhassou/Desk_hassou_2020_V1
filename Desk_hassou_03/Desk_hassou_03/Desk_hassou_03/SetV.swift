@@ -17,6 +17,10 @@ class Point_Store {
 class CustomNSButton: NSButton {
     var st = ""
 }
+class CustomNSTextField: NSTextField {
+    var loc_x = -999.0
+    var loc_y = -999.0
+}
 enum Direction {
     case yoko
     case tate
