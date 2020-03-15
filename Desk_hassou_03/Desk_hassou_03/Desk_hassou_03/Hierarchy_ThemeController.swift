@@ -75,10 +75,10 @@ class Hierarchy_ThemeController: NSViewController {
         var mugen_stop = 0
         while end_flag == false {
             // self_point_xが-999以外で、かつ、self_xの子を持つ親は、その子のself_point_x
-            // を当てはめる。下からどんどん、適応されるので、1週で全部格納されない場合（縦が３以上の列がある場合）
+            // を当てはめる。下からどんどん、適応されるので、1周で全部格納されない場合（縦が３以上の列がある場合）
             var all_update = realm.objects(Hierarchy_Theme_Db_v5.self).filter("start_theme == %@",m_theme)
             for one in all_update {
-                if one.self_point_x == -999{
+                if one.self_point_x != 1{
                     var child_s = realm.objects(Hierarchy_Theme_Db_v5.self).filter("parent_theme == %@",one.self_theme)
                     for one_child in child_s{
                         if one_child.self_point_x != -999 && one_child.self_x == 1{
@@ -103,8 +103,8 @@ class Hierarchy_ThemeController: NSViewController {
             }
         }
         let disp_arr = realm.objects(Hierarchy_Theme_Db_v5.self).filter("start_theme == %@",m_theme)
-//        print("disp_arr")
-//        print(disp_arr)
+        print("disp_arr")
+        print(disp_arr)
         // 試した感じ、大丈夫そうなので、別途、
         for one_disp in disp_arr{
             // textの表示
@@ -154,18 +154,21 @@ class Hierarchy_ThemeController: NSViewController {
                 tate_sita.leftAnchor.constraint(equalTo: viewForContent.leftAnchor).isActive = true
                 tate_sita.rightAnchor.constraint(equalTo: viewForContent.rightAnchor).isActive = true
             }
-            // これが、横線
-            if one_disp.self_x != 1 {
-                let yoko = MyLine(frame: self.view.frame, x_: Double(point_x), y_: Double(point_y) + 75 + 17.5,direction_:Direction.yoko)
-                yoko.translatesAutoresizingMaskIntoConstraints = false
-                viewForContent.addSubview(yoko)
-                yoko.topAnchor.constraint(equalTo: viewForContent.topAnchor).isActive = true
-                yoko.bottomAnchor.constraint(equalTo: viewForContent.bottomAnchor).isActive = true
-                yoko.leftAnchor.constraint(equalTo: viewForContent.leftAnchor).isActive = true
-                yoko.rightAnchor.constraint(equalTo: viewForContent.rightAnchor).isActive = true
-            }
+//            // これが、横線　うまくいかない
+//            if one_disp.self_x != 1 {
+//                let yoko = MyLine(frame: self.view.frame, x_: Double(point_x), y_: Double(point_y) + 75 + 17.5,direction_:Direction.yoko)
+//                yoko.translatesAutoresizingMaskIntoConstraints = false
+//                viewForContent.addSubview(yoko)
+//                yoko.topAnchor.constraint(equalTo: viewForContent.topAnchor).isActive = true
+//                yoko.bottomAnchor.constraint(equalTo: viewForContent.bottomAnchor).isActive = true
+//                yoko.leftAnchor.constraint(equalTo: viewForContent.leftAnchor).isActive = true
+//                yoko.rightAnchor.constraint(equalTo: viewForContent.rightAnchor).isActive = true
+//            }
         }
-        
+        // 横線のために、ループを再度周す
+        for one_disp in disp_arr{
+            
+        }
         // NSScrollView 内の領域
         let scrollContentView = NSClipView(frame:
             NSRect(x: 0, y: 0, width: contentWidth, height: contentHeight))
@@ -199,16 +202,9 @@ class Hierarchy_ThemeController: NSViewController {
         
         var arr = Array(stocks)
         if arr.count != 0{
-//            print("--------------")
-//            print("parent_theme")
-//            print(parent_theme)
-//            print("theme_")
-//            print(theme_)
             if before_parent_theme != parent_theme{
                 index_count = 1
             }
-//            print("index_count")
-//            print(index_count)
             if first_falg == true{
                 let hierarchy_theme_db = Hierarchy_Theme_Db_v5()
                 // 当たり前だが、最初は、start_themeとself_themeが同じ
@@ -217,7 +213,7 @@ class Hierarchy_ThemeController: NSViewController {
                 hierarchy_theme_db.parent_theme = ""
                 hierarchy_theme_db.self_x = 1
                 hierarchy_theme_db.self_y = 1
-                hierarchy_theme_db.self_y = 1
+                hierarchy_theme_db.self_point_x = 1
                 hierarchy_theme_db.child_idea_num = arr.count
                 try! realm.write() {
                     realm.add(hierarchy_theme_db)
@@ -228,19 +224,6 @@ class Hierarchy_ThemeController: NSViewController {
                 // その結果のyに＋1すれば、この時点のDBのyが判明する。
                 
                 let serched = realm.objects(Hierarchy_Theme_Db_v5.self).filter("self_theme == %@",parent_theme)
-
-//                print("parent_theme")
-//                print(parent_theme)
-//                print("theme_")
-//                print(theme_)
-//                print("theme_")
-//                print(theme_)
-//                print("serched[0].self_x")
-//                print(serched[0].self_x)
-//                print("serched[0].self_y")
-//                print(serched[0].self_y)
-//                print("index_count")
-//                print(index_count)
                 
                 let hierarchy_theme_db_2 = Hierarchy_Theme_Db_v5()
                 // 当たり前だが、start_themeはずっと同じで良いので、変わらず、m_themeを取得
@@ -258,7 +241,6 @@ class Hierarchy_ThemeController: NSViewController {
                 }
             }
             index_count = index_count + 1
-//            print("--------------")
             before_parent_theme = parent_theme
         }else{
             
@@ -270,8 +252,6 @@ class Hierarchy_ThemeController: NSViewController {
         }
     }
     @objc func randam_location(_ sender: CustomNSButton){
-//        print("sender.st")
-//        print(sender.st)
         UserDefaults.standard.set(sender.st, forKey: "theme")
         UserDefaults.standard.synchronize()
         U().screen_next(viewCon : self ,id:"Randam_Location" , storyboard:storyboard!)

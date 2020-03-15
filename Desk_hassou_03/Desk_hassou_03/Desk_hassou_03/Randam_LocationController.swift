@@ -31,7 +31,6 @@ class Randam_LocationController: NSViewController {
         self.view.wantsLayer = true
         self.view.layer?.backgroundColor = NSColor.white.cgColor
         self.view.frame = CGRect(x:10, y:10 , width:1200, height:650);
-        
 
         first_appear()
     }
@@ -49,6 +48,9 @@ class Randam_LocationController: NSViewController {
            }
            let orderedSet = NSOrderedSet(array: temp)
            m_idea_Stock_s = orderedSet.array as! [String]
+           if m_idea_Stock_s.count == 0{
+               randam_generate(st_:"")
+           }
            // 削除して、0から追加する。
            let deleting = realm.objects(Random_Loc_Idea.self).filter("theme == %@",m_theme)
            try! realm.write {
@@ -161,8 +163,10 @@ class Randam_LocationController: NSViewController {
             var idea_stock = Idea_Stock()
             idea_stock.theme = m_theme
             idea_stock.idea = one.stringValue
-            try! realm.write() {
-                realm.add(idea_stock)
+            if one.stringValue != "" {
+                try! realm.write() {
+                    realm.add(idea_stock)
+                }
             }
         }
         // こっちは、追加画面があった場合の追加

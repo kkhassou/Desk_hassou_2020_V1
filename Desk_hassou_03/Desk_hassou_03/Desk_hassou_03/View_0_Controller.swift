@@ -26,6 +26,27 @@ class View_0_Controller: NSViewController, NSComboBoxDataSource{
     override func viewDidLoad() {
         super.viewDidLoad()
         if false{
+//            let deleting = realm.objects(Random_Loc_Idea.self)
+//            try! realm.write {
+//                realm.delete(deleting)
+//            }
+//            let deleting_2 = realm.objects(Hierarchy_Theme_Db_v5.self)
+//            try! realm.write {
+//                realm.delete(deleting_2)
+//            }
+//            let idea_Stock = realm.objects(Idea_Stock.self).filter("theme == %@","書籍で読んだ内容を、この発想支援アプリで、活用しやすいような機能を作る")
+//            print(idea_Stock)
+            let deleting = realm.objects(Idea_Stock.self).filter("idea == %@","アイデア発想支援アプリを使っているシーンを撮影して発信する")
+            try! realm.write {
+                realm.delete(deleting)
+            }
+            let deleting_2 = realm.objects(Idea_Stock.self).filter("theme == %@","アイデア発想支援アプリを使っているシーンを撮影して発信する")
+            try! realm.write {
+                realm.delete(deleting_2)
+            }
+            exit(0)
+        }
+        if false{
             let stocks = realm.objects(Hint_Db.self).filter("theme == %@","SDGs169の具体的な目標")
             try! realm.write {
                 realm.delete(stocks)
