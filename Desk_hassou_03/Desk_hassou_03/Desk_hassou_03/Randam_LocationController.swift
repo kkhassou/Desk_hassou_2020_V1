@@ -32,30 +32,30 @@ class Randam_LocationController: NSViewController {
         self.view.layer?.backgroundColor = NSColor.white.cgColor
         self.view.frame = CGRect(x:10, y:10 , width:1200, height:650);
         
-        if first_falg == false{
-            m_theme = UserDefaults.standard.object(forKey: "theme") as! String
-            // ここに表示の処理を入れる
-            var db_idea_Stock_s = realm.objects(Idea_Stock.self).filter("theme == %@",m_theme)
-            var db_idea_Stock_array = Array(db_idea_Stock_s)
-            var temp :[String] = []
-            for one in db_idea_Stock_array{
-                if one.idea != ""{
-                    temp.append(one.idea)
-                }
-            }
-            let orderedSet = NSOrderedSet(array: temp)
-            m_idea_Stock_s = orderedSet.array as! [String]
-            // 削除して、0から追加する。
-            let deleting = realm.objects(Random_Loc_Idea.self).filter("theme == %@",m_theme)
-            try! realm.write {
-                realm.delete(deleting)
-            }
-            first_falg = true
-        }
+
         first_appear()
     }
     func first_appear(){
-       
+       if first_falg == false{
+           m_theme = UserDefaults.standard.object(forKey: "theme") as! String
+           // ここに表示の処理を入れる
+           var db_idea_Stock_s = realm.objects(Idea_Stock.self).filter("theme == %@",m_theme)
+           var db_idea_Stock_array = Array(db_idea_Stock_s)
+           var temp :[String] = []
+           for one in db_idea_Stock_array{
+               if one.idea != ""{
+                   temp.append(one.idea)
+               }
+           }
+           let orderedSet = NSOrderedSet(array: temp)
+           m_idea_Stock_s = orderedSet.array as! [String]
+           // 削除して、0から追加する。
+           let deleting = realm.objects(Random_Loc_Idea.self).filter("theme == %@",m_theme)
+           try! realm.write {
+               realm.delete(deleting)
+           }
+           first_falg = true
+       }
        var theme_content = NSTextField()
        var theme_content_p = Param(st_ :m_theme,x_:20,y_:575,width_:200,height_:50,fontSize_:9)
      U().text_generate(param_:theme_content_p,nsText_:theme_content,view_:self.view,input_flag_:false,ajust_flag_:false,border_flag_:true)
@@ -114,15 +114,15 @@ class Randam_LocationController: NSViewController {
                 }
             }
         }
-        print("m_page_now")
-        print(m_page_now)
+//        print("m_page_now")
+//        print(m_page_now)
         let disp_s = realm.objects(Random_Loc_Idea.self).filter("theme == %@",m_theme).filter("disp_num == %@",m_page_now)
-        print("disp_s")
-        print(disp_s)
+//        print("disp_s")
+//        print(disp_s)
         var disp_arr = Array(disp_s)
         var count_2 = 0
         for one in disp_arr{
-            print("one in disp_arr")
+//            print("one in disp_arr")
             count_2 = count_2 + 1
             randam_obj_disp(ran_loc_idea_: one)
         }
@@ -130,10 +130,32 @@ class Randam_LocationController: NSViewController {
     @objc func add_button_click(_ sender: CustomNSButton){
         randam_generate(st_:"")
     }
-    @objc func next_button_click(_ sender: CustomNSButton){
-
+    @objc func deep_dip_button_click(_ sender: CustomNSButton){
+        store_db()
+        for v in view.subviews {
+            v.removeFromSuperview()
+        }
+        m_x_y_Array.removeAll()
+        m_added_text_s.removeAll()
+        m_idea_Stock_s.removeAll()
+        first_falg = false
+        m_page_now = 1
+        UserDefaults.standard.set(sender.st, forKey: "theme")
+        UserDefaults.standard.synchronize()
+        print("sender.st")
+        print(sender.st)
+        UserDefaults.standard.synchronize()
+        for v in view.subviews {
+            v.removeFromSuperview()
+        }
+        first_appear()
     }
     @objc func store_button_click(_ sender: CustomNSButton){
+        store_db()
+        self.dismiss(nil)
+        U().screen_next(viewCon : self ,id:"Hierarchy_Theme" , storyboard:storyboard!)
+    }
+    func store_db(){
         // これが、今いる場面で追加があった場合の追加
         for one in m_added_text_s{
             var idea_stock = Idea_Stock()
@@ -158,10 +180,10 @@ class Randam_LocationController: NSViewController {
                 }
             }
         }
-        self.dismiss(nil)
     }
     @objc func return_button_click(_ sender: CustomNSButton){
         self.dismiss(nil)
+        U().screen_next(viewCon : self ,id:"Hierarchy_Theme" , storyboard:storyboard!)
     }
     func randam_generate(st_:String){
         var xRand = -999.0
@@ -196,7 +218,6 @@ class Randam_LocationController: NSViewController {
         }
         if existFlag == false {
 //            print("existFlag == false")
-            print("existFlag == false")
             m_tag_count = m_tag_count + 1
             var random_loc_idea = Random_Loc_Idea()
             random_loc_idea.theme = m_theme
@@ -286,11 +307,11 @@ class Randam_LocationController: NSViewController {
         add_button.tag = 999
         self.view.addSubview(add_button)
         
-        let next_button = CustomNSButton(title: "深掘り", target: self, action: #selector(next_button_click))
-        next_button.frame = CGRect(x:ran_loc_idea_.x + 40, y:ran_loc_idea_.y - 22.0, width:65.0, height:20.0);
-        next_button.st = ran_loc_idea_.idea
-        next_button.tag = 777
-        self.view.addSubview(next_button)
+        let deep_dip_button = CustomNSButton(title: "深掘り", target: self, action: #selector(deep_dip_button_click))
+        deep_dip_button.frame = CGRect(x:ran_loc_idea_.x + 40, y:ran_loc_idea_.y - 22.0, width:65.0, height:20.0);
+        deep_dip_button.st = ran_loc_idea_.idea
+        deep_dip_button.tag = 777
+        self.view.addSubview(deep_dip_button)
     }
 }
 
