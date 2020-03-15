@@ -187,7 +187,7 @@ class Randam_LocationController: NSViewController {
     }
     @objc func return_button_click(_ sender: CustomNSButton){
         self.dismiss(nil)
-        U().screen_next(viewCon : self ,id:"Hierarchy_Theme" , storyboard:storyboard!)
+        U().screen_next(viewCon : self ,id:"second" , storyboard:storyboard!)
     }
     func randam_generate(st_:String){
         var xRand = -999.0

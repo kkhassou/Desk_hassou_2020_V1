@@ -116,6 +116,8 @@ class Divided_Group_DispController: NSViewController {
         self.dismiss(nil)
     }
     @objc func to_txt_disp_click(){
+        UserDefaults.standard.set("Divided_Group_Disp", forKey: "from_page")
+        UserDefaults.standard.synchronize()
         U().screen_next(viewCon : self ,id:"Txt_Disp" , storyboard:storyboard!)
     }
     @objc func next_page_click(){

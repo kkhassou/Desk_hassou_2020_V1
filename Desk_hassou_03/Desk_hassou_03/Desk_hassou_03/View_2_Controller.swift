@@ -40,7 +40,10 @@ class View_2_Controller: NSViewController, NSTableViewDelegate, NSTableViewDataS
         U().button_generate(param_:delete_btn_p,viewCon_:self,view_:self.view,action: #selector(delete_db))
         var select_btn_p = Param(st_ :"決定",x_:375,y_:30,width_:75,height_:50,fontSize_:22)
         U().button_generate(param_:select_btn_p,viewCon_:self,view_:self.view,action: #selector(select_theme))
-        
+        var text_disp_btn_p = Param(st_ :"テキスト表示",x_:460,y_:30,width_:180,height_:50,fontSize_:22)
+        U().button_generate(param_:text_disp_btn_p,viewCon_:self,view_:self.view,action: #selector(text_disp))
+        var hierarchy_text_disp_btn_p = Param(st_ :"階層テキスト表示",x_:650,y_:30,width_:200,height_:50,fontSize_:22)
+        U().button_generate(param_:hierarchy_text_disp_btn_p,viewCon_:self,view_:self.view,action: #selector(hierarchy_text_disp))
         let stocks = realm.objects(Idea_Stock.self)
         var temp :[String] = []
         for one in stocks{
@@ -62,6 +65,36 @@ class View_2_Controller: NSViewController, NSTableViewDelegate, NSTableViewDataS
             select_stock = unique_stocks[tableview.clickedRow]
         }
     }
+    @objc func text_disp(){
+        if select_stock != ""{
+            UserDefaults.standard.set(select_stock, forKey: "theme")
+            UserDefaults.standard.set("View_2_only", forKey: "from_page")
+            UserDefaults.standard.synchronize()
+            self.dismiss(nil)
+            let next = storyboard?.instantiateController(withIdentifier: "Txt_Disp")
+            self.presentAsModalWindow(next! as! NSViewController)
+        }else{
+            let alert = NSAlert()
+            alert.messageText = "テーマを選択してください"
+            alert.addButton(withTitle: "OK")
+            let response = alert.runModal()
+        }
+    }
+    @objc func hierarchy_text_disp(){
+        if select_stock != ""{
+            UserDefaults.standard.set(select_stock, forKey: "theme")
+            UserDefaults.standard.set("View_2_hierarchy", forKey: "from_page")
+            UserDefaults.standard.synchronize()
+            self.dismiss(nil)
+            let next = storyboard?.instantiateController(withIdentifier: "Txt_Disp")
+            self.presentAsModalWindow(next! as! NSViewController)
+        }else{
+            let alert = NSAlert()
+            alert.messageText = "テーマを選択してください"
+            alert.addButton(withTitle: "OK")
+            let response = alert.runModal()
+        }
+    }
     @objc func return_disp(){
         self.dismiss(nil)
         let next = storyboard?.instantiateController(withIdentifier: "first")
@@ -80,7 +113,6 @@ class View_2_Controller: NSViewController, NSTableViewDelegate, NSTableViewDataS
             alert.addButton(withTitle: "OK")
             let response = alert.runModal()
         }
-
     }
     @objc func select_theme(){
         if select_stock != ""{
