@@ -154,20 +154,39 @@ class Hierarchy_ThemeController: NSViewController {
                 tate_sita.leftAnchor.constraint(equalTo: viewForContent.leftAnchor).isActive = true
                 tate_sita.rightAnchor.constraint(equalTo: viewForContent.rightAnchor).isActive = true
             }
-//            // これが、横線　うまくいかない
-//            if one_disp.self_x != 1 {
-//                let yoko = MyLine(frame: self.view.frame, x_: Double(point_x), y_: Double(point_y) + 75 + 17.5,direction_:Direction.yoko)
-//                yoko.translatesAutoresizingMaskIntoConstraints = false
-//                viewForContent.addSubview(yoko)
-//                yoko.topAnchor.constraint(equalTo: viewForContent.topAnchor).isActive = true
-//                yoko.bottomAnchor.constraint(equalTo: viewForContent.bottomAnchor).isActive = true
-//                yoko.leftAnchor.constraint(equalTo: viewForContent.leftAnchor).isActive = true
-//                yoko.rightAnchor.constraint(equalTo: viewForContent.rightAnchor).isActive = true
-//            }
-        }
-        // 横線のために、ループを再度周す
-        for one_disp in disp_arr{
-            
+            // これが、横線　うまくいかない
+            if one_disp.self_x != 1 {
+                let yoko = MyLine(frame: self.view.frame, x_: Double(point_x), y_: Double(point_y) + 75 + 17.5,direction_:Direction.yoko)
+                yoko.translatesAutoresizingMaskIntoConstraints = false
+                viewForContent.addSubview(yoko)
+                yoko.topAnchor.constraint(equalTo: viewForContent.topAnchor).isActive = true
+                yoko.bottomAnchor.constraint(equalTo: viewForContent.bottomAnchor).isActive = true
+                yoko.leftAnchor.constraint(equalTo: viewForContent.leftAnchor).isActive = true
+                yoko.rightAnchor.constraint(equalTo: viewForContent.rightAnchor).isActive = true
+                // 横が1つ以上離れている場合に、線を追加する処理を入れる。
+                // 自分のself_x - 1を検索したself_point_xと自分のself_point_xの差が1以上ある場合は、
+                // 横に差の分だけ線を引く
+                let serched = realm.objects(Hierarchy_Theme_Db_v5.self).filter("parent_theme == %@",one_disp.parent_theme)
+                    .filter("self_x == %@",one_disp.self_x - 1).last
+                var diff_num = one_disp.self_point_x - serched!.self_point_x
+                print("diff_num")
+                print(diff_num)
+                if diff_num > 1{
+                    print("test 173")
+                    for i in 1..<diff_num{
+                        print("test 177")
+                        print("point_x")
+                        print(point_x)
+                        let yoko_2 = MyLine(frame: self.view.frame, x_: Double(point_x - (i * 175)), y_: Double(point_y) + 75 + 17.5,direction_:Direction.yoko)
+                        yoko_2.translatesAutoresizingMaskIntoConstraints = false
+                        viewForContent.addSubview(yoko_2)
+                        yoko_2.topAnchor.constraint(equalTo: viewForContent.topAnchor).isActive = true
+                        yoko_2.bottomAnchor.constraint(equalTo: viewForContent.bottomAnchor).isActive = true
+                        yoko_2.leftAnchor.constraint(equalTo: viewForContent.leftAnchor).isActive = true
+                        yoko_2.rightAnchor.constraint(equalTo: viewForContent.rightAnchor).isActive = true
+                    }
+                }
+            }
         }
         // NSScrollView 内の領域
         let scrollContentView = NSClipView(frame:
@@ -192,18 +211,23 @@ class Hierarchy_ThemeController: NSViewController {
         index_count = index_count_
         // 再起処理で書かないと無理
         let stocks = realm.objects(Idea_Stock.self).filter("theme == %@",theme_)
-        if false{
-            let deleting = realm.objects(Hierarchy_Theme_Db_v5.self)
-            try! realm.write {
-                realm.delete(deleting)
-            }
-            exit(0)
-        }
-        
         var arr = Array(stocks)
         if arr.count != 0{
             if before_parent_theme != parent_theme{
-                index_count = 1
+                // 処理を追加
+                let serched = realm.objects(Hierarchy_Theme_Db_v5.self).filter("parent_theme == %@",parent_theme)
+                var arr = Array(serched)
+                if serched.count == 0{
+                    index_count = 1
+                }else{
+                     var max = -999
+                    for one in arr{
+                        if one.self_x > max {
+                            max = one.self_x
+                        }
+                    }
+                    index_count = max + 1
+                }
             }
             if first_falg == true{
                 let hierarchy_theme_db = Hierarchy_Theme_Db_v5()
