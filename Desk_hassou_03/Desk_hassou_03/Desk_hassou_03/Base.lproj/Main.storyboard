@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="15702" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="CLq-7b-w8u">
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="15702" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="Wvw-mr-M4x">
     <dependencies>
         <deployment identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="15702"/>
@@ -18,6 +18,19 @@
                 <customObject id="VcG-kI-3AX" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-405" y="-246"/>
+        </scene>
+        <!--Randam AreaS Controller-->
+        <scene sceneID="LOW-mZ-i14">
+            <objects>
+                <viewController identifier="Randam_Area_S" storyboardIdentifier="Randam_Area_S" id="2DS-oa-KH1" customClass="Randam_Area_S_Controller" customModule="Desk_hassou_03" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" id="nlg-g5-JhD">
+                        <rect key="frame" x="0.0" y="0.0" width="450" height="300"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </view>
+                </viewController>
+                <customObject id="gRe-h6-5Tb" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-550" y="-46"/>
         </scene>
         <!--Group Divide Controller-->
         <scene sceneID="vFC-qV-jn0">

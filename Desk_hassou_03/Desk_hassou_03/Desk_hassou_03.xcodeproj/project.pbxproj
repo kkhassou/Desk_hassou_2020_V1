@@ -28,6 +28,7 @@
 		20AA6D6724165316006D59C3 /* Txt_DispController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20AA6D6624165316006D59C3 /* Txt_DispController.swift */; };
 		20AA6D692417A8AA006D59C3 /* Hierarchy_ThemeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20AA6D682417A8AA006D59C3 /* Hierarchy_ThemeController.swift */; };
 		20AA6D6B241A737B006D59C3 /* Randam_LocationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20AA6D6A241A737B006D59C3 /* Randam_LocationController.swift */; };
+		20AA6D6D2423A278006D59C3 /* Randam_Area_S_Controller.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20AA6D6C2423A278006D59C3 /* Randam_Area_S_Controller.swift */; };
 		20BCD3C9240B6DDD00E12208 /* U.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20BCD3C8240B6DDD00E12208 /* U.swift */; };
 		DA9466CD84644D35069409B7 /* Pods_Desk_hassou_03.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5096009E41F9DC3468606082 /* Pods_Desk_hassou_03.framework */; };
 /* End PBXBuildFile section */
@@ -58,6 +59,7 @@
 		20AA6D6624165316006D59C3 /* Txt_DispController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Txt_DispController.swift; sourceTree = "<group>"; };
 		20AA6D682417A8AA006D59C3 /* Hierarchy_ThemeController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Hierarchy_ThemeController.swift; sourceTree = "<group>"; };
 		20AA6D6A241A737B006D59C3 /* Randam_LocationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Randam_LocationController.swift; sourceTree = "<group>"; };
+		20AA6D6C2423A278006D59C3 /* Randam_Area_S_Controller.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Randam_Area_S_Controller.swift; sourceTree = "<group>"; };
 		20BCD3C8240B6DDD00E12208 /* U.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = U.swift; sourceTree = "<group>"; };
 		5096009E41F9DC3468606082 /* Pods_Desk_hassou_03.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Desk_hassou_03.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		760DF83D57A10A4EA4824EF5 /* Pods-Desk_hassou_03.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Desk_hassou_03.release.xcconfig"; path = "Target Support Files/Pods-Desk_hassou_03/Pods-Desk_hassou_03.release.xcconfig"; sourceTree = "<group>"; };
@@ -105,6 +107,7 @@
 				2025D08C24026878003A05A7 /* List_Combine_RandomController.swift */,
 				2025D08A24024C8A003A05A7 /* List_Content_Combine_RandomController.swift */,
 				2040632C23BF4923001D0BB5 /* View_2_Controller.swift */,
+				20AA6D6C2423A278006D59C3 /* Randam_Area_S_Controller.swift */,
 				2040633223BF7B54001D0BB5 /* View_0_Controller.swift */,
 				2025D08E240359E0003A05A7 /* Group_DivideController.swift */,
 				2040633A23BF8370001D0BB5 /* View_3_Controller.swift */,
@@ -263,6 +266,7 @@
 				2025D08924010541003A05A7 /* List_Theme_Combine_RandomController.swift in Sources */,
 				2040632D23BF4923001D0BB5 /* View_2_Controller.swift in Sources */,
 				2025D08F240359E0003A05A7 /* Group_DivideController.swift in Sources */,
+				20AA6D6D2423A278006D59C3 /* Randam_Area_S_Controller.swift in Sources */,
 				20BCD3C9240B6DDD00E12208 /* U.swift in Sources */,
 				20AA6D6724165316006D59C3 /* Txt_DispController.swift in Sources */,
 				208C4E5B23F9D7E600A586FD /* List_Nine_x_NineController.swift in Sources */,

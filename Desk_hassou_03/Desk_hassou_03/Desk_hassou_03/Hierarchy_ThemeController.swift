@@ -27,13 +27,9 @@ class Hierarchy_ThemeController: NSViewController {
         let contentHeight: CGFloat = 1300
         let margin: CGFloat = 50
          
-        // scrollContentView の中身
         let viewForContent = NSView(frame:
             NSRect(x: 0, y: 0, width: contentWidth, height: contentHeight))
-         
-        // これで、画面枠width1200,height650より大きなサイズもスクロールして表示出来るようになった。
-        // とりあえず、縦横倍だが、もっと、大きくてもいけるようだ。
-        
+                 
         m_theme = UserDefaults.standard.object(forKey: "theme") as! String
         
         // 一旦、削除してから追加しする。

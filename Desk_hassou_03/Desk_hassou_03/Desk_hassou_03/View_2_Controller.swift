@@ -32,6 +32,8 @@ class View_2_Controller: NSViewController, NSTableViewDelegate, NSTableViewDataS
         U().button_generate(param_:nine_x_nine_btn_p,viewCon_:self,view_:self.view,action: #selector(select_nine_x_nine))
         var hierarchy_theme_btn_p = Param(st_ :"テーマの階層表示へ",x_:290,y_:0,width_:220,height_:50,fontSize_:22)
         U().button_generate(param_:hierarchy_theme_btn_p,viewCon_:self,view_:self.view,action: #selector(hierarchy_theme))
+        var randam_area_s_btn_p = Param(st_ :"R区域複数表示",x_:520,y_:0,width_:200,height_:50,fontSize_:22)
+        U().button_generate(param_:randam_area_s_btn_p,viewCon_:self,view_:self.view,action: #selector(randam_area_s))
         var enlarge_btn_p = Param(st_ :"アイデア増幅",x_:120,y_:0,width_:160,height_:50,fontSize_:22)
         U().button_generate(param_:enlarge_btn_p,viewCon_:self,view_:self.view,action: #selector(select_enlarge))
         var detail_disp_btn_p = Param(st_ :"そのアイデアを見る",x_:100,y_:30,width_:200,height_:50,fontSize_:22)
@@ -44,6 +46,7 @@ class View_2_Controller: NSViewController, NSTableViewDelegate, NSTableViewDataS
         U().button_generate(param_:text_disp_btn_p,viewCon_:self,view_:self.view,action: #selector(text_disp))
         var hierarchy_text_disp_btn_p = Param(st_ :"階層テキスト表示",x_:650,y_:30,width_:200,height_:50,fontSize_:22)
         U().button_generate(param_:hierarchy_text_disp_btn_p,viewCon_:self,view_:self.view,action: #selector(hierarchy_text_disp))
+
         let stocks = realm.objects(Idea_Stock.self)
         var temp :[String] = []
         for one in stocks{
@@ -63,6 +66,21 @@ class View_2_Controller: NSViewController, NSTableViewDelegate, NSTableViewDataS
     @objc func onItemClicked() {
         if tableview.clickedRow > -1{
             select_stock = unique_stocks[tableview.clickedRow]
+        }
+    }
+    @objc func randam_area_s(){
+        if select_stock != ""{
+            UserDefaults.standard.set(select_stock, forKey: "theme")
+//            UserDefaults.standard.set("View_2_hierarchy", forKey: "from_page")
+            UserDefaults.standard.synchronize()
+            self.dismiss(nil)
+            let next = storyboard?.instantiateController(withIdentifier: "Randam_Area_S")
+            self.presentAsModalWindow(next! as! NSViewController)
+        }else{
+            let alert = NSAlert()
+            alert.messageText = "テーマを選択してください"
+            alert.addButton(withTitle: "OK")
+            let response = alert.runModal()
         }
     }
     @objc func text_disp(){
