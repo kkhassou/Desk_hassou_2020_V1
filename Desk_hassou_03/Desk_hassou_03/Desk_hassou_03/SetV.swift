@@ -69,6 +69,17 @@ class group_set_color{
     var group = ""
     var backColor:NSColor = NSColor.clear
 }
+class Index_Collect: Object{
+    @objc dynamic var theme = ""
+    @objc dynamic var index = ""
+}
+
+class Randam_Area_S_DB: Object{
+    @objc dynamic var start_theme = ""
+    @objc dynamic var theme = ""
+    @objc dynamic var disp_count = -999
+    @objc dynamic var idea = ""
+}
 class Random_Loc_Idea: Object{
     @objc dynamic var theme = ""
     @objc dynamic var idea = ""

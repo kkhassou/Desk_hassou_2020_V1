@@ -27,35 +27,101 @@ class Randam_Area_S_Controller: NSViewController {
     
     var m_x_y_Array:[Point_Store] = []
     var m_added_text_s:[CustomNSTextField] = []
-    
+    var m_title_text_s:[CustomNSTextField] = []
     var m_tag_count = 0
     var m_area_count = 0
     var m_tate = -999
     var m_yoko = -999
+    
+    var first_flag = true
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.wantsLayer = true
         self.view.layer?.backgroundColor = NSColor.white.cgColor
         self.view.frame = CGRect(x:10, y:10 , width:1200, height:650);
         
-
-         
         viewForContent = NSView(frame:
             NSRect(x: 0, y: 0, width: CONTENTWIDTH, height: CONTENTHEIGHT))
-                 
+         
+        var store_btn = NSButton(title: "保存", target: self, action: #selector(store_click))
+        store_btn.frame = CGRect(x:0, y:CONTENTHEIGHT - 30, width:100, height:30);
+        store_btn.font = NSFont.systemFont(ofSize: 12)
+        viewForContent.addSubview(store_btn)
+        
+        var hozon_disp = NSTextField()
+        hozon_disp.frame = CGRect(x:0, y:CONTENTHEIGHT - 80, width:20, height:50);
+        hozon_disp.font = NSFont.systemFont(ofSize: 12)
+        hozon_disp.stringValue = "↑保存"
+        hozon_disp.isEditable = false
+        hozon_disp.isBordered = false
+        viewForContent.addSubview(hozon_disp)
+        
         m_theme = UserDefaults.standard.object(forKey: "theme") as! String
         
         count2tate_yoko(area_count_: m_area_count)
         randam_generate(st_:"",area_count: m_area_count)
-        add_area(area_count: m_area_count,theme_:m_theme)
+        
+        let deleting = realm.objects(Index_Collect.self).filter("theme == %@",m_theme)
+        try! realm.write {
+            realm.delete(deleting)
+        }
+        
+        add_area(area_count: m_area_count,theme_:m_theme,click_loc: 0)
     }
-    func add_area(area_count:Int,theme_:String){
-        var theme_content = NSTextField()
-        theme_content.stringValue = String(area_count) + "-" + theme_
+    func add_area(area_count:Int,theme_:String,click_loc:Int){
+        var theme_content = CustomNSTextField()
+        if first_flag == true{
+            theme_content.stringValue = String(area_count) + "- " + theme_
+            first_flag = false
+        }else{
+            for one in m_title_text_s{
+                if click_loc == one.area_loc{
+                    print("one.stringValue")
+                    print(one.stringValue)
+                    let arr:[String] = one.stringValue.components(separatedBy: "-")
+                    var index = ""
+                    var count = 0
+                    var initial_roop = true
+                    for one_2 in arr{
+                        count = count + 1
+                        if initial_roop == true{
+                            index = one_2
+                            initial_roop = false
+                        }else{
+                            index = index + "-" + one_2
+                        }
+                        if count == arr.count - 1{
+                            break
+                        }
+                    }
+                    // 配列を何度も回すのは、馬鹿らしいので、
+                    // DBにindexを格納して、同じものがあれば、一つ増やす、という処理にしよう。
+                    var roop_continue = true
+                    var roop_start = 1
+                    while roop_continue{
+                        var index_added = index + "-" + String(roop_start) + "-"
+                        roop_start = roop_start + 1
+                        let serched = realm.objects(Index_Collect.self).filter("theme == %@",m_theme).filter("index == %@",index_added)
+                        if serched.count == 0{
+                            let index_collect = Index_Collect()
+                            index_collect.theme = m_theme
+                            index_collect.index = index_added
+                            try! realm.write {
+                                realm.add(index_collect)
+                            }
+                            theme_content.stringValue = index_added + " " + theme_
+                            roop_continue = false
+                        }
+                    }
+                }
+            }
+        }
         theme_content.frame = CGRect(x:20 + CGFloat(400 * (m_yoko)), y:CONTENTHEIGHT - 70 - CGFloat((LINE_HEIGHT + MAGIN_HEIGHT) * (m_tate)), width:400, height:30);
         theme_content.font = NSFont.systemFont(ofSize: 12)
         theme_content.isEditable = false
         theme_content.isBordered = false
+        theme_content.area_loc = area_count
+        m_title_text_s.append(theme_content)
         viewForContent.addSubview(theme_content)
         // NSScrollView 内の領域
         let scrollContentView = NSClipView(frame:
@@ -83,6 +149,10 @@ class Randam_Area_S_Controller: NSViewController {
         yoko_2.rightAnchor.constraint(equalTo: viewForContent.rightAnchor).isActive = true
     }
     func randam_generate(st_:String,area_count: Int){
+        // こっちはこっちで、横縦の位置を取得せねばならない。
+        var hani_yoko = area_count % 5
+        var hani_tate = Int(area_count / 5)
+        
         var xRand = -999.0
         var yRand = -999.0
         var breakCount = 0
@@ -90,15 +160,14 @@ class Randam_Area_S_Controller: NSViewController {
         while true {
             breakCount = breakCount + 1
             // テキストを配置する範囲を決める
-            var hidariX = MAGIN_WIDTH + ((LINE_WIDTH + MAGIN_WIDTH) * (m_yoko))
+            var hidariX = MAGIN_WIDTH + ((LINE_WIDTH + MAGIN_WIDTH) * (hani_yoko))
             var migiiX = hidariX + LINE_WIDTH - Int(TB_WIDTH)
             // 一旦横への移動だけ考慮する。
-//            var ueY = Int(CONTENTHEIGHT) - ((m_area_count - 1)*LINE_HEIGHT) - MAGIN_HEIGHT - Int(TB_HEIGHT)
-            var ueY = Int(CONTENTHEIGHT) - MAGIN_HEIGHT - Int(TB_HEIGHT) - ((LINE_HEIGHT) * (m_tate))
-            var sitaY = ueY - LINE_HEIGHT + Int(TB_HEIGHT*2)
-//            print(hidariX)
-//            print(migiiX)
+            var ueY = Int(CONTENTHEIGHT) - (hani_tate + 1) * MAGIN_HEIGHT  - (hani_tate) * LINE_HEIGHT - 30
+            var sitaY = Int(CONTENTHEIGHT) - (hani_tate + 1) * (MAGIN_HEIGHT + LINE_HEIGHT) + 30
+//            print("ueY")
 //            print(ueY)
+//            print("sitaY")
 //            print(sitaY)
             xRand = Double.random(in: Double(hidariX) ... Double(migiiX))
             yRand = Double.random(in: Double(sitaY) ... Double(ueY))
@@ -170,19 +239,45 @@ class Randam_Area_S_Controller: NSViewController {
         
         viewForContent.addSubview(deep_dip_button)
     }
+    
+    @objc func store_click(_ sender: NSButton){
+        let deleting = realm.objects(Randam_Area_S_DB.self).filter("start_theme == %@",m_theme)
+        try! realm.write {
+            realm.delete(deleting)
+        }
+        for one in m_added_text_s{
+            var randam_area_s_db = Randam_Area_S_DB()
+            randam_area_s_db.start_theme = m_theme
+            for one_2 in m_title_text_s{
+                if one.area_loc == one_2.area_loc{
+                    randam_area_s_db.theme = one_2.stringValue
+                }
+            }
+            randam_area_s_db.disp_count = one.area_loc
+            randam_area_s_db.idea = one.stringValue
+            try! realm.write {
+                realm.add(randam_area_s_db)
+            }
+        }
+        let temp = realm.objects(Randam_Area_S_DB.self).filter("start_theme == %@",m_theme)
+        print("temp")
+        print(temp)
+    }
     @objc func add_button_click(_ sender: CustomNSButton){
         print("sender.area_loc")
         print(sender.area_loc)
         randam_generate(st_:"",area_count: sender.area_loc)
     }
     @objc func deep_dip_button_click(_ sender: CustomNSButton){
+//        print("sender.area_loc")
+//        print(sender.area_loc)
         // まずは、追加だけでやってみよう。
         m_area_count = m_area_count + 1
         count2tate_yoko(area_count_:m_area_count)
         randam_generate(st_:"",area_count: m_area_count)
         for one in m_added_text_s{
             if one.tag == sender.tag {
-                add_area(area_count: m_area_count,theme_: one.stringValue)
+                add_area(area_count: m_area_count,theme_: one.stringValue,click_loc:sender.area_loc)
             }
         }
     }
@@ -209,10 +304,10 @@ class AreaLine: NSView {
         let MAGIN_WIDTH = 20
         let MAGIN_HEIGHT = 80
         let CONTENTHEIGHT = 1300
-        let hidariUe = NSPoint(x: Double((x - 1)*LINE_WIDTH + MAGIN_WIDTH), y: Double(CONTENTHEIGHT - ((y - 1)*(LINE_HEIGHT + MAGIN_HEIGHT)) - MAGIN_HEIGHT))
-        let migiiUe = NSPoint(x: Double((x)*LINE_WIDTH + MAGIN_WIDTH), y: Double(CONTENTHEIGHT - ((y - 1)*(LINE_HEIGHT + MAGIN_HEIGHT)) - MAGIN_HEIGHT))
-        let hidariSita = NSPoint(x: Double((x - 1)*LINE_WIDTH + MAGIN_WIDTH), y: Double(CONTENTHEIGHT - ((y)*(LINE_HEIGHT + MAGIN_HEIGHT)) - MAGIN_HEIGHT))
-        let migiSita = NSPoint(x: Double((x)*LINE_WIDTH + MAGIN_WIDTH), y: Double(CONTENTHEIGHT - ((y)*(LINE_HEIGHT + MAGIN_HEIGHT)) - MAGIN_HEIGHT))
+        let hidariUe = NSPoint(x: Double((x - 1)*LINE_WIDTH + MAGIN_WIDTH), y: Double(CONTENTHEIGHT - ((y)*(MAGIN_HEIGHT)) - (y - 1)*LINE_HEIGHT))
+        let migiiUe = NSPoint(x: Double((x)*LINE_WIDTH + MAGIN_WIDTH), y: Double(CONTENTHEIGHT - ((y)*(MAGIN_HEIGHT)) - (y - 1)*LINE_HEIGHT))
+        let hidariSita = NSPoint(x: Double((x - 1)*LINE_WIDTH + MAGIN_WIDTH), y: Double(CONTENTHEIGHT - y*(MAGIN_HEIGHT + LINE_HEIGHT)))
+        let migiSita = NSPoint(x: Double((x)*LINE_WIDTH + MAGIN_WIDTH), y: Double(CONTENTHEIGHT - y*(MAGIN_HEIGHT + LINE_HEIGHT)))
         // 正方形なので4本線を引く
         let path_1 = NSBezierPath()
         path_1.move(to: hidariUe)
