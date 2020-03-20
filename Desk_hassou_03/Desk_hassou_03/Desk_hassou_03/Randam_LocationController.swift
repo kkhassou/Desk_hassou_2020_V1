@@ -133,6 +133,17 @@ class Randam_LocationController: NSViewController {
         randam_generate(st_:"")
     }
     @objc func deep_dip_button_click(_ sender: CustomNSButton){
+        if sender.st != ""{
+            UserDefaults.standard.set(sender.st, forKey: "theme")
+        }else{
+            for one in m_added_text_s{
+                if sender.tag == one.tag{
+                    print("one.stringValue")
+                    print(one.stringValue)
+                    UserDefaults.standard.set(one.stringValue, forKey: "theme")
+                }
+            }
+        }
         store_db()
         for v in view.subviews {
             v.removeFromSuperview()
@@ -142,10 +153,9 @@ class Randam_LocationController: NSViewController {
         m_idea_Stock_s.removeAll()
         first_falg = false
         m_page_now = 1
-        UserDefaults.standard.set(sender.st, forKey: "theme")
-        UserDefaults.standard.synchronize()
-        print("sender.st")
-        print(sender.st)
+        // 追加したテキストに入力した場合は、sender.stが空になってしまうので、
+        // ボタンとテキストのタグを揃えて、検索を掛ける必要が多分ある。
+
         UserDefaults.standard.synchronize()
         for v in view.subviews {
             v.removeFromSuperview()
@@ -215,14 +225,12 @@ class Randam_LocationController: NSViewController {
                 m_x_y_Array.append(x_y)
                 break
             }
-            if breakCount == 10000{
+            if breakCount == 100{
                 break
             }
             existFlag = false
         }
         if existFlag == false {
-//            print("existFlag == false")
-            m_tag_count = m_tag_count + 1
             var random_loc_idea = Random_Loc_Idea()
             random_loc_idea.theme = m_theme
             random_loc_idea.idea = st_
@@ -231,10 +239,8 @@ class Randam_LocationController: NSViewController {
             idea_count = idea_count + 1
             // 新しく追加したものに関しては、この時には、インサート出来ない。
             if st_ != ""{
-                random_loc_idea.tag = m_tag_count + 10000
                 random_loc_idea.disp_num = m_page_now
             }else{
-                random_loc_idea.tag = m_tag_count
                 random_loc_idea.disp_num = m_page_now
                 randam_obj_disp(ran_loc_idea_:random_loc_idea)
             }
@@ -295,26 +301,31 @@ class Randam_LocationController: NSViewController {
         }
     }
     func randam_obj_disp(ran_loc_idea_:Random_Loc_Idea){
+        m_tag_count = m_tag_count + 1
         let random_content = CustomNSTextField()
         random_content.loc_x = ran_loc_idea_.x
         random_content.loc_y = ran_loc_idea_.y
-        var random_content_p = Param(st_ :ran_loc_idea_.idea,x_:Int(ran_loc_idea_.x),y_:Int(ran_loc_idea_.y),width_:Int(TB_WIDTH),height_:Int(TB_HEIGHT),fontSize_:9)
-        
+        random_content.frame = CGRect(x:Int(ran_loc_idea_.x), y:Int(ran_loc_idea_.y) , width:Int(TB_WIDTH), height:Int(TB_HEIGHT))
+        random_content.font = NSFont.systemFont(ofSize: 9)
+        random_content.isBordered = true
+        random_content.isEditable = true
+        random_content.tag = m_tag_count
         if ran_loc_idea_.idea != "" {
-        U().text_generate(param_:random_content_p,nsText_:random_content,view_:self.view,input_flag_:false,ajust_flag_:false,border_flag_:true)
-        }else{        U().text_generate(param_:random_content_p,nsText_:random_content,view_:self.view,input_flag_:true,ajust_flag_:false,border_flag_:true)
+            self.view.addSubview(random_content)
+        }else{
+            self.view.addSubview(random_content)
             m_added_text_s.append(random_content)
         }
         let add_button = CustomNSButton(title: "追加", target: self, action: #selector(add_button_click))
         add_button.frame = CGRect(x:ran_loc_idea_.x-5.0, y:ran_loc_idea_.y - 22.0, width:55.0, height:20.0);
         add_button.st = ran_loc_idea_.idea
-        add_button.tag = 999
+        add_button.tag = m_tag_count
         self.view.addSubview(add_button)
         
         let deep_dip_button = CustomNSButton(title: "深掘り", target: self, action: #selector(deep_dip_button_click))
         deep_dip_button.frame = CGRect(x:ran_loc_idea_.x + 40, y:ran_loc_idea_.y - 22.0, width:65.0, height:20.0);
         deep_dip_button.st = ran_loc_idea_.idea
-        deep_dip_button.tag = 777
+        deep_dip_button.tag = m_tag_count
         self.view.addSubview(deep_dip_button)
     }
 }
