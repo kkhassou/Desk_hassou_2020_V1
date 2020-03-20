@@ -56,61 +56,96 @@ class Randam_Area_S_Controller: NSViewController {
         hozon_disp.isBordered = false
         viewForContent.addSubview(hozon_disp)
         
-        m_theme = UserDefaults.standard.object(forKey: "theme") as! String
-        
-        count2tate_yoko(area_count_: m_area_count)
-        randam_generate(st_:"",area_count: m_area_count)
-        
         let deleting = realm.objects(Index_Collect.self).filter("theme == %@",m_theme)
         try! realm.write {
             realm.delete(deleting)
         }
         
+        m_theme = UserDefaults.standard.object(forKey: "theme") as! String
+        print("kake 65")
+        let db_start_theme = realm.objects(Randam_Area_S_DB.self).filter("start_theme == %@",m_theme)
+        if db_start_theme.count == 0{
+            first_appear()
+        }else{
+            print("kake 70")
+            // 2重にループを回す必要がある。
+            var temp :[String] = []
+            for one in db_start_theme{
+                temp.append(one.theme)
+            }
+            let orderedSet = NSOrderedSet(array: temp)
+            var unique_theme = orderedSet.array as! [String]
+            var first_for = true
+            for one in unique_theme{
+                print("kake 80")
+                let db_theme = realm.objects(Randam_Area_S_DB.self).filter("theme == %@",one)
+                for one_2 in db_theme{
+                    if first_for == true{
+                        print("count2tate_yoko")
+                        count2tate_yoko(area_count_: one_2.disp_count)
+                    }
+                    randam_generate(st_:one,area_count: one_2.disp_count)
+                    if first_for == true{
+                        add_area(area_count: one_2.disp_count,theme_:one,click_loc: -999)
+                        first_for = false
+                    }
+                }
+                
+            }
+        }
+    }
+    func first_appear(){
+        count2tate_yoko(area_count_: m_area_count)
+        randam_generate(st_:"",area_count: m_area_count)
         add_area(area_count: m_area_count,theme_:m_theme,click_loc: 0)
     }
     func add_area(area_count:Int,theme_:String,click_loc:Int){
         var theme_content = CustomNSTextField()
-        if first_flag == true{
-            theme_content.stringValue = String(area_count) + "- " + theme_
-            first_flag = false
+        if click_loc == -999{
+            theme_content.stringValue = theme_
         }else{
-            for one in m_title_text_s{
-                if click_loc == one.area_loc{
-                    print("one.stringValue")
-                    print(one.stringValue)
-                    let arr:[String] = one.stringValue.components(separatedBy: "-")
-                    var index = ""
-                    var count = 0
-                    var initial_roop = true
-                    for one_2 in arr{
-                        count = count + 1
-                        if initial_roop == true{
-                            index = one_2
-                            initial_roop = false
-                        }else{
-                            index = index + "-" + one_2
-                        }
-                        if count == arr.count - 1{
-                            break
-                        }
-                    }
-                    // 配列を何度も回すのは、馬鹿らしいので、
-                    // DBにindexを格納して、同じものがあれば、一つ増やす、という処理にしよう。
-                    var roop_continue = true
-                    var roop_start = 1
-                    while roop_continue{
-                        var index_added = index + "-" + String(roop_start) + "-"
-                        roop_start = roop_start + 1
-                        let serched = realm.objects(Index_Collect.self).filter("theme == %@",m_theme).filter("index == %@",index_added)
-                        if serched.count == 0{
-                            let index_collect = Index_Collect()
-                            index_collect.theme = m_theme
-                            index_collect.index = index_added
-                            try! realm.write {
-                                realm.add(index_collect)
+            if first_flag == true{
+                theme_content.stringValue = String(area_count) + "- " + theme_
+                first_flag = false
+            }else{
+                for one in m_title_text_s{
+                    if click_loc == one.area_loc{
+                        print("one.stringValue")
+                        print(one.stringValue)
+                        let arr:[String] = one.stringValue.components(separatedBy: "-")
+                        var index = ""
+                        var count = 0
+                        var initial_roop = true
+                        for one_2 in arr{
+                            count = count + 1
+                            if initial_roop == true{
+                                index = one_2
+                                initial_roop = false
+                            }else{
+                                index = index + "-" + one_2
                             }
-                            theme_content.stringValue = index_added + " " + theme_
-                            roop_continue = false
+                            if count == arr.count - 1{
+                                break
+                            }
+                        }
+                        // 配列を何度も回すのは、馬鹿らしいので、
+                        // DBにindexを格納して、同じものがあれば、一つ増やす、という処理にしよう。
+                        var roop_continue = true
+                        var roop_start = 1
+                        while roop_continue{
+                            var index_added = index + "-" + String(roop_start) + "-"
+                            roop_start = roop_start + 1
+                            let serched = realm.objects(Index_Collect.self).filter("theme == %@",m_theme).filter("index == %@",index_added)
+                            if serched.count == 0{
+                                let index_collect = Index_Collect()
+                                index_collect.theme = m_theme
+                                index_collect.index = index_added
+                                try! realm.write {
+                                    realm.add(index_collect)
+                                }
+                                theme_content.stringValue = index_added + " " + theme_
+                                roop_continue = false
+                            }
                         }
                     }
                 }
@@ -259,9 +294,6 @@ class Randam_Area_S_Controller: NSViewController {
                 realm.add(randam_area_s_db)
             }
         }
-        let temp = realm.objects(Randam_Area_S_DB.self).filter("start_theme == %@",m_theme)
-        print("temp")
-        print(temp)
     }
     @objc func add_button_click(_ sender: CustomNSButton){
         print("sender.area_loc")
