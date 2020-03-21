@@ -17,11 +17,13 @@ class Point_Store {
 class CustomNSButton: NSButton {
     var st = ""
     var area_loc = -999
+    var index = -999
 }
 class CustomNSTextField: NSTextField {
     var loc_x = -999.0
     var loc_y = -999.0
     var area_loc = -999
+    var index = -999
 }
 enum Direction {
     case yoko
@@ -69,9 +71,16 @@ class group_set_color{
     var group = ""
     var backColor:NSColor = NSColor.clear
 }
+
 class Index_Collect: Object{
     @objc dynamic var theme = ""
     @objc dynamic var index = ""
+}
+
+class Process_s_DB: Object{
+    @objc dynamic var theme = ""
+    @objc dynamic var index = -999
+    @objc dynamic var content = ""
 }
 
 class Randam_Area_S_DB: Object{

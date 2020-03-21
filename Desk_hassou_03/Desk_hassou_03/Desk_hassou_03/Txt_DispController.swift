@@ -67,6 +67,27 @@ class Txt_DispController: NSViewController {
             for i in 0..<3 {
                 text_content_st = text_content_st + "\n"
             }
+        }else if from_page == "Randam_Area_S"{
+            let stocks = realm.objects(Randam_Area_S_DB.self).filter("start_theme == %@",m_theme)
+            var temp :[String] = []
+            for one in stocks{
+                if one.theme != ""{
+                    temp.append(one.theme)
+                }
+            }
+            let orderedSet = NSOrderedSet(array: temp)
+            let unique_theme = orderedSet.array as! [String]
+            
+            for one in unique_theme{
+                text_content_st = text_content_st + "●" + one + "\n"
+                var theme_stocks = realm.objects(Randam_Area_S_DB.self).filter("start_theme == %@",m_theme).filter("theme == %@",one)
+                for one in theme_stocks{
+                    text_content_st = text_content_st + "・" + one.idea + "\n"
+                }
+            }
+            for i in 0..<3 {
+                text_content_st = text_content_st + "\n"
+            }
         }
         var text_content = NSTextField()
         text_content.stringValue = text_content_st

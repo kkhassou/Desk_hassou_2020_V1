@@ -34,6 +34,8 @@ class View_2_Controller: NSViewController, NSTableViewDelegate, NSTableViewDataS
         U().button_generate(param_:hierarchy_theme_btn_p,viewCon_:self,view_:self.view,action: #selector(hierarchy_theme))
         var randam_area_s_btn_p = Param(st_ :"R区域複数表示",x_:520,y_:0,width_:200,height_:50,fontSize_:22)
         U().button_generate(param_:randam_area_s_btn_p,viewCon_:self,view_:self.view,action: #selector(randam_area_s))
+        var process_btn_p = Param(st_ :"プロセス思考",x_:730,y_:0,width_:200,height_:50,fontSize_:22)
+        U().button_generate(param_:process_btn_p,viewCon_:self,view_:self.view,action: #selector(process))
         var enlarge_btn_p = Param(st_ :"アイデア増幅",x_:120,y_:0,width_:160,height_:50,fontSize_:22)
         U().button_generate(param_:enlarge_btn_p,viewCon_:self,view_:self.view,action: #selector(select_enlarge))
         var detail_disp_btn_p = Param(st_ :"そのアイデアを見る",x_:100,y_:30,width_:200,height_:50,fontSize_:22)
@@ -75,6 +77,20 @@ class View_2_Controller: NSViewController, NSTableViewDelegate, NSTableViewDataS
             UserDefaults.standard.synchronize()
             self.dismiss(nil)
             let next = storyboard?.instantiateController(withIdentifier: "Randam_Area_S")
+            self.presentAsModalWindow(next! as! NSViewController)
+        }else{
+            let alert = NSAlert()
+            alert.messageText = "テーマを選択してください"
+            alert.addButton(withTitle: "OK")
+            let response = alert.runModal()
+        }
+    }
+    @objc func process(){
+        if select_stock != ""{
+            UserDefaults.standard.set(select_stock, forKey: "theme")
+            UserDefaults.standard.synchronize()
+            self.dismiss(nil)
+            let next = storyboard?.instantiateController(withIdentifier: "Process")
             self.presentAsModalWindow(next! as! NSViewController)
         }else{
             let alert = NSAlert()

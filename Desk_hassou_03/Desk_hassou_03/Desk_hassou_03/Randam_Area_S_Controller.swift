@@ -34,7 +34,9 @@ class Randam_Area_S_Controller: NSViewController {
     var m_yoko = -999
     
     var first_flag = true
+    
     override func viewDidLoad() {
+
         super.viewDidLoad()
         self.view.wantsLayer = true
         self.view.layer?.backgroundColor = NSColor.white.cgColor
@@ -48,6 +50,11 @@ class Randam_Area_S_Controller: NSViewController {
         store_btn.font = NSFont.systemFont(ofSize: 12)
         viewForContent.addSubview(store_btn)
         
+        var text_disp_btn = NSButton(title: "テキスト表示", target: self, action: #selector(text_disp_click))
+        text_disp_btn.frame = CGRect(x:120, y:CONTENTHEIGHT - 30, width:150, height:30);
+        text_disp_btn.font = NSFont.systemFont(ofSize: 12)
+        viewForContent.addSubview(text_disp_btn)
+        
         var hozon_disp = NSTextField()
         hozon_disp.frame = CGRect(x:0, y:CONTENTHEIGHT - 80, width:20, height:50);
         hozon_disp.font = NSFont.systemFont(ofSize: 12)
@@ -56,18 +63,24 @@ class Randam_Area_S_Controller: NSViewController {
         hozon_disp.isBordered = false
         viewForContent.addSubview(hozon_disp)
         
-        let deleting = realm.objects(Index_Collect.self).filter("theme == %@",m_theme)
-        try! realm.write {
-            realm.delete(deleting)
-        }
-        
         m_theme = UserDefaults.standard.object(forKey: "theme") as! String
-        print("kake 65")
+
+//        let deleting = realm.objects(Randam_Area_S_DB.self).filter("start_theme == %@",m_theme)
+//        try! realm.write {
+//            realm.delete(deleting)
+//        }
+//
+//        let deleting2 = realm.objects(Index_Collect.self).filter("theme == %@",m_theme)
+//        try! realm.write {
+//            realm.delete(deleting2)
+//        }
+//        exit(0)
+        
         let db_start_theme = realm.objects(Randam_Area_S_DB.self).filter("start_theme == %@",m_theme)
         if db_start_theme.count == 0{
             first_appear()
         }else{
-            print("kake 70")
+            first_flag = false
             // 2重にループを回す必要がある。
             var temp :[String] = []
             for one in db_start_theme{
@@ -75,16 +88,17 @@ class Randam_Area_S_Controller: NSViewController {
             }
             let orderedSet = NSOrderedSet(array: temp)
             var unique_theme = orderedSet.array as! [String]
-            var first_for = true
+            m_area_count = unique_theme.count - 1
             for one in unique_theme{
-                print("kake 80")
+//                print("kake 80")
+                var first_for = true
                 let db_theme = realm.objects(Randam_Area_S_DB.self).filter("theme == %@",one)
                 for one_2 in db_theme{
                     if first_for == true{
-                        print("count2tate_yoko")
+//                        print("count2tate_yoko")
                         count2tate_yoko(area_count_: one_2.disp_count)
                     }
-                    randam_generate(st_:one,area_count: one_2.disp_count)
+                    randam_generate(st_:one_2.idea,area_count: one_2.disp_count)
                     if first_for == true{
                         add_area(area_count: one_2.disp_count,theme_:one,click_loc: -999)
                         first_for = false
@@ -102,16 +116,18 @@ class Randam_Area_S_Controller: NSViewController {
     func add_area(area_count:Int,theme_:String,click_loc:Int){
         var theme_content = CustomNSTextField()
         if click_loc == -999{
+//            print("theme_")
+//            print(theme_)
             theme_content.stringValue = theme_
         }else{
             if first_flag == true{
-                theme_content.stringValue = String(area_count) + "- " + theme_
+                theme_content.stringValue = String(area_count + 1) + "- " + theme_
                 first_flag = false
             }else{
                 for one in m_title_text_s{
                     if click_loc == one.area_loc{
-                        print("one.stringValue")
-                        print(one.stringValue)
+//                        print("one.stringValue")
+//                        print(one.stringValue)
                         let arr:[String] = one.stringValue.components(separatedBy: "-")
                         var index = ""
                         var count = 0
@@ -200,14 +216,8 @@ class Randam_Area_S_Controller: NSViewController {
             // 一旦横への移動だけ考慮する。
             var ueY = Int(CONTENTHEIGHT) - (hani_tate + 1) * MAGIN_HEIGHT  - (hani_tate) * LINE_HEIGHT - 30
             var sitaY = Int(CONTENTHEIGHT) - (hani_tate + 1) * (MAGIN_HEIGHT + LINE_HEIGHT) + 30
-//            print("ueY")
-//            print(ueY)
-//            print("sitaY")
-//            print(sitaY)
             xRand = Double.random(in: Double(hidariX) ... Double(migiiX))
             yRand = Double.random(in: Double(sitaY) ... Double(ueY))
-//            print(xRand)
-//            print(yRand)
             for one_x_y_Array in m_x_y_Array{
                 if Double(xRand - (TB_WIDTH + 5))  < Double(one_x_y_Array.x) && Double(one_x_y_Array.x) < Double(xRand + (TB_WIDTH + 5)) && Double(yRand - (TB_HEIGHT + 25)) < Double(one_x_y_Array.y) && Double(one_x_y_Array.y) < Double(yRand + (TB_HEIGHT + 25)){
                     existFlag = true
@@ -255,6 +265,7 @@ class Randam_Area_S_Controller: NSViewController {
         random_content.isBordered = true
         random_content.tag = m_tag_count
         random_content.area_loc = ran_loc_idea_.disp_num
+        random_content.stringValue = ran_loc_idea_.idea
         viewForContent.addSubview(random_content)
         m_added_text_s.append(random_content)
         
@@ -274,8 +285,7 @@ class Randam_Area_S_Controller: NSViewController {
         
         viewForContent.addSubview(deep_dip_button)
     }
-    
-    @objc func store_click(_ sender: NSButton){
+    func store_db(){
         let deleting = realm.objects(Randam_Area_S_DB.self).filter("start_theme == %@",m_theme)
         try! realm.write {
             realm.delete(deleting)
@@ -295,14 +305,23 @@ class Randam_Area_S_Controller: NSViewController {
             }
         }
     }
+    @objc func store_click(_ sender: NSButton){
+        store_db()
+        self.dismiss(nil)
+    }
+    @objc func text_disp_click(_ sender: CustomNSButton){
+        store_db()
+        UserDefaults.standard.set("Randam_Area_S", forKey: "from_page")
+        UserDefaults.standard.synchronize()
+        let next = storyboard?.instantiateController(withIdentifier: "Txt_Disp")
+        self.presentAsModalWindow(next! as! NSViewController)
+    }
     @objc func add_button_click(_ sender: CustomNSButton){
-        print("sender.area_loc")
-        print(sender.area_loc)
         randam_generate(st_:"",area_count: sender.area_loc)
     }
     @objc func deep_dip_button_click(_ sender: CustomNSButton){
-//        print("sender.area_loc")
-//        print(sender.area_loc)
+        print("sender.area_loc")
+        print(sender.area_loc)
         // まずは、追加だけでやってみよう。
         m_area_count = m_area_count + 1
         count2tate_yoko(area_count_:m_area_count)
