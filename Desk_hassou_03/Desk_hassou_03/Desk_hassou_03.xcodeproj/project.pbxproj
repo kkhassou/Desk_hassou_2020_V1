@@ -30,6 +30,7 @@
 		20AA6D6B241A737B006D59C3 /* Randam_LocationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20AA6D6A241A737B006D59C3 /* Randam_LocationController.swift */; };
 		20AA6D6D2423A278006D59C3 /* Randam_Area_S_Controller.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20AA6D6C2423A278006D59C3 /* Randam_Area_S_Controller.swift */; };
 		20AA6D6F24256C17006D59C3 /* ProcessController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20AA6D6E24256C17006D59C3 /* ProcessController.swift */; };
+		20AA6D7124272F83006D59C3 /* MemoController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20AA6D7024272F83006D59C3 /* MemoController.swift */; };
 		20BCD3C9240B6DDD00E12208 /* U.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20BCD3C8240B6DDD00E12208 /* U.swift */; };
 		DA9466CD84644D35069409B7 /* Pods_Desk_hassou_03.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5096009E41F9DC3468606082 /* Pods_Desk_hassou_03.framework */; };
 /* End PBXBuildFile section */
@@ -62,6 +63,7 @@
 		20AA6D6A241A737B006D59C3 /* Randam_LocationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Randam_LocationController.swift; sourceTree = "<group>"; };
 		20AA6D6C2423A278006D59C3 /* Randam_Area_S_Controller.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Randam_Area_S_Controller.swift; sourceTree = "<group>"; };
 		20AA6D6E24256C17006D59C3 /* ProcessController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProcessController.swift; sourceTree = "<group>"; };
+		20AA6D7024272F83006D59C3 /* MemoController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoController.swift; sourceTree = "<group>"; };
 		20BCD3C8240B6DDD00E12208 /* U.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = U.swift; sourceTree = "<group>"; };
 		5096009E41F9DC3468606082 /* Pods_Desk_hassou_03.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Desk_hassou_03.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		760DF83D57A10A4EA4824EF5 /* Pods-Desk_hassou_03.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Desk_hassou_03.release.xcconfig"; path = "Target Support Files/Pods-Desk_hassou_03/Pods-Desk_hassou_03.release.xcconfig"; sourceTree = "<group>"; };
@@ -122,6 +124,7 @@
 				2040632623BF2335001D0BB5 /* SetV.swift */,
 				20BCD3C8240B6DDD00E12208 /* U.swift */,
 				20AA6D6E24256C17006D59C3 /* ProcessController.swift */,
+				20AA6D7024272F83006D59C3 /* MemoController.swift */,
 				2040631A23BF1B1B001D0BB5 /* Assets.xcassets */,
 				2040631C23BF1B1B001D0BB5 /* Main.storyboard */,
 				2040631F23BF1B1B001D0BB5 /* Info.plist */,
@@ -283,6 +286,7 @@
 				20AA6D6324131F56006D59C3 /* Index_Group_DivideController.swift in Sources */,
 				2040633B23BF8370001D0BB5 /* View_3_Controller.swift in Sources */,
 				2040631723BF1B19001D0BB5 /* AppDelegate.swift in Sources */,
+				20AA6D7124272F83006D59C3 /* MemoController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

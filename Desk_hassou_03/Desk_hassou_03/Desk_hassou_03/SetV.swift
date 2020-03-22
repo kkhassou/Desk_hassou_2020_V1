@@ -77,11 +77,13 @@ class Index_Collect: Object{
     @objc dynamic var index = ""
 }
 
-class Process_s_DB: Object{
+class Process_s_DB_2: Object{
     @objc dynamic var theme = ""
     @objc dynamic var index = -999
     @objc dynamic var content = ""
+    @objc dynamic var comment = ""
 }
+
 
 class Randam_Area_S_DB: Object{
     @objc dynamic var start_theme = ""

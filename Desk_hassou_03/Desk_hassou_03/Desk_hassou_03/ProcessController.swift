@@ -14,6 +14,7 @@ class ProcessController: NSViewController {
     var m_theme = ""
     var m_idea_Stock_s:[String] = []
     var m_added_text_s:[CustomNSTextField] = []
+    var m_memo_button_s:[CustomNSButton] = []
     var m_up_add_button_s:[CustomNSButton] = []
     var m_bottom_add_button_s:[CustomNSButton] = []
     var m_yajirusi_s:[YajirusiLine] = []
@@ -50,19 +51,40 @@ class ProcessController: NSViewController {
         start_y = 30 //FRAME_HEIGT / 2 - TB_HEIGHT
         
         m_theme = UserDefaults.standard.object(forKey: "theme") as! String
-        
-        add_textbox(num:total_textbox)
-        add_yajirusi_line(num: total_textbox)
-        add_yajirusi_line(num: total_textbox)
-        var count = 0
-        for one in m_added_text_s{
-            viewForContent.addSubview(one)
-            viewForContent.addSubview(m_up_add_button_s[count])
-            viewForContent.addSubview(m_bottom_add_button_s[count])
-            viewForContent.addSubview(m_yajirusi_s[count])
-            count = count + 1
+        var from_memo_flag = UserDefaults.standard.object(forKey: "from_memo") as! String
+        let db_start = realm.objects(Process_s_DB_2.self).filter("theme == %@",m_theme)
+        if db_start.count == 0{
+            add_textbox(num:total_textbox,st:"")
+            add_yajirusi_line(num: total_textbox)
+            var count = 0
+            for one in m_added_text_s{
+                viewForContent.addSubview(one)
+                viewForContent.addSubview(m_up_add_button_s[count])
+                viewForContent.addSubview(m_bottom_add_button_s[count])
+                viewForContent.addSubview(m_yajirusi_s[count])
+                viewForContent.addSubview(m_memo_button_s[count])
+                count = count + 1
+            }
+            add_scroll()
+        }else{
+            total_textbox = db_start.count - 1
+            var count = 0
+            for one in db_start{
+                add_textbox(num:one.index,st:one.content)
+                add_yajirusi_line(num: one.index)
+            }
+            for one in m_added_text_s{
+                viewForContent.addSubview(one)
+                viewForContent.addSubview(m_up_add_button_s[count])
+                viewForContent.addSubview(m_bottom_add_button_s[count])
+                viewForContent.addSubview(m_yajirusi_s[count])
+                viewForContent.addSubview(m_memo_button_s[count])
+                count = count + 1
+            }
+            add_scroll()
         }
-        add_scroll()
+        UserDefaults.standard.set(false, forKey: "from_memo")
+        UserDefaults.standard.synchronize()
     }
     @objc func up_add_click(_ sender: CustomNSButton){
         // sender.index より大きい数字がなければ、末尾に追加
@@ -74,7 +96,7 @@ class ProcessController: NSViewController {
         }
         if big_exist == false{
             total_textbox = total_textbox + 1
-            add_textbox(num:total_textbox)
+            add_textbox(num:total_textbox,st:"")
             add_yajirusi_line(num: total_textbox)
             var count = 0
             for one in m_added_text_s{
@@ -84,16 +106,17 @@ class ProcessController: NSViewController {
                 viewForContent.addSubview(m_up_add_button_s[count])
                 viewForContent.addSubview(m_bottom_add_button_s[count])
                 viewForContent.addSubview(m_yajirusi_s[count])
+                viewForContent.addSubview(m_memo_button_s[count])
                 count = count + 1
             }
         }else{
             total_textbox = total_textbox + 1
-            let deleting = realm.objects(Process_s_DB.self).filter("theme == %@",m_theme)
+            let deleting = realm.objects(Process_s_DB_2.self).filter("theme == %@",m_theme)
             try! realm.write {
                 realm.delete(deleting)
             }
             for one in m_added_text_s{
-                let process_s_db = Process_s_DB()
+                let process_s_db = Process_s_DB_2()
                 process_s_db.theme  = m_theme
                 process_s_db.index = one.index
                 process_s_db.content = one.stringValue
@@ -109,23 +132,23 @@ class ProcessController: NSViewController {
             for one in temp_s{
                 // より大きいものの位置を1つ1つ位置を右にずらして追加する必要がある。
                 if one.index > sender.index{
-                    add_textbox(num:one.index + 1)
+                    add_textbox(num:one.index + 1,st:"")
                 }else if one.index <= sender.index{
-                    add_textbox(num:one.index)
+                    add_textbox(num:one.index,st:"")
                 }
             }
-            add_textbox(num:sender.index + 1)
+            add_textbox(num:sender.index + 1,st:"")
             var count = 0
             // 再度、構築し直さなければならない
             
             for one in m_added_text_s{
                 if one.index > sender.index + 1{
-                    let serched = realm.objects(Process_s_DB.self).filter("theme == %@",m_theme).filter("index == %@",(one.index - 1)).last
+                    let serched = realm.objects(Process_s_DB_2.self).filter("theme == %@",m_theme).filter("index == %@",(one.index - 1)).last
                     one.stringValue = serched!.content
                 }else  if one.index == sender.index + 1{
                     one.stringValue = ""
                 }else{
-                    let serched = realm.objects(Process_s_DB.self).filter("theme == %@",m_theme).filter("index == %@",one.index).last
+                    let serched = realm.objects(Process_s_DB_2.self).filter("theme == %@",m_theme).filter("index == %@",one.index).last
                     one.stringValue = serched!.content
                 }
                 viewForContent.addSubview(one)
@@ -142,13 +165,13 @@ class ProcessController: NSViewController {
     }
     @objc func bottom_add_click(_ sender: CustomNSButton){
             total_textbox = total_textbox + 1
-            let deleting = realm.objects(Process_s_DB.self).filter("theme == %@",m_theme)
+            let deleting = realm.objects(Process_s_DB_2.self).filter("theme == %@",m_theme)
             try! realm.write {
                 realm.delete(deleting)
             }
             print("----------")
             for one in m_added_text_s{
-                let process_s_db = Process_s_DB()
+                let process_s_db = Process_s_DB_2()
                 process_s_db.theme  = m_theme
                 process_s_db.index = one.index
                 process_s_db.content = one.stringValue
@@ -164,22 +187,22 @@ class ProcessController: NSViewController {
             for one in temp_s{
                 // より大きいものの位置を1つ1つ位置を右にずらして追加する必要がある。
                 if one.index >= sender.index{
-                    add_textbox(num:one.index + 1)
+                    add_textbox(num:one.index + 1,st:"")
                 }else if one.index < sender.index{
-                    add_textbox(num:one.index)
+                    add_textbox(num:one.index,st:"")
                 }
             }
-            add_textbox(num:sender.index)
+            add_textbox(num:sender.index,st:"")
             var count = 0
             
             for one in m_added_text_s{
                 if one.index > sender.index{
-                    let serched = realm.objects(Process_s_DB.self).filter("theme == %@",m_theme).filter("index == %@",(one.index - 1)).last
+                    let serched = realm.objects(Process_s_DB_2.self).filter("theme == %@",m_theme).filter("index == %@",(one.index - 1)).last
                     one.stringValue = serched!.content
                 }else  if one.index == sender.index{
                     one.stringValue = ""
                 }else{
-                    let serched = realm.objects(Process_s_DB.self).filter("theme == %@",m_theme).filter("index == %@",one.index).last
+                    let serched = realm.objects(Process_s_DB_2.self).filter("theme == %@",m_theme).filter("index == %@",one.index).last
                     one.stringValue = serched!.content
                 }
                 viewForContent.addSubview(one)
@@ -224,23 +247,53 @@ class ProcessController: NSViewController {
 //        UserDefaults.standard.set(sender.st, forKey: "theme")
 //        UserDefaults.standard.synchronize()
 //        U().screen_next(viewCon : self ,id:"Randam_Location" , storyboard:storyboard!)
+        let deleting = realm.objects(Process_s_DB_2.self).filter("theme == %@",m_theme)
+        try! realm.write {
+            realm.delete(deleting)
+        }
+        for one in m_added_text_s{
+            var process_db = Process_s_DB_2()
+            process_db.theme = m_theme
+            process_db.content = one.stringValue
+            process_db.index = one.index
+            try! realm.write {
+                realm.add(process_db)
+            }
+        }
     }
     @objc func text_disp_click(_ sender: CustomNSButton){
 //        UserDefaults.standard.set(sender.st, forKey: "theme")
 //        UserDefaults.standard.synchronize()
 //        U().screen_next(viewCon : self ,id:"Randam_Location" , storyboard:storyboard!)
     }
-    func add_textbox(num:Int){
+    
+    @objc func memo_click(_ sender: CustomNSButton){
+        // process_indexについては、画面遷移先で保存する必要はない。
+        // メモ画面から戻る際に、戻りフラグをtrueにして、この画面を表示する際に、
+        // falseにして、戻ってきた際だけに、
+        UserDefaults.standard.set(sender.index, forKey: "process_index")
+        UserDefaults.standard.synchronize()
+        let next = storyboard?.instantiateController(withIdentifier: "Memo")
+        self.presentAsModalWindow(next! as! NSViewController)
+    }
+    func add_textbox(num:Int,st:String){
         var process_element = CustomNSTextField()
         now_x = start_x + INTERVAL_YOKO * Double(num)
         now_y = start_y + INTERVAL_TATE * Double(num)
         process_element.frame = CGRect(x:now_x, y:now_y, width:TB_WIDTH, height:TB_HEIGHT);
-        process_element.stringValue = ""
+        process_element.stringValue = st
         process_element.font = NSFont.systemFont(ofSize: 10)
         process_element.isEditable = true
         process_element.isBordered = true
         process_element.index = num
         m_added_text_s.append(process_element)
+        
+        // 矢印の横あたりにメモを残せるようにする。
+        let memo_button = CustomNSButton(title: "メモ", target: self, action: #selector(memo_click))
+        memo_button.frame = CGRect(x:now_x + TB_WIDTH + 10, y:now_y + TB_HEIGHT - 15, width:65.0, height:20.0);
+        memo_button.font = NSFont.systemFont(ofSize: 10)
+        memo_button.index = num
+        m_memo_button_s.append(memo_button)
         
         let up_add_button = CustomNSButton(title: "前に追加", target: self, action: #selector(bottom_add_click))
         up_add_button.frame = CGRect(x:now_x-5.0, y:now_y - 22.0, width:65.0, height:20.0);

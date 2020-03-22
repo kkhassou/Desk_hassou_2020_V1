@@ -1371,6 +1371,19 @@
             </objects>
             <point key="canvasLocation" x="74" y="1290"/>
         </scene>
+        <!--Memo Controller-->
+        <scene sceneID="MfK-Zj-oZb">
+            <objects>
+                <viewController identifier="Memo" storyboardIdentifier="Memo" id="9v4-EY-s32" customClass="MemoController" customModule="Desk_hassou_03" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" id="5QU-Cf-j9c">
+                        <rect key="frame" x="0.0" y="0.0" width="450" height="300"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </view>
+                </viewController>
+                <customObject id="wf6-ug-3tm" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-452" y="1507"/>
+        </scene>
         <!--Hierarchy Theme Controller-->
         <scene sceneID="CxL-bU-poO">
             <objects>
