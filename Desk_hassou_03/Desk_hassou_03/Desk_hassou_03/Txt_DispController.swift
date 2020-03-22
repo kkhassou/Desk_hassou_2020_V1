@@ -88,6 +88,20 @@ class Txt_DispController: NSViewController {
             for i in 0..<3 {
                 text_content_st = text_content_st + "\n"
             }
+        }else if from_page == "Process"{
+            let stocks = realm.objects(Process_s_DB_2.self).filter("theme == %@",m_theme)
+            // indexの順番に並べる必要がある。
+            for i in 0 ..< stocks.count{
+                for one in stocks{
+                    if i == one.index{
+                        text_content_st = text_content_st + "[" + String(i + 1) + "]\n" + one.content + "\nコメント\n"
+                        text_content_st = text_content_st + one.comment + "\n↓\n"
+                    }
+                }
+            }
+            for i in 0..<3 {
+                text_content_st = text_content_st + "\n"
+            }
         }
         var text_content = NSTextField()
         text_content.stringValue = text_content_st

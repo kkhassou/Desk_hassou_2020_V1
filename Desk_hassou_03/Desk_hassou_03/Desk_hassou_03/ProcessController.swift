@@ -285,6 +285,7 @@ class ProcessController: NSViewController {
     }
     @objc func store_click(_ sender: CustomNSButton){
         store_db()
+        self.dismiss(nil)
     }
     func store_db(){
         let deleting = realm.objects(Process_s_DB_2.self).filter("theme == %@",m_theme)
@@ -310,11 +311,14 @@ class ProcessController: NSViewController {
         }
     }
     @objc func text_disp_click(_ sender: CustomNSButton){
-//        UserDefaults.standard.set(sender.st, forKey: "theme")
-//        UserDefaults.standard.synchronize()
-//        U().screen_next(viewCon : self ,id:"Randam_Location" , storyboard:storyboard!)
+        store_db()
+        self.dismiss(nil)
+        UserDefaults.standard.set("Process", forKey: "from_page")
+        UserDefaults.standard.synchronize()
+        self.dismiss(nil)
+        let next = storyboard?.instantiateController(withIdentifier: "Txt_Disp")
+        self.presentAsModalWindow(next! as! NSViewController)
     }
-    
     @objc func memo_click(_ sender: CustomNSButton){
         // process_indexについては、画面遷移先で保存する必要はない。
         // メモ画面から戻る際に、戻りフラグをtrueにして、この画面を表示する際に、
