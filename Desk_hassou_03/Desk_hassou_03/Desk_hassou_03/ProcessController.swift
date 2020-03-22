@@ -17,6 +17,7 @@ class ProcessController: NSViewController {
     var m_memo_button_s:[CustomNSButton] = []
     var m_up_add_button_s:[CustomNSButton] = []
     var m_bottom_add_button_s:[CustomNSButton] = []
+    var m_delete_button_s:[CustomNSButton] = []
     var m_yajirusi_s:[YajirusiLine] = []
     var m_x_y_Array:[Point_Store] = []
     var m_page_total = -999
@@ -47,13 +48,6 @@ class ProcessController: NSViewController {
         self.view.frame = CGRect(x:10, y:10 , width:FRAME_WIDTH, height:FRAME_HEIGT);
         
         let margin: CGFloat = 50
-         
-        viewForContent = NSView(frame:
-            NSRect(x: 0, y: 0, width: contentWidth, height: contentHeight))
-        
-        start_x = 30 //FRAME_WIDTH / 2 - TB_WIDTH
-        start_y = 30 //FRAME_HEIGT / 2 - TB_HEIGHT
-        
         m_theme = UserDefaults.standard.object(forKey: "theme") as! String
         
 //        let deleting = realm.objects(Process_s_DB_2.self).filter("theme == %@",m_theme)
@@ -70,8 +64,23 @@ class ProcessController: NSViewController {
             print("memo_content_st")
             print(memo_content_st)
         }
+        first_appear()
+        UserDefaults.standard.set(false, forKey: "from_memo")
+        UserDefaults.standard.synchronize()
+    }
+    func first_appear(){
+        
+        viewForContent = NSView(frame:
+            NSRect(x: 0, y: 0, width: contentWidth, height: contentHeight))
+        
+        start_x = 30 //FRAME_WIDTH / 2 - TB_WIDTH
+        start_y = 30 //FRAME_HEIGT / 2 - TB_HEIGHT
+        
         let db_start = realm.objects(Process_s_DB_2.self).filter("theme == %@",m_theme)
+        print("db_start")
+        print(db_start)
         if db_start.count == 0{
+            print("if db_start.count == 0{")
             add_textbox(num:total_textbox,st:"",memo_st:"")
             add_yajirusi_line(num: total_textbox)
             var count = 0
@@ -81,17 +90,14 @@ class ProcessController: NSViewController {
                 viewForContent.addSubview(m_bottom_add_button_s[count])
                 viewForContent.addSubview(m_yajirusi_s[count])
                 viewForContent.addSubview(m_memo_button_s[count])
+                viewForContent.addSubview(m_delete_button_s[count])
                 count = count + 1
             }
             add_scroll()
         }else{
             total_textbox = db_start.count - 1
-            var count = 0
+            
             for one in db_start{
-                print("one.index")
-                print(one.index)
-                print("process_index")
-                print(process_index)
                 if one.index == process_index{
                     print("L 85")
                     add_textbox(num:one.index,st:one.content,memo_st:memo_content_st)
@@ -101,18 +107,75 @@ class ProcessController: NSViewController {
                 }
                 add_yajirusi_line(num: one.index)
             }
+            var count = 0
             for one in m_added_text_s{
+                print("one.stringValue")
+                print(one.stringValue)
+                print("one.index")
+                print(one.index)
                 viewForContent.addSubview(one)
                 viewForContent.addSubview(m_up_add_button_s[count])
                 viewForContent.addSubview(m_bottom_add_button_s[count])
                 viewForContent.addSubview(m_yajirusi_s[count])
                 viewForContent.addSubview(m_memo_button_s[count])
+                viewForContent.addSubview(m_delete_button_s[count])
                 count = count + 1
             }
             add_scroll()
         }
-        UserDefaults.standard.set(false, forKey: "from_memo")
-        UserDefaults.standard.synchronize()
+    }
+    @objc func delete_click(_ sender: CustomNSButton){
+        // DBの削除と配列の削除の両方を行うべし
+        // そっかー、上書きじゃないから、オブジェクトの削除も行わなきゃいけないのね、
+        //
+        for v in view.subviews {
+            v.removeFromSuperview()
+        }
+        
+        // dbから、そのタグの分だけ削除して、一つ、前にずらして、登録、その後、
+        // 初期表示を行えばOK!
+        // 難しく考えず、現時点のテキスト配列を読み込んんで、インデックスがクリックしたインデックスは削除
+        // より上はインデックスを-1、より下はそのままで、DB保存すれば、良いだけ。
+        let deleting = realm.objects(Process_s_DB_2.self).filter("theme == %@",m_theme)
+        try! realm.write {
+            realm.delete(deleting)
+        }
+        
+        var count = 0
+        for one in m_added_text_s{
+            if one.index == sender.index {
+                print("one.index == sender.index")
+                print("one.stringValue")
+                print(one.stringValue)
+                // ここで削除するのでなく、最初に全部を削除しておいて、現状のものをDB保存すればOK
+            }else if one.index > sender.index{
+                let process_s_db = Process_s_DB_2()
+                process_s_db.theme  = m_theme
+                process_s_db.index = one.index - 1
+                process_s_db.content = one.stringValue
+                process_s_db.comment = m_memo_button_s[count].st
+                try! realm.write() {
+                    realm.add(process_s_db)
+                }
+            }else if one.index < sender.index{
+                let process_s_db = Process_s_DB_2()
+                process_s_db.theme  = m_theme
+                process_s_db.index = one.index
+                process_s_db.content = one.stringValue
+                process_s_db.comment = m_memo_button_s[count].st
+                try! realm.write() {
+                    realm.add(process_s_db)
+                }
+            }
+            count = count + 1
+        }
+        
+        m_added_text_s.removeAll()
+        m_up_add_button_s.removeAll()
+        m_bottom_add_button_s.removeAll()
+        m_memo_button_s.removeAll()
+        m_delete_button_s.removeAll()
+        first_appear()
     }
     @objc func up_add_click(_ sender: CustomNSButton){
         // sender.index より大きい数字がなければ、末尾に追加
@@ -135,6 +198,7 @@ class ProcessController: NSViewController {
                 viewForContent.addSubview(m_bottom_add_button_s[count])
                 viewForContent.addSubview(m_yajirusi_s[count])
                 viewForContent.addSubview(m_memo_button_s[count])
+                viewForContent.addSubview(m_delete_button_s[count])
                 count = count + 1
             }
         }else{
@@ -163,6 +227,7 @@ class ProcessController: NSViewController {
             m_up_add_button_s.removeAll()
             m_bottom_add_button_s.removeAll()
             m_memo_button_s.removeAll()
+            m_delete_button_s.removeAll()
             for one in temp_s{
                 // より大きいものの位置を1つ1つ位置を右にずらして追加する必要がある。
                 if one.index > sender.index{
@@ -193,6 +258,7 @@ class ProcessController: NSViewController {
                 viewForContent.addSubview(m_bottom_add_button_s[count_2])
                 viewForContent.addSubview(m_yajirusi_s[one.index])
                 viewForContent.addSubview(m_memo_button_s[count_2])
+                viewForContent.addSubview(m_delete_button_s[count_2])
                 count_2 = count_2 + 1
             }
         }
@@ -223,6 +289,7 @@ class ProcessController: NSViewController {
             m_up_add_button_s.removeAll()
             m_bottom_add_button_s.removeAll()
             m_memo_button_s.removeAll()
+            m_delete_button_s.removeAll()
             for one in temp_s{
                 // より大きいものの位置を1つ1つ位置を右にずらして追加する必要がある。
                 if one.index >= sender.index{
@@ -252,6 +319,7 @@ class ProcessController: NSViewController {
                 viewForContent.addSubview(m_bottom_add_button_s[count])
                 viewForContent.addSubview(m_yajirusi_s[one.index])
                 viewForContent.addSubview(m_memo_button_s[count])
+                viewForContent.addSubview(m_delete_button_s[count])
                 count = count + 1
             }
             add_scroll()
@@ -320,12 +388,7 @@ class ProcessController: NSViewController {
         self.presentAsModalWindow(next! as! NSViewController)
     }
     @objc func memo_click(_ sender: CustomNSButton){
-        // process_indexについては、画面遷移先で保存する必要はない。
-        // メモ画面から戻る際に、戻りフラグをtrueにして、この画面を表示する際に、
-        // falseにして、戻ってきた際だけに、
         store_db()
-        print("sender.st")
-        print(sender.st)
         UserDefaults.standard.set(sender.index, forKey: "process_index")
         UserDefaults.standard.set(sender.st, forKey: "memo_content_st")
         UserDefaults.standard.synchronize()
@@ -343,6 +406,7 @@ class ProcessController: NSViewController {
         process_element.isEditable = true
         process_element.isBordered = true
         process_element.index = num
+        process_element.tag = 999
         m_added_text_s.append(process_element)
         
         // 矢印の横あたりにメモを残せるようにする。
@@ -351,19 +415,29 @@ class ProcessController: NSViewController {
         memo_button.font = NSFont.systemFont(ofSize: 10)
         memo_button.st = memo_st
         memo_button.index = num
+        memo_button.tag = 999
         m_memo_button_s.append(memo_button)
         
         let up_add_button = CustomNSButton(title: "前に追加", target: self, action: #selector(bottom_add_click))
-        up_add_button.frame = CGRect(x:now_x-5.0, y:now_y - 22.0, width:65.0, height:20.0);
-        up_add_button.font = NSFont.systemFont(ofSize: 10)
+        up_add_button.frame = CGRect(x:now_x-10.0, y:now_y - 22.0, width:60.0, height:20.0);
+        up_add_button.font = NSFont.systemFont(ofSize: 8)
         up_add_button.index = num
+        up_add_button.tag = 999
         m_up_add_button_s.append(up_add_button)
         
         let bottom_add_button = CustomNSButton(title: "次に追加", target: self, action: #selector(up_add_click))
-        bottom_add_button.frame = CGRect(x:now_x + 60, y:now_y - 22.0, width:65.0, height:20.0);
-        bottom_add_button.font = NSFont.systemFont(ofSize: 10)
+        bottom_add_button.frame = CGRect(x:now_x + 40, y:now_y - 22.0, width:60.0, height:20.0);
+        bottom_add_button.font = NSFont.systemFont(ofSize: 8)
         bottom_add_button.index = num
+        bottom_add_button.tag = 999
         m_bottom_add_button_s.append(bottom_add_button)
+        
+        let delete_button = CustomNSButton(title: "削除", target: self, action: #selector(delete_click))
+        delete_button.frame = CGRect(x:now_x + 90, y:now_y - 22.0, width:50.0, height:20.0);
+        delete_button.font = NSFont.systemFont(ofSize: 8)
+        delete_button.index = num
+        delete_button.tag = 999
+        m_delete_button_s.append(delete_button)
     }
     func add_yajirusi_line(num:Int){
         // まず、枠の線を引こう
@@ -386,7 +460,6 @@ class YajirusiLine: NSView {
     var start_y = 30
     var INTERVAL_YOKO = 150.0
     var INTERVAL_TATE = 90.0
-    
     init(frame frameRect: NSRect,  num_: Int){//x_: Int, y_: Int) {
         super.init(frame: frameRect)
         var now_x = Double(start_x) + INTERVAL_YOKO * Double(num_)
