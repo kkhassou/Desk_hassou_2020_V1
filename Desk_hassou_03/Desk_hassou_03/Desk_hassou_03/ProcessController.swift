@@ -92,13 +92,7 @@ class ProcessController: NSViewController {
             try! realm.write {
                 realm.delete(deleting)
             }
-            print("----------")
             for one in m_added_text_s{
-                print("^^^^^^^^^")
-                print("one.index")
-                print(one.index)
-                print("one.stringValue")
-                print(one.stringValue)
                 let process_s_db = Process_s_DB()
                 process_s_db.theme  = m_theme
                 process_s_db.index = one.index
@@ -106,9 +100,7 @@ class ProcessController: NSViewController {
                 try! realm.write() {
                     realm.add(process_s_db)
                 }
-                print("^^^^^^^^^")
             }
-            print("----------")
             var temp_s:[CustomNSTextField] = []
             temp_s.append(contentsOf: m_added_text_s)
             m_added_text_s.removeAll()
@@ -116,35 +108,24 @@ class ProcessController: NSViewController {
             m_bottom_add_button_s.removeAll()
             for one in temp_s{
                 // より大きいものの位置を1つ1つ位置を右にずらして追加する必要がある。
-                if one.index >= sender.index{
+                if one.index > sender.index{
                     add_textbox(num:one.index + 1)
-                }else if one.index < sender.index{
+                }else if one.index <= sender.index{
                     add_textbox(num:one.index)
                 }
             }
-            add_textbox(num:sender.index)
+            add_textbox(num:sender.index + 1)
             var count = 0
-//            print("----------")
             // 再度、構築し直さなければならない
             
             for one in m_added_text_s{
-//                print("one.index")
-//                print(one.index)
-                if one.index > sender.index{
+                if one.index > sender.index + 1{
                     let serched = realm.objects(Process_s_DB.self).filter("theme == %@",m_theme).filter("index == %@",(one.index - 1)).last
-//                    print("^^^^^^^^^")
-//                    print("serched!.content mae")
-//                    print(serched!.content)
-//                    print("^^^^^^^^^")
                     one.stringValue = serched!.content
-                }else  if one.index == sender.index{
+                }else  if one.index == sender.index + 1{
                     one.stringValue = ""
                 }else{
                     let serched = realm.objects(Process_s_DB.self).filter("theme == %@",m_theme).filter("index == %@",one.index).last
-//                    print("^^^^^^^^^")
-//                    print("serched!.content ato")
-//                    print(serched!.content)
-//                    print("^^^^^^^^^")
                     one.stringValue = serched!.content
                 }
                 viewForContent.addSubview(one)
@@ -231,12 +212,23 @@ class ProcessController: NSViewController {
         
         // これは、あえて左上に固定したいので、スクロールに付与しない
         var theme_content = NSTextField()
-        theme_content.frame = CGRect(x:50, y:550, width:TB_WIDTH, height:TB_HEIGHT);
-        theme_content.stringValue = m_theme
-        theme_content.font = NSFont.systemFont(ofSize: 12)
-        theme_content.isEditable = false
-        theme_content.isBordered = false
-        self.view.addSubview(theme_content)
+        var theme_content_p = Param(st_ :m_theme,x_:50,y_:550,width_:Int(TB_WIDTH),height_:Int(TB_HEIGHT),fontSize_:12)
+        U().text_generate(param_:theme_content_p,nsText_:theme_content,view_:self.view,input_flag_:false,ajust_flag_:false,border_flag_:true)
+        // これは、あえて左上に固定したいので、スクロールに付与しない
+        var store_btn_p = Param(st_ :"保存",x_:200,y_:550,width_:100,height_:20,fontSize_:13)
+        U().button_generate(param_:store_btn_p,viewCon_:self,view_:self.view,action: #selector(store_click))
+        var text_disp_btn_p = Param(st_ :"テキスト表示",x_:320,y_:550,width_:150,height_:20,fontSize_:13)
+        U().button_generate(param_:text_disp_btn_p,viewCon_:self,view_:self.view,action: #selector(text_disp_click))
+    }
+    @objc func store_click(_ sender: CustomNSButton){
+//        UserDefaults.standard.set(sender.st, forKey: "theme")
+//        UserDefaults.standard.synchronize()
+//        U().screen_next(viewCon : self ,id:"Randam_Location" , storyboard:storyboard!)
+    }
+    @objc func text_disp_click(_ sender: CustomNSButton){
+//        UserDefaults.standard.set(sender.st, forKey: "theme")
+//        UserDefaults.standard.synchronize()
+//        U().screen_next(viewCon : self ,id:"Randam_Location" , storyboard:storyboard!)
     }
     func add_textbox(num:Int){
         var process_element = CustomNSTextField()
@@ -249,14 +241,12 @@ class ProcessController: NSViewController {
         process_element.isBordered = true
         process_element.index = num
         m_added_text_s.append(process_element)
-//        viewForContent.addSubview(process_element)
         
         let up_add_button = CustomNSButton(title: "前に追加", target: self, action: #selector(bottom_add_click))
         up_add_button.frame = CGRect(x:now_x-5.0, y:now_y - 22.0, width:65.0, height:20.0);
         up_add_button.font = NSFont.systemFont(ofSize: 10)
         up_add_button.index = num
         m_up_add_button_s.append(up_add_button)
-//        viewForContent.addSubview(up_add_button)
         
         let bottom_add_button = CustomNSButton(title: "次に追加", target: self, action: #selector(up_add_click))
         bottom_add_button.frame = CGRect(x:now_x + 60, y:now_y - 22.0, width:65.0, height:20.0);
