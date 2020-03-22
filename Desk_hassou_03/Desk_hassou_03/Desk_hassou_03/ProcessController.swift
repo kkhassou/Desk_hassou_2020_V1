@@ -24,6 +24,8 @@ class ProcessController: NSViewController {
     var m_tag_count = 10000
     let TB_WIDTH = 125.0
     let TB_HEIGHT = 50.0
+    
+    
     var total_textbox = 0
     var INTERVAL_YOKO = 150.0
     var INTERVAL_TATE = 90.0
@@ -36,12 +38,14 @@ class ProcessController: NSViewController {
     var viewForContent = NSView()
     let contentWidth: CGFloat = 2400
     let contentHeight: CGFloat = 1300
+    var process_index = -999
+    var memo_content_st = ""
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.wantsLayer = true
         self.view.layer?.backgroundColor = NSColor.white.cgColor
         self.view.frame = CGRect(x:10, y:10 , width:FRAME_WIDTH, height:FRAME_HEIGT);
-
+        
         let margin: CGFloat = 50
          
         viewForContent = NSView(frame:
@@ -51,10 +55,24 @@ class ProcessController: NSViewController {
         start_y = 30 //FRAME_HEIGT / 2 - TB_HEIGHT
         
         m_theme = UserDefaults.standard.object(forKey: "theme") as! String
-        var from_memo_flag = UserDefaults.standard.object(forKey: "from_memo") as! String
+        
+//        let deleting = realm.objects(Process_s_DB_2.self).filter("theme == %@",m_theme)
+//        try! realm.write {
+//            realm.delete(deleting)
+//        }
+//        exit(0)
+        
+        var from_memo_flag = UserDefaults.standard.object(forKey: "from_memo") as! Bool
+        if from_memo_flag == true{
+            // メモの内容とインデックスを受け取る
+            process_index = UserDefaults.standard.object(forKey: "process_index") as! Int
+            memo_content_st = UserDefaults.standard.object(forKey: "memo_content_st") as! String
+            print("memo_content_st")
+            print(memo_content_st)
+        }
         let db_start = realm.objects(Process_s_DB_2.self).filter("theme == %@",m_theme)
         if db_start.count == 0{
-            add_textbox(num:total_textbox,st:"")
+            add_textbox(num:total_textbox,st:"",memo_st:"")
             add_yajirusi_line(num: total_textbox)
             var count = 0
             for one in m_added_text_s{
@@ -70,7 +88,17 @@ class ProcessController: NSViewController {
             total_textbox = db_start.count - 1
             var count = 0
             for one in db_start{
-                add_textbox(num:one.index,st:one.content)
+                print("one.index")
+                print(one.index)
+                print("process_index")
+                print(process_index)
+                if one.index == process_index{
+                    print("L 85")
+                    add_textbox(num:one.index,st:one.content,memo_st:memo_content_st)
+                }else{
+                    print("L 88")
+                    add_textbox(num:one.index,st:one.content,memo_st:one.comment)
+                }
                 add_yajirusi_line(num: one.index)
             }
             for one in m_added_text_s{
@@ -96,7 +124,7 @@ class ProcessController: NSViewController {
         }
         if big_exist == false{
             total_textbox = total_textbox + 1
-            add_textbox(num:total_textbox,st:"")
+            add_textbox(num:total_textbox,st:"",memo_st:"")
             add_yajirusi_line(num: total_textbox)
             var count = 0
             for one in m_added_text_s{
@@ -115,51 +143,58 @@ class ProcessController: NSViewController {
             try! realm.write {
                 realm.delete(deleting)
             }
+            var count_1 = 0
             for one in m_added_text_s{
                 let process_s_db = Process_s_DB_2()
                 process_s_db.theme  = m_theme
                 process_s_db.index = one.index
                 process_s_db.content = one.stringValue
+                print("m_memo_button_s[count_1].st")
+                print(m_memo_button_s[count_1].st)
+                process_s_db.comment = m_memo_button_s[count_1].st
                 try! realm.write() {
                     realm.add(process_s_db)
                 }
+                count_1 = count_1 + 1
             }
             var temp_s:[CustomNSTextField] = []
             temp_s.append(contentsOf: m_added_text_s)
             m_added_text_s.removeAll()
             m_up_add_button_s.removeAll()
             m_bottom_add_button_s.removeAll()
+            m_memo_button_s.removeAll()
             for one in temp_s{
                 // より大きいものの位置を1つ1つ位置を右にずらして追加する必要がある。
                 if one.index > sender.index{
-                    add_textbox(num:one.index + 1,st:"")
+                    add_textbox(num:one.index + 1,st:"",memo_st:"")
                 }else if one.index <= sender.index{
-                    add_textbox(num:one.index,st:"")
+                    add_textbox(num:one.index,st:"",memo_st:"")
                 }
             }
-            add_textbox(num:sender.index + 1,st:"")
-            var count = 0
+            add_textbox(num:sender.index + 1,st:"",memo_st:"")
+            var count_2 = 0
             // 再度、構築し直さなければならない
             
             for one in m_added_text_s{
                 if one.index > sender.index + 1{
                     let serched = realm.objects(Process_s_DB_2.self).filter("theme == %@",m_theme).filter("index == %@",(one.index - 1)).last
                     one.stringValue = serched!.content
+                    m_memo_button_s[count_2].st = serched!.content
                 }else  if one.index == sender.index + 1{
                     one.stringValue = ""
                 }else{
                     let serched = realm.objects(Process_s_DB_2.self).filter("theme == %@",m_theme).filter("index == %@",one.index).last
                     one.stringValue = serched!.content
+                    m_memo_button_s[count_2].st = serched!.content
                 }
-                viewForContent.addSubview(one)
-                viewForContent.addSubview(m_up_add_button_s[count])
-                viewForContent.addSubview(m_bottom_add_button_s[count])
                 add_yajirusi_line(num: one.index)
+                viewForContent.addSubview(one)
+                viewForContent.addSubview(m_up_add_button_s[count_2])
+                viewForContent.addSubview(m_bottom_add_button_s[count_2])
                 viewForContent.addSubview(m_yajirusi_s[one.index])
-                count = count + 1
+                viewForContent.addSubview(m_memo_button_s[count_2])
+                count_2 = count_2 + 1
             }
-//            print("----------")
-
         }
         add_scroll()
     }
@@ -170,50 +205,55 @@ class ProcessController: NSViewController {
                 realm.delete(deleting)
             }
             print("----------")
+            var count_1 = 0
             for one in m_added_text_s{
                 let process_s_db = Process_s_DB_2()
                 process_s_db.theme  = m_theme
                 process_s_db.index = one.index
                 process_s_db.content = one.stringValue
+                process_s_db.comment = m_memo_button_s[count_1].st
                 try! realm.write() {
                     realm.add(process_s_db)
                 }
+                count_1 = count_1 + 1
             }
             var temp_s:[CustomNSTextField] = []
             temp_s.append(contentsOf: m_added_text_s)
             m_added_text_s.removeAll()
             m_up_add_button_s.removeAll()
             m_bottom_add_button_s.removeAll()
+            m_memo_button_s.removeAll()
             for one in temp_s{
                 // より大きいものの位置を1つ1つ位置を右にずらして追加する必要がある。
                 if one.index >= sender.index{
-                    add_textbox(num:one.index + 1,st:"")
+                    add_textbox(num:one.index + 1,st:"",memo_st:"")
                 }else if one.index < sender.index{
-                    add_textbox(num:one.index,st:"")
+                    add_textbox(num:one.index,st:"",memo_st:"")
                 }
             }
-            add_textbox(num:sender.index,st:"")
+            add_textbox(num:sender.index,st:"",memo_st:"")
             var count = 0
             
             for one in m_added_text_s{
                 if one.index > sender.index{
                     let serched = realm.objects(Process_s_DB_2.self).filter("theme == %@",m_theme).filter("index == %@",(one.index - 1)).last
                     one.stringValue = serched!.content
+                    m_memo_button_s[count].st = serched!.comment
                 }else  if one.index == sender.index{
                     one.stringValue = ""
                 }else{
                     let serched = realm.objects(Process_s_DB_2.self).filter("theme == %@",m_theme).filter("index == %@",one.index).last
                     one.stringValue = serched!.content
+                    m_memo_button_s[count].st = serched!.comment
                 }
+                add_yajirusi_line(num: one.index)
                 viewForContent.addSubview(one)
                 viewForContent.addSubview(m_up_add_button_s[count])
                 viewForContent.addSubview(m_bottom_add_button_s[count])
-                add_yajirusi_line(num: one.index)
                 viewForContent.addSubview(m_yajirusi_s[one.index])
+                viewForContent.addSubview(m_memo_button_s[count])
                 count = count + 1
             }
-
-            
             add_scroll()
     }
     func add_scroll(){
@@ -244,21 +284,29 @@ class ProcessController: NSViewController {
         U().button_generate(param_:text_disp_btn_p,viewCon_:self,view_:self.view,action: #selector(text_disp_click))
     }
     @objc func store_click(_ sender: CustomNSButton){
-//        UserDefaults.standard.set(sender.st, forKey: "theme")
-//        UserDefaults.standard.synchronize()
-//        U().screen_next(viewCon : self ,id:"Randam_Location" , storyboard:storyboard!)
+        store_db()
+    }
+    func store_db(){
         let deleting = realm.objects(Process_s_DB_2.self).filter("theme == %@",m_theme)
         try! realm.write {
             realm.delete(deleting)
         }
+        var count = 0
         for one in m_added_text_s{
             var process_db = Process_s_DB_2()
             process_db.theme = m_theme
             process_db.content = one.stringValue
+            // これでいいのかな？
+            print("one.index")
+            print(one.index)
+            print("m_memo_button_s[count].st")
+            print(m_memo_button_s[count].st)
+            process_db.comment = m_memo_button_s[count].st
             process_db.index = one.index
             try! realm.write {
                 realm.add(process_db)
             }
+            count = count + 1
         }
     }
     @objc func text_disp_click(_ sender: CustomNSButton){
@@ -271,12 +319,17 @@ class ProcessController: NSViewController {
         // process_indexについては、画面遷移先で保存する必要はない。
         // メモ画面から戻る際に、戻りフラグをtrueにして、この画面を表示する際に、
         // falseにして、戻ってきた際だけに、
+        store_db()
+        print("sender.st")
+        print(sender.st)
         UserDefaults.standard.set(sender.index, forKey: "process_index")
+        UserDefaults.standard.set(sender.st, forKey: "memo_content_st")
         UserDefaults.standard.synchronize()
+        self.dismiss(nil)
         let next = storyboard?.instantiateController(withIdentifier: "Memo")
         self.presentAsModalWindow(next! as! NSViewController)
     }
-    func add_textbox(num:Int,st:String){
+    func add_textbox(num:Int,st:String,memo_st:String){
         var process_element = CustomNSTextField()
         now_x = start_x + INTERVAL_YOKO * Double(num)
         now_y = start_y + INTERVAL_TATE * Double(num)
@@ -292,6 +345,7 @@ class ProcessController: NSViewController {
         let memo_button = CustomNSButton(title: "メモ", target: self, action: #selector(memo_click))
         memo_button.frame = CGRect(x:now_x + TB_WIDTH + 10, y:now_y + TB_HEIGHT - 15, width:65.0, height:20.0);
         memo_button.font = NSFont.systemFont(ofSize: 10)
+        memo_button.st = memo_st
         memo_button.index = num
         m_memo_button_s.append(memo_button)
         
