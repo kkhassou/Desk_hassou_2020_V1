@@ -12,11 +12,11 @@ import RealmSwift
 
 class View_2_Controller: NSViewController, NSTableViewDelegate, NSTableViewDataSource{
     
+    var m_db_type = ""
     let realm = try! Realm()
     var unique_stocks:[String] = []
     
     var select_stock = ""
-    
     @IBOutlet weak var tableview: NSTableView!
     
     override func viewDidLoad() {
@@ -52,7 +52,9 @@ class View_2_Controller: NSViewController, NSTableViewDelegate, NSTableViewDataS
         let stocks = realm.objects(Idea_Stock.self)
         var temp :[String] = []
         for one in stocks{
-            temp.append(one.theme)
+            if one.theme != "" {
+                temp.append(one.theme)
+            }
         }
         let orderedSet = NSOrderedSet(array: temp)
         unique_stocks = orderedSet.array as! [String]
@@ -68,21 +70,24 @@ class View_2_Controller: NSViewController, NSTableViewDelegate, NSTableViewDataS
     @objc func onItemClicked() {
         if tableview.clickedRow > -1{
             select_stock = unique_stocks[tableview.clickedRow]
+        }else{
+            select_stock = ""
         }
     }
     @objc func randam_area_s(){
         if select_stock != ""{
             UserDefaults.standard.set(select_stock, forKey: "theme")
-//            UserDefaults.standard.set("View_2_hierarchy", forKey: "from_page")
             UserDefaults.standard.synchronize()
             self.dismiss(nil)
             let next = storyboard?.instantiateController(withIdentifier: "Randam_Area_S")
             self.presentAsModalWindow(next! as! NSViewController)
         }else{
-            let alert = NSAlert()
-            alert.messageText = "テーマを選択してください"
-            alert.addButton(withTitle: "OK")
-            let response = alert.runModal()
+            m_db_type = "Randam_Area_S_DB"
+            new_theme_create()
+//            let alert = NSAlert()
+//            alert.messageText = "テーマを選択してください"
+//            alert.addButton(withTitle: "OK")
+//            let response = alert.runModal()
         }
     }
     @objc func process(){
@@ -237,6 +242,65 @@ class View_2_Controller: NSViewController, NSTableViewDelegate, NSTableViewDataS
             alert.messageText = "テーマを選択してください"
             alert.addButton(withTitle: "OK")
             let response = alert.runModal()
+        }
+    }
+    func new_theme_create(){
+        let alert = NSAlert()
+        alert.messageText = "新規テーマで作成"
+        alert.addButton(withTitle: "OK")
+        alert.addButton(withTitle: "キャンセル")
+        let new_theme_input = NSTextField(frame: NSRect(x: 0, y: 80, width: 500, height: 24))
+        let stackViewer = NSStackView(frame: NSRect(x: 0, y: 0, width: 500, height: 150))
+        stackViewer.addSubview(new_theme_input)
+        alert.accessoryView = stackViewer
+
+        let response = alert.runModal()
+        switch response {
+        case .alertFirstButtonReturn:
+            if new_theme_input.stringValue != ""{
+                
+                var exist_count = 0
+                if m_db_type == "Randam_Area_S_DB"{
+                    var exitstIt = realm.objects(Randam_Area_S_DB.self).filter("theme == %@",new_theme_input.stringValue)
+                    exist_count = exitstIt.count
+                }
+                if exist_count == 0{
+
+                    if m_db_type == "Randam_Area_S_DB"{
+                        let new_Db = Randam_Area_S_DB()
+                        new_Db.theme  = new_theme_input.stringValue
+                        try! realm.write() {
+                            realm.add(new_Db)
+                        }
+                    }
+                    let idea_stock = Idea_Stock()
+                    idea_stock.theme = new_theme_input.stringValue
+                    try! realm.write() {
+                        realm.add(idea_stock)
+                    }
+                    select_stock = new_theme_input.stringValue
+                    UserDefaults.standard.set(select_stock, forKey: "theme")
+                    UserDefaults.standard.synchronize()
+                    self.dismiss(nil)
+                    let next = storyboard?.instantiateController(withIdentifier: "Randam_Area_S")
+                    self.presentAsModalWindow(next! as! NSViewController)
+                }else{
+                    let alert = NSAlert()
+                    alert.messageText = "重複したアイデアは登録出来ません。"
+                    let response = alert.runModal()
+                }
+            }else{
+                let alert = NSAlert()
+                alert.messageText = "テーマを入力してください。。"
+                alert.addButton(withTitle: "OK")
+                let response = alert.runModal()
+            }
+
+            break
+        case .alertSecondButtonReturn:
+            break
+        default:
+            break
         }
     }
 }
