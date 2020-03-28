@@ -16,6 +16,9 @@ class Txt_DispController: NSViewController {
     var unique_group:[String] = []
     var stocs_array:[Grouped_Stock] = []
     var text_content_st = ""
+    var m_hint_content = NSTextField()
+    var m_category_content = NSTextField()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.wantsLayer = true
@@ -102,13 +105,53 @@ class Txt_DispController: NSViewController {
             for i in 0..<3 {
                 text_content_st = text_content_st + "\n"
             }
+        }else if from_page == "Combine_Random"{
+            for i in 0..<300{
+                text_content_st = text_content_st + "\n"
+            }
         }
-        var text_content = NSTextField()
-        text_content.stringValue = text_content_st
-        text_content.frame = CGRect(x:10, y:10 , width:1200, height:650);
-        text_content.font = NSFont.systemFont(ofSize: 9)
-        scrollView.addSubview(text_content)
-        self.view.addSubview(scrollView)
+        
+        if from_page == "Combine_Random"{
+            var category_titel = NSTextField()
+            category_titel.stringValue = "ヒントのカテゴリ"
+            category_titel.frame = CGRect(x:10, y:10 , width:1200, height:25);
+            category_titel.font = NSFont.systemFont(ofSize: 15)
+            category_titel.isBordered = false
+            category_titel.isSelectable = false
+            scrollView.addSubview(category_titel)
+
+            m_category_content.stringValue = ""
+            m_category_content.frame = CGRect(x:10, y:45 , width:1200, height:25);
+            m_category_content.font = NSFont.systemFont(ofSize: 15)
+            scrollView.addSubview(m_category_content)
+            var hint_titel = NSTextField()
+            hint_titel.stringValue = "ヒント(１行が1つのヒントとなります。）"
+            hint_titel.frame = CGRect(x:10, y:80 , width:300, height:25);
+            hint_titel.font = NSFont.systemFont(ofSize: 15)
+            hint_titel.isBordered = false
+            hint_titel.isSelectable = false
+            scrollView.addSubview(hint_titel)
+            
+            m_hint_content.stringValue = text_content_st
+            m_hint_content.frame = CGRect(x:10, y:115 , width:1200, height:550);
+            m_hint_content.font = NSFont.systemFont(ofSize: 9)
+            scrollView.addSubview(m_hint_content)
+            
+            // ボタンもここで追加。保存のボタン。
+            var db_store_button = CustomNSButton(title: "ヒント保存", target: self, action: #selector(db_store_click))
+            db_store_button.frame = CGRect(x:310, y:80 , width:150, height:25);
+            db_store_button.font = NSFont.systemFont(ofSize: 15)
+            scrollView.addSubview(db_store_button)
+            
+            self.view.addSubview(scrollView)
+        }else{
+            var text_content = NSTextField()
+            text_content.stringValue = text_content_st
+            text_content.frame = CGRect(x:10, y:10 , width:1200, height:650);
+            text_content.font = NSFont.systemFont(ofSize: 9)
+            scrollView.addSubview(text_content)
+            self.view.addSubview(scrollView)
+        }
     }
     var idea_s:[String] = []
     func db_serch(theme_:String){
@@ -122,6 +165,23 @@ class Txt_DispController: NSViewController {
         }
         for one in idea_s{
             db_serch(theme_:one)
+        }
+    }
+    @objc func db_store_click(_ sender: CustomNSButton){
+        let str:String = m_hint_content.stringValue
+        let arr:[String] = str.components(separatedBy: "\n")
+        for one in arr{
+            if one != ""{
+                let exitstIt = realm.objects(Hint_Db.self).filter("theme == %@",m_category_content.stringValue).filter("content == %@",one)
+                    if exitstIt.count == 0{
+                    let hint_Db = Hint_Db()
+                    hint_Db.theme  = m_category_content.stringValue
+                    hint_Db.content = one
+                    try! realm.write() {
+                        realm.add(hint_Db)
+                    }
+                }
+            }
         }
     }
 }

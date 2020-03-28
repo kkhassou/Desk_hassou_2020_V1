@@ -272,10 +272,22 @@ class Combine_RandomController: NSViewController {
         randam_store_btn.font = NSFont.systemFont(ofSize: 22)
         view.self.addSubview(randam_store_btn)
         
+        var hint_put_together_btn = NSButton(title: "ヒントをまとめて保存", target: self, action: #selector(hint_put_together))
+        hint_put_together_btn.frame = CGRect(x: 400, y: 50 , width: 250, height: 50)
+        hint_put_together_btn.font = NSFont.systemFont(ofSize: 22)
+        view.self.addSubview(hint_put_together_btn)
+        
         var index_btn = NSButton(title: "蓄積した一覧を表示", target: self, action: #selector(index_click))
         index_btn.frame = CGRect(x: 650, y: 50 , width: 220, height: 50)
         index_btn.font = NSFont.systemFont(ofSize: 22)
         view.self.addSubview(index_btn)
+    }
+    @objc func hint_put_together(_ sender: NSButton) {
+        UserDefaults.standard.set("Combine_Random", forKey: "from_page")
+        UserDefaults.standard.synchronize()
+        self.dismiss(nil)
+        let next = storyboard?.instantiateController(withIdentifier: "Txt_Disp")
+        self.presentAsModalWindow(next! as! NSViewController)
     }
     @objc func index_click(_ sender: NSButton) {
         self.dismiss(nil)

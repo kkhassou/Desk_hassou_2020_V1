@@ -322,7 +322,6 @@ class Randam_Area_S_Controller: NSViewController {
     @objc func deep_dip_button_click(_ sender: CustomNSButton){
         print("sender.area_loc")
         print(sender.area_loc)
-        // まずは、追加だけでやってみよう。
         m_area_count = m_area_count + 1
         count2tate_yoko(area_count_:m_area_count)
         randam_generate(st_:"",area_count: m_area_count)
