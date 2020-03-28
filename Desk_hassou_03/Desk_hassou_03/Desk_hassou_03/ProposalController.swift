@@ -74,7 +74,12 @@ class ProposalController: NSViewController {
                     U().text_generate(param_:content_p,nsText_:content,view_:viewForContent,input_flag_:false,ajust_flag_:false,border_flag_:true)
                     m_answer_s.append(content)
                 }else{
-                    var content_p = Param(st_ :"",x_:10 + 400*x,y_: 1150 - y*115,width_:350,height_:80,fontSize_:15)
+                    var stock_answer = ""
+                    let disp = realm.objects(Proposal_Seed.self).filter("seed == %@",m_trigger_idea).filter("question == %@",titele_st[x*5+y])
+                    if disp.count != 0{
+                        stock_answer = disp[0].answer
+                    }
+                    var content_p = Param(st_ :stock_answer,x_:10 + 400*x,y_: 1150 - y*115,width_:350,height_:80,fontSize_:15)
                     U().text_generate(param_:content_p,nsText_:content,view_:viewForContent,input_flag_:true,ajust_flag_:false,border_flag_:true)
                     m_answer_s.append(content)
                 }
@@ -103,6 +108,9 @@ class ProposalController: NSViewController {
                 }
             }
         }
+//        let disp = realm.objects(Proposal_Seed.self).filter("seed == %@",m_trigger_idea)
+//        print("disp")
+//        print(disp)
     }
 }
 class MyLine2: NSView {
