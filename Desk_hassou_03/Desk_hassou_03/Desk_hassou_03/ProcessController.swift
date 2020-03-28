@@ -26,7 +26,6 @@ class ProcessController: NSViewController {
     let TB_WIDTH = 125.0
     let TB_HEIGHT = 50.0
     
-    
     var total_textbox = 0
     var INTERVAL_YOKO = 150.0
     var INTERVAL_TATE = 90.0

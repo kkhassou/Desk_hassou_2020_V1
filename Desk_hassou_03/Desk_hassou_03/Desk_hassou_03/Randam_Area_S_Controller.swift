@@ -318,6 +318,11 @@ class Randam_Area_S_Controller: NSViewController {
         self.dismiss(nil)
         // 別画面へ遷移する。
         // そこで、アイデアを企画にまとめられるようにする。
+        for one in m_added_text_s{
+            if one.tag == sender.tag {
+                UserDefaults.standard.set(m_theme + ">>" + one.stringValue, forKey: "trigger_idea")
+            }
+        }
         UserDefaults.standard.set("Randam_Area_S", forKey: "from_page")
         UserDefaults.standard.synchronize()
         let next = storyboard?.instantiateController(withIdentifier: "Proposal")

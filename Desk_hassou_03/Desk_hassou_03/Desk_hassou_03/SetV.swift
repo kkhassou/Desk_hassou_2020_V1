@@ -72,6 +72,12 @@ class group_set_color{
     var backColor:NSColor = NSColor.clear
 }
 
+class Proposal_Seed: Object{
+    @objc dynamic var seed = ""
+    @objc dynamic var question = ""
+    @objc dynamic var answer = ""
+}
+
 class Index_Collect: Object{
     @objc dynamic var theme = ""
     @objc dynamic var index = ""
