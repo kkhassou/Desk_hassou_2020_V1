@@ -270,20 +270,28 @@ class Randam_Area_S_Controller: NSViewController {
         m_added_text_s.append(random_content)
         
         let add_button = CustomNSButton(title: "追加", target: self, action: #selector(add_button_click))
-        add_button.frame = CGRect(x:ran_loc_idea_.x-5.0, y:ran_loc_idea_.y - 22.0, width:55.0, height:20.0);
+        add_button.frame = CGRect(x:ran_loc_idea_.x-15.0, y:ran_loc_idea_.y - 22.0, width:45.0, height:20.0);
         add_button.st = ran_loc_idea_.idea
         add_button.tag = m_tag_count
         add_button.area_loc = ran_loc_idea_.disp_num
+        add_button.font = NSFont.systemFont(ofSize: 8)
         viewForContent.addSubview(add_button)
         
         let deep_dip_button = CustomNSButton(title: "深掘り", target: self, action: #selector(deep_dip_button_click))
-        deep_dip_button.frame = CGRect(x:ran_loc_idea_.x + 40, y:ran_loc_idea_.y - 22.0, width:65.0, height:20.0);
+        deep_dip_button.frame = CGRect(x:ran_loc_idea_.x + 20.0, y:ran_loc_idea_.y - 22.0, width:50.0, height:20.0);
         deep_dip_button.st = ran_loc_idea_.idea
         deep_dip_button.tag = m_tag_count
         deep_dip_button.area_loc = ran_loc_idea_.disp_num
-        // ここで、クリックした時のエリアも取得できるので、後は、表示する時の座標を決める時に使えばOK
-        
+        deep_dip_button.font = NSFont.systemFont(ofSize: 8)
         viewForContent.addSubview(deep_dip_button)
+        
+        let proposal_button = CustomNSButton(title: "企画", target: self, action: #selector(proposal_button_click))
+        proposal_button.frame = CGRect(x:ran_loc_idea_.x + 65.0, y:ran_loc_idea_.y - 22.0, width:45.0, height:20.0);
+        proposal_button.st = ran_loc_idea_.idea
+        proposal_button.tag = m_tag_count
+        proposal_button.area_loc = ran_loc_idea_.disp_num
+        proposal_button.font = NSFont.systemFont(ofSize: 8)
+        viewForContent.addSubview(proposal_button)
     }
     func store_db(){
         let deleting = realm.objects(Randam_Area_S_DB.self).filter("start_theme == %@",m_theme)
@@ -304,6 +312,16 @@ class Randam_Area_S_Controller: NSViewController {
                 realm.add(randam_area_s_db)
             }
         }
+    }
+    @objc func proposal_button_click(_ sender: NSButton){
+        store_db()
+        self.dismiss(nil)
+        // 別画面へ遷移する。
+        // そこで、アイデアを企画にまとめられるようにする。
+        UserDefaults.standard.set("Randam_Area_S", forKey: "from_page")
+        UserDefaults.standard.synchronize()
+        let next = storyboard?.instantiateController(withIdentifier: "Proposal")
+        self.presentAsModalWindow(next! as! NSViewController)
     }
     @objc func store_click(_ sender: NSButton){
         store_db()

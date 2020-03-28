@@ -58,6 +58,19 @@
             </objects>
             <point key="canvasLocation" x="8" y="-246"/>
         </scene>
+        <!--Proposal Controller-->
+        <scene sceneID="6KS-jc-0es">
+            <objects>
+                <viewController identifier="Proposal" storyboardIdentifier="Proposal" id="Weq-T9-v6j" customClass="ProposalController" customModule="Desk_hassou_03" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" id="sOM-6R-VQP">
+                        <rect key="frame" x="0.0" y="0.0" width="450" height="300"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </view>
+                </viewController>
+                <customObject id="aPV-0o-f9j" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-231" y="-53"/>
+        </scene>
         <!--View0 Controller-->
         <scene sceneID="Qv2-tC-dWb">
             <objects>
