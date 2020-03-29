@@ -25,6 +25,9 @@ class View_0_Controller: NSViewController, NSComboBoxDataSource{
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.view.frame = CGRect(x:10, y:10 , width:1200, height:675);
+        self.view.wantsLayer = true
+        self.view.layer?.backgroundColor = NSColor.white.cgColor
         if false{
 //            let deleting = realm.objects(Random_Loc_Idea.self)
 //            try! realm.write {
@@ -69,12 +72,12 @@ class View_0_Controller: NSViewController, NSComboBoxDataSource{
         self.view.wantsLayer = true
         self.view.layer?.backgroundColor = NSColor.white.cgColor
         
-        var category_title_p = Param(st_ :"ランダムヒントカテゴリ",x_:50,y_:250,width_:150,height_:20,fontSize_:20)
-    U().text_generate(param_:category_title_p,nsText_:category_title,view_:self.view,input_flag_:false,ajust_flag_:false,border_flag_:false)
+//        var category_title_p = Param(st_ :"ランダムヒントカテゴリ",x_:50,y_:600,width_:150,height_:20,fontSize_:20)
+//    U().text_generate(param_:category_title_p,nsText_:category_title,view_:self.view,input_flag_:false,ajust_flag_:false,border_flag_:false)
         
         comboBox.usesDataSource = true
         comboBox.dataSource = self
-        comboBox.frame = CGRect(x: 50, y: 150 , width: 250, height: 50)
+        comboBox.frame = CGRect(x: 50, y: 600 , width: 250, height: 50)
         comboBox.isEditable = false
         
         let stocks = realm.objects(Hint_Db.self)
@@ -92,14 +95,24 @@ class View_0_Controller: NSViewController, NSComboBoxDataSource{
         comboBox.addItems(withObjectValues: self.dataArray)
         self.view.addSubview(comboBox)
         
-        var randam_brest_p = Param(st_ :"ランダム ブレスト",x_:50,y_:50,width_:250,height_:50,fontSize_:22)
+        var randam_brest_p = Param(st_ :"ランダム ブレスト",x_:50,y_:550,width_:250,height_:50,fontSize_:22)
         U().button_generate(param_:randam_brest_p,viewCon_:self,view_:self.view,action: #selector(randam_brest_click))
         
-        var randam_9x9_p = Param(st_ :"9x9 ブレスト",x_:50,y_:100,width_:250,height_:50,fontSize_:22)
-        U().button_generate(param_:randam_9x9_p,viewCon_:self,view_:self.view,action: #selector(nine_x_nine_brest_click))
-                
-        var combine_random_p = Param(st_ :"ランダム組み合わせ",x_:50,y_:0,width_:250,height_:50,fontSize_:22)
+        var combine_random_p = Param(st_ :"ランダム組み合わせ",x_:50,y_:500,width_:250,height_:50,fontSize_:22)
         U().button_generate(param_:combine_random_p,viewCon_:self,view_:self.view,action: #selector(combine_random_click))
+        
+        var randam_9x9_p = Param(st_ :"9x9 ブレスト",x_:50,y_:450,width_:250,height_:50,fontSize_:22)
+        U().button_generate(param_:randam_9x9_p,viewCon_:self,view_:self.view,action: #selector(nine_x_nine_brest_click))
+        
+        var proposal_list_p = Param(st_ :"企画一覧",x_:50,y_:400,width_:250,height_:50,fontSize_:22)
+        U().button_generate(param_:proposal_list_p,viewCon_:self,view_:self.view,action: #selector(proposal_list_click))
+    }
+    @objc func proposal_list_click(_ sender: NSButton) {
+        UserDefaults.standard.set("Proposal_List", forKey: "to_page")
+        UserDefaults.standard.synchronize()
+        let next = storyboard?.instantiateController(withIdentifier: "List")
+        self.presentAsModalWindow(next! as! NSViewController)
+        self.dismiss(nil)
     }
     @objc func randam_brest_click(_ sender: NSButton) {
         UserDefaults.standard.set(mHintCategory, forKey: "mHintCategory")
