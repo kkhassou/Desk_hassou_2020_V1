@@ -55,7 +55,7 @@ class EnlergeController: NSViewController {
         view.self.addSubview(theme_change_btn)
 
         theme_select_btn = NSButton(title: "テーマ選択", target: self, action: #selector(theme_select_click))
-        theme_select_btn.frame = CGRect(x: 300, y: 600 , width: 150, height: 50)
+        theme_select_btn.frame = CGRect(x: 290, y: 600 , width: 150, height: 50)
         theme_select_btn.font = NSFont.systemFont(ofSize: 22)
         view.self.addSubview(theme_select_btn)
         
@@ -67,7 +67,7 @@ class EnlergeController: NSViewController {
         theme_title.backgroundColor = NSColor.white
         self.view.addSubview(theme_title)
         
-        theme_content.frame = CGRect(x:50, y:550 , width:400, height:50);
+        theme_content.frame = CGRect(x:20, y:550 , width:400, height:50);
         theme_content.stringValue = mtheme
         theme_content.font = NSFont.systemFont(ofSize: CGFloat(20))
         theme_content.isEditable = false
@@ -86,7 +86,7 @@ class EnlergeController: NSViewController {
         
         random_disp(tag: "IDEA")
         
-        hint_title.frame = CGRect(x:20, y:370 , width:100, height:30);
+        hint_title.frame = CGRect(x:20, y:340 , width:100, height:30);
         hint_title.stringValue = "ヒント"
         hint_title.font = NSFont.systemFont(ofSize: CGFloat(20))
         hint_title.isEditable = false
@@ -94,7 +94,7 @@ class EnlergeController: NSViewController {
         hint_title.backgroundColor = NSColor.white
         self.view.addSubview(hint_title)
         
-        idea_title.frame = CGRect(x:20, y:200 , width:200, height:30);
+        idea_title.frame = CGRect(x:20, y:180 , width:200, height:30);
         idea_title.stringValue = "更なるアイデア"
         idea_title.font = NSFont.systemFont(ofSize: CGFloat(20))
         idea_title.isEditable = false
@@ -102,7 +102,7 @@ class EnlergeController: NSViewController {
         idea_title.backgroundColor = NSColor.white
         self.view.addSubview(idea_title)
         
-        idea_input.frame = CGRect(x:50, y:70 , width:400, height:100);
+        idea_input.frame = CGRect(x:20, y:70 , width:400, height:100);
         idea_input.stringValue = ""
         idea_input.font = NSFont.systemFont(ofSize: CGFloat(20))
         idea_input.backgroundColor = NSColor.white
@@ -126,7 +126,7 @@ class EnlergeController: NSViewController {
             var word_2 = ""
             var char_count_4 = 0
             for one in hintArray[ranInt_2].content{
-                if char_count_4 % 22 == 0 && char_count_4 != 0{
+                if char_count_4 % 30 == 0 && char_count_4 != 0{
                     word_2 = word_2 + "\n" + String(one)
                 }else{
                     word_2 = word_2 + String(one)
@@ -134,11 +134,11 @@ class EnlergeController: NSViewController {
                 char_count_4 = char_count_4 + 1
             }
             hint_content.stringValue = word_2
-            hint_content.frame = CGRect(x: 50, y: 250 , width: 400, height: 100)
+            hint_content.frame = CGRect(x: 20, y: 220 , width: 430, height: 100)
             if hintArray[ranInt_2].content.count < 10{
-                hint_content.font = NSFont.systemFont(ofSize: CGFloat(50))
+                hint_content.font = NSFont.systemFont(ofSize: CGFloat(20))
             }else{
-                hint_content.font = NSFont.systemFont(ofSize: CGFloat(30))
+                hint_content.font = NSFont.systemFont(ofSize: CGFloat(15))
             }
             hint_content.isBordered = false
             hint_content.isEditable = false
@@ -153,7 +153,7 @@ class EnlergeController: NSViewController {
             var word_2 = ""
             var char_count_4 = 0
             for one in ideaArray[ranInt_2].idea{
-                if char_count_4 % 22 == 0 && char_count_4 != 0{
+                if char_count_4 % 30 == 0 && char_count_4 != 0{
                     word_2 = word_2 + "\n" + String(one)
                 }else{
                     word_2 = word_2 + String(one)
@@ -161,8 +161,8 @@ class EnlergeController: NSViewController {
                 char_count_4 = char_count_4 + 1
             }
             randam_idea_content.stringValue = word_2
-            randam_idea_content.frame = CGRect(x:50, y:430 , width:400, height:50);
-            randam_idea_content.font = NSFont.systemFont(ofSize: CGFloat(20))
+            randam_idea_content.frame = CGRect(x:20, y:370 , width:430, height:100);
+            randam_idea_content.font = NSFont.systemFont(ofSize: CGFloat(15))
             randam_idea_content.isEditable = false
             randam_idea_content.isSelectable = false
             randam_idea_content.isBordered = false
@@ -226,10 +226,9 @@ class EnlergeController: NSViewController {
     func idea_count_disp(){
         if theme_content.stringValue != ""{
             let ideaSelect = realm.objects(Idea_Stock.self).filter("theme == %@",theme_content.stringValue)
-            theme_idea_count.frame = CGRect(x: 320, y: 70 , width: 30, height: 30)
-            theme_idea_count.frame = CGRect(x:450, y:600 , width:50, height:50);
+            theme_idea_count.frame = CGRect(x:450, y:590 , width:50, height:50);
             theme_idea_count.stringValue = String(ideaSelect.count)
-            theme_idea_count.font = NSFont.systemFont(ofSize: CGFloat(30))
+            theme_idea_count.font = NSFont.systemFont(ofSize: CGFloat(20))
             theme_idea_count.isEditable = false
             theme_idea_count.isSelectable = false
             theme_idea_count.isBordered = false

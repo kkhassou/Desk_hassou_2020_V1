@@ -106,6 +106,17 @@ class View_0_Controller: NSViewController, NSComboBoxDataSource{
         
         var proposal_list_p = Param(st_ :"企画一覧",x_:50,y_:400,width_:250,height_:50,fontSize_:22)
         U().button_generate(param_:proposal_list_p,viewCon_:self,view_:self.view,action: #selector(proposal_list_click))
+        
+        var concurrent_p = Param(st_ :"複数同時入力",x_:50,y_:350,width_:250,height_:50,fontSize_:22)
+        U().button_generate(param_:concurrent_p,viewCon_:self,view_:self.view,action: #selector(concurrent_click))
+    }
+    @objc func concurrent_click(_ sender: NSButton) {
+        UserDefaults.standard.set("Concurrent_List", forKey: "to_page")
+        UserDefaults.standard.set(mHintCategory, forKey: "mHintCategory")
+        UserDefaults.standard.synchronize()
+        let next = storyboard?.instantiateController(withIdentifier: "List")
+        self.presentAsModalWindow(next! as! NSViewController)
+        self.dismiss(nil)
     }
     @objc func proposal_list_click(_ sender: NSButton) {
         UserDefaults.standard.set("Proposal_List", forKey: "to_page")

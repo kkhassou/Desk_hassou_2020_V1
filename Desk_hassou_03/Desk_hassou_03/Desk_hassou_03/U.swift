@@ -48,6 +48,7 @@ class U {
         var nsButton  = NSButton(title: param_.st, target: viewCon_, action: action)
         nsButton.frame = CGRect(x:param_.x, y:param_.y , width:param_.width, height:param_.height)
         nsButton.font = NSFont.systemFont(ofSize: CGFloat(param_.fontSize))
+        nsButton.tag = param_.tag
         view_.addSubview(nsButton)
     }
     func screen_next(viewCon : NSViewController ,id:String , storyboard:NSStoryboard){

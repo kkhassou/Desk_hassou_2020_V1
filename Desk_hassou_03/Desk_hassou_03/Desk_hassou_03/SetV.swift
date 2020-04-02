@@ -72,6 +72,13 @@ class group_set_color{
     var backColor:NSColor = NSColor.clear
 }
 
+class Concurrent_db: Object{
+    @objc dynamic var id = 0
+    @objc dynamic var theme = ""
+    @objc dynamic var frame = ""
+    @objc dynamic var idea = ""
+}
+
 class Proposal_Seed: Object{
     @objc dynamic var seed = ""
     @objc dynamic var question = ""

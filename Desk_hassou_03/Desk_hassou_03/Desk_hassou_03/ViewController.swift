@@ -41,21 +41,22 @@ class ViewController: NSViewController {
     var idea_input_p = Param(st_ :"",x_:50,y_:75,width_:400,height_:100,fontSize_:15)
     
     var idea_count = NSTextField()
-    var idea_count_p = Param(st_ :"",x_:450,y_:600,width_:50,height_:50,fontSize_:30)
+    var idea_count_p = Param(st_ :"",x_:450,y_:590,width_:50,height_:50,fontSize_:20)
     
     var theme_change_btn_p = Param(st_ :"テーマ変更",x_:140,y_:600,width_:150,height_:50,fontSize_:22)
 
-    var theme_select_btn_p = Param(st_ :"テーマ選択",x_:300,y_:600,width_:150,height_:50,fontSize_:22)
+    var theme_select_btn_p = Param(st_ :"テーマ選択",x_:290,y_:600,width_:150,height_:50,fontSize_:22)
     
     var ramdom_store_btn_p = Param(st_ :"ランダム&保存",x_:300,y_:25,width_:180,height_:50,fontSize_:22)
     
     var hintArray:[Hint_Db] = []
 
     override func viewDidLoad() {
-        m_HintCategory = UserDefaults.standard.object(forKey: "mHintCategory") as! String
+        
         super.viewDidLoad()
         
         m_theme = UserDefaults.standard.object(forKey: "theme") as! String
+        m_HintCategory = UserDefaults.standard.object(forKey: "mHintCategory") as! String
         
         self.view.frame = CGRect(x:SELF_X, y:SELF_Y , width:SELF_WIDTH, height:SELF_HEITHT);
         self.view.wantsLayer = true
