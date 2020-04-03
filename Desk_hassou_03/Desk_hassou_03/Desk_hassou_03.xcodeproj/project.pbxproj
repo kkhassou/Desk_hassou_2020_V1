@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		200706B02435CEC8003BE36D /* More_IdeaController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 200706AF2435CEC8003BE36D /* More_IdeaController.swift */; };
+		200706B42436D762003BE36D /* Deep_EnlargeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 200706B32436D762003BE36D /* Deep_EnlargeController.swift */; };
 		2025D08723FF3830003A05A7 /* Combine_RandomController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2025D08623FF3830003A05A7 /* Combine_RandomController.swift */; };
 		2025D08924010541003A05A7 /* List_Theme_Combine_RandomController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2025D08824010541003A05A7 /* List_Theme_Combine_RandomController.swift */; };
 		2025D08B24024C8A003A05A7 /* List_Content_Combine_RandomController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2025D08A24024C8A003A05A7 /* List_Content_Combine_RandomController.swift */; };
@@ -42,6 +43,7 @@
 /* Begin PBXFileReference section */
 		13F29D9B5B10B60322A308DA /* Pods-Desk_hassou_03.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Desk_hassou_03.debug.xcconfig"; path = "Target Support Files/Pods-Desk_hassou_03/Pods-Desk_hassou_03.debug.xcconfig"; sourceTree = "<group>"; };
 		200706AF2435CEC8003BE36D /* More_IdeaController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = More_IdeaController.swift; sourceTree = "<group>"; };
+		200706B32436D762003BE36D /* Deep_EnlargeController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Deep_EnlargeController.swift; sourceTree = "<group>"; };
 		2025D08623FF3830003A05A7 /* Combine_RandomController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Combine_RandomController.swift; sourceTree = "<group>"; };
 		2025D08824010541003A05A7 /* List_Theme_Combine_RandomController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = List_Theme_Combine_RandomController.swift; sourceTree = "<group>"; };
 		2025D08A24024C8A003A05A7 /* List_Content_Combine_RandomController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = List_Content_Combine_RandomController.swift; sourceTree = "<group>"; };
@@ -137,6 +139,7 @@
 				20AA6D6E24256C17006D59C3 /* ProcessController.swift */,
 				20AA6D7024272F83006D59C3 /* MemoController.swift */,
 				200706AF2435CEC8003BE36D /* More_IdeaController.swift */,
+				200706B32436D762003BE36D /* Deep_EnlargeController.swift */,
 				2040631A23BF1B1B001D0BB5 /* Assets.xcassets */,
 				2040631C23BF1B1B001D0BB5 /* Main.storyboard */,
 				2040631F23BF1B1B001D0BB5 /* Info.plist */,
@@ -294,6 +297,7 @@
 				2025D08723FF3830003A05A7 /* Combine_RandomController.swift in Sources */,
 				2025D08B24024C8A003A05A7 /* List_Content_Combine_RandomController.swift in Sources */,
 				20AA6D6B241A737B006D59C3 /* Randam_LocationController.swift in Sources */,
+				200706B42436D762003BE36D /* Deep_EnlargeController.swift in Sources */,
 				20AA6D7724301988006D59C3 /* ListController.swift in Sources */,
 				208C4E5923F8F25700A586FD /* Nine_x_NineController.swift in Sources */,
 				208C4E6123FB450100A586FD /* EnlergeController.swift in Sources */,

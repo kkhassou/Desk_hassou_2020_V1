@@ -1550,5 +1550,18 @@
             </objects>
             <point key="canvasLocation" x="8" y="2172"/>
         </scene>
+        <!--Deep Enlarge Controller-->
+        <scene sceneID="E8y-Hn-gIa">
+            <objects>
+                <viewController identifier="Deep_Enlarge" storyboardIdentifier="Deep_Enlarge" id="Zzd-3P-a5c" customClass="Deep_EnlargeController" customModule="Desk_hassou_03" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" id="CQ8-Cd-dL5">
+                        <rect key="frame" x="0.0" y="0.0" width="450" height="300"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </view>
+                </viewController>
+                <customObject id="s8S-Ug-b33" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-158" y="2482"/>
+        </scene>
     </scenes>
 </document>

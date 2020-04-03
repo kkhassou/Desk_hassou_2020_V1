@@ -19,7 +19,8 @@ class View_3_Controller: NSViewController, NSTableViewDelegate, NSTableViewDataS
     var return_btn_p = Param(st_ :"戻る",x_:25,y_:30,width_:75,height_:50,fontSize_:22)
     var more_idea_btn_p = Param(st_ :"1つ1つ再度アイデア",x_:110,y_:30,width_:250,height_:50,fontSize_:22)
     var select_btn_p = Param(st_ :"決定",x_:375,y_:30,width_:75,height_:50,fontSize_:22)
-        var delete_btn_p = Param(st_ :"削除",x_:460,y_:30,width_:75,height_:50,fontSize_:22)
+    var delete_btn_p = Param(st_ :"削除",x_:460,y_:30,width_:75,height_:50,fontSize_:22)
+    var deep_enlarge_btn_p = Param(st_ :"深層増幅",x_:550,y_:30,width_:150,height_:50,fontSize_:22)
     var nine_x_nine_btn_p = Param(st_ :"9x9へ",x_:25,y_:0,width_:100,height_:50,fontSize_:22)
     var group_btn_p = Param(st_ :"グループ分け＆コメント",x_:150,y_:0,width_:250,height_:50,fontSize_:22)
     var index_group_btn_p = Param(st_ :"一覧からグループ分け",x_:425,y_:0,width_:225,height_:50,fontSize_:22)
@@ -60,6 +61,7 @@ class View_3_Controller: NSViewController, NSTableViewDelegate, NSTableViewDataS
         
         U().button_generate(param_:delete_btn_p,viewCon_:self,view_:self.view,action: #selector(delete_db))
 
+        U().button_generate(param_:deep_enlarge_btn_p,viewCon_:self,view_:self.view,action: #selector(deep_enlarge))
     }
     
     func numberOfRows(in tableView: NSTableView) -> Int {
@@ -75,6 +77,13 @@ class View_3_Controller: NSViewController, NSTableViewDelegate, NSTableViewDataS
     
     @objc func more_idea(){
         U().screen_next(viewCon : self ,id:"More_Idea" , storyboard:storyboard!)
+    }
+    @objc func deep_enlarge(){
+        UserDefaults.standard.set("Deep_Enlarge_Pre", forKey: "to_page")
+        UserDefaults.standard.synchronize()
+        let next = storyboard?.instantiateController(withIdentifier: "List")
+        self.presentAsModalWindow(next! as! NSViewController)
+        self.dismiss(nil)
     }
     @objc func select_theme(){
         if m_select_stock != ""{
