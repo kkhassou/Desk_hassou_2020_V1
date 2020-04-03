@@ -112,6 +112,8 @@ class ConcurrentController: NSViewController {
          m_rand_hint = hintArray[ranInt_2].content
         var hint_content_p = Param(st_ :m_rand_hint,x_:20,y_:460,width_:400,height_:40,fontSize_:15)
         U().text_generate(param_:hint_content_p,nsText_:hint_content,view_:self.view,input_flag_:false,ajust_flag_:false,border_flag_:false)
+        input_1_content.stringValue = ""
+        input_2_content.stringValue = ""
 //        let test = realm.objects(Concurrent_db.self).filter("theme == %@",m_theme)
 //        print(test)
     }

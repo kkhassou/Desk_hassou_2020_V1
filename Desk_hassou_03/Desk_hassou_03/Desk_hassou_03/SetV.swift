@@ -183,6 +183,12 @@ class Idea_Stock: Object{
     @objc dynamic var hint = ""
     @objc dynamic var idea = ""
 }
+class More_Idea_Stock_1: Object{
+    @objc dynamic var theme = ""
+    @objc dynamic var hint = ""
+    @objc dynamic var idea = ""
+    @objc dynamic var more_idea_1 = ""
+}
 
 class Nine_x_Nine_Stock: Object{
     @objc dynamic var y0_x0 = ""

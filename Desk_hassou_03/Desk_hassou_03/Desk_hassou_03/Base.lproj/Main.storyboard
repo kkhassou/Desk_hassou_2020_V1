@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="15702" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="Zbi-tP-Ooe">
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="15702" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="CLq-7b-w8u">
     <dependencies>
         <deployment identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="15702"/>
@@ -69,7 +69,7 @@
                 </viewController>
                 <customObject id="aPV-0o-f9j" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-231" y="-53"/>
+            <point key="canvasLocation" x="-306" y="-36"/>
         </scene>
         <!--View0 Controller-->
         <scene sceneID="Qv2-tC-dWb">
@@ -1523,6 +1523,19 @@
                 <customObject id="fVU-5K-MEp" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="148" y="1811"/>
+        </scene>
+        <!--More Idea Controller-->
+        <scene sceneID="Qob-Qx-5FS">
+            <objects>
+                <viewController identifier="More_Idea" storyboardIdentifier="More_Idea" id="ajG-j7-3PG" customClass="More_IdeaController" customModule="Desk_hassou_03" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" id="Ofj-fR-J3c">
+                        <rect key="frame" x="0.0" y="0.0" width="450" height="300"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </view>
+                </viewController>
+                <customObject id="UQc-k6-H1d" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-365" y="2162"/>
         </scene>
         <!--Concurrent Controller-->
         <scene sceneID="vZs-8t-Vwh">

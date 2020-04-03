@@ -45,6 +45,16 @@ class ListController: NSViewController, NSTableViewDelegate, NSTableViewDataSour
             
             var new_btn_p = Param(st_ :"新規作成",x_:85,y_:30,width_:100,height_:50,fontSize_:22)
             U().button_generate(param_:new_btn_p,viewCon_:self,view_:self.view,action: #selector(new_theme))
+        }else if m_to_page == "Hint_Category_List"{
+            let stocks = realm.objects(Hint_Db.self)
+            var temp :[String] = []
+            for one in stocks{
+                temp.append(one.theme)
+            }
+            let orderedSet = NSOrderedSet(array: temp)
+            db_stocks = orderedSet.array as! [String]
+            var select_btn_p = Param(st_ :"決定",x_:10,y_:30,width_:75,height_:50,fontSize_:22)
+            U().button_generate(param_:select_btn_p,viewCon_:self,view_:self.view,action: #selector(select_theme))
         }
         tableview.action = #selector(onItemClicked)
     }
@@ -119,6 +129,12 @@ class ListController: NSViewController, NSTableViewDelegate, NSTableViewDataSour
                 UserDefaults.standard.synchronize()
                 self.dismiss(nil)
                 let next = storyboard?.instantiateController(withIdentifier: "Concurrent")
+                self.presentAsModalWindow(next! as! NSViewController)
+            }else if m_to_page == "Hint_Category_List"{
+                UserDefaults.standard.set(select_stock, forKey: "mHintCategory")
+                UserDefaults.standard.synchronize()
+                self.dismiss(nil)
+                let next = storyboard?.instantiateController(withIdentifier: "More_Idea")
                 self.presentAsModalWindow(next! as! NSViewController)
             }
         }else{
