@@ -33,8 +33,8 @@ class Deep_EnlargeController: NSViewController {
     var idea_input = NSTextField()
 
     var theme_idea_count = NSTextField()
-    var more_idea_count = NSTextField()
-    var more_idea_total_count = NSTextField()
+    var this_count = NSTextField()
+    var total_count = NSTextField()
     var next_disp_btn = NSButton()
     var return_disp_btn = NSButton()
     var randam_store_btn = NSButton()
@@ -44,12 +44,12 @@ class Deep_EnlargeController: NSViewController {
 //    var theme_select_btn = NSButton()
 
     var hintArray:[Hint_Db] = []
-    var ideaArray:[Idea_Stock] = []
+    var ideaArray:[Deep_Enlarge_Db] = []
     
     var m_theme = ""
     var m_parent_category = ""
     var m_child_category = ""
-    
+    var m_level = ""
     var this_is_theme = false
     
     override func viewDidLoad() {
@@ -107,6 +107,7 @@ class Deep_EnlargeController: NSViewController {
             idea_count_disp()
         }else{
             this_is_theme = true
+            m_level = arr[0]
         }
             
         hint_title.frame = CGRect(x:20, y:340 , width:100, height:30);
@@ -143,8 +144,8 @@ class Deep_EnlargeController: NSViewController {
         
         random_disp(tag: "HINT")
         
-        more_idea_count_disp()
-        more_idea_total_count_disp()
+        this_count_disp()
+        total_count_disp()
     }
     func random_disp(tag:String){
         if tag == "HINT"{
@@ -175,18 +176,18 @@ class Deep_EnlargeController: NSViewController {
             hint_content.isBordered = false
             view.self.addSubview(hint_content)
         }else if tag == "IDEA"{
-            idea_disp()
+            element_disp()
         }
     }
     @objc func next_disp_click(_ sender: NSButton) {
         if m_idea_num < m_idea_total_num{
             m_idea_num = m_idea_num + 1
             if this_is_theme == false{
-                idea_disp()
+                element_disp()
                 idea_count_disp()
             }
-            more_idea_count_disp()
-            more_idea_total_count_disp()
+            this_count_disp()
+            total_count_disp()
             random_disp(tag: "HINT")
         }
     }
@@ -194,42 +195,68 @@ class Deep_EnlargeController: NSViewController {
         if m_idea_num > 0{
             m_idea_num = m_idea_num - 1
             if this_is_theme == false{
-                idea_disp()
+                element_disp()
                 idea_count_disp()
             }
-            more_idea_count_disp()
-            more_idea_total_count_disp()
+            this_count_disp()
+            total_count_disp()
             random_disp(tag: "HINT")
         }
     }
-    func more_idea_count_disp(){
-        let ideaSelect = realm.objects(More_Idea_Stock_1.self).filter("theme == %@",theme_content.stringValue).filter("idea == %@",ordering_idea_content.stringValue)
-        more_idea_count.frame = CGRect(x:270, y:170 , width:100, height:35);
-        more_idea_count.stringValue = "個別:" + String(ideaSelect.count)
-        more_idea_count.font = NSFont.systemFont(ofSize: CGFloat(20))
-        more_idea_count.isEditable = false
-        more_idea_count.isSelectable = false
-        more_idea_count.isBordered = false
-        more_idea_count.backgroundColor = NSColor.white
-        self.view.addSubview(more_idea_count)
+    func this_count_disp(){
+        var serch_idea = "idea_" + m_level
+        let ideaSelect = realm.objects(More_Idea_Stock_1.self).filter("theme == %@",theme_content.stringValue).filter(serch_idea + " == %@",ordering_idea_content.stringValue)
+        this_count.frame = CGRect(x:270, y:170 , width:100, height:35);
+        this_count.stringValue = "個別:" + String(ideaSelect.count)
+        this_count.font = NSFont.systemFont(ofSize: CGFloat(20))
+        this_count.isEditable = false
+        this_count.isSelectable = false
+        this_count.isBordered = false
+        this_count.backgroundColor = NSColor.white
+        self.view.addSubview(this_count)
     }
-    func more_idea_total_count_disp(){
-        let ideaSelect = realm.objects(More_Idea_Stock_1.self).filter("theme == %@",theme_content.stringValue)
-        more_idea_total_count.frame = CGRect(x:370, y:170 , width:100, height:35);
-        more_idea_total_count.stringValue = "合計:" + String(ideaSelect.count)
-        more_idea_total_count.font = NSFont.systemFont(ofSize: CGFloat(20))
-        more_idea_total_count.isEditable = false
-        more_idea_total_count.isSelectable = false
-        more_idea_total_count.isBordered = false
-        more_idea_total_count.backgroundColor = NSColor.white
-        self.view.addSubview(more_idea_total_count)
+    func total_count_disp(){
+        let ideaSelect = realm.objects(Deep_Enlarge_Db.self).filter("theme == %@",m_theme)
+        total_count.frame = CGRect(x:370, y:170 , width:100, height:35);
+        total_count.stringValue = "合計:" + String(ideaSelect.count)
+        total_count.font = NSFont.systemFont(ofSize: CGFloat(20))
+        total_count.isEditable = false
+        total_count.isSelectable = false
+        total_count.isBordered = false
+        total_count.backgroundColor = NSColor.white
+        self.view.addSubview(total_count)
     }
-    func idea_disp(){
-        let dbSelect = realm.objects(Idea_Stock.self).filter("theme == %@",m_theme)
+    func element_disp(){
+        var serch_category = "category_" + m_level
+        let dbSelect = realm.objects(Deep_Enlarge_Db.self).filter("theme == %@",m_theme).filter(serch_category + " == %@",m_parent_category)
         ideaArray = Array(dbSelect)
+        var temp:[String] = []
+        for one in ideaArray{
+            if m_level == "1"{
+                temp.append(one.idea_1)
+            }else if m_level == "2"{
+                temp.append(one.idea_2)
+            }else if m_level == "3"{
+                temp.append(one.idea_3)
+            }else if m_level == "4"{
+                temp.append(one.idea_4)
+            }else if m_level == "5"{
+                temp.append(one.idea_5)
+            }else if m_level == "6"{
+                temp.append(one.idea_6)
+            }else if m_level == "7"{
+                temp.append(one.idea_7)
+            }else if m_level == "8"{
+                temp.append(one.idea_8)
+            }else if m_level == "9"{
+                temp.append(one.idea_9)
+            }else if m_level == "10"{
+                temp.append(one.idea_10)
+            }
+        }
         var word_2 = ""
         var char_count_4 = 0
-        for one in ideaArray[m_idea_num].idea{
+        for one in temp{
             if char_count_4 % 30 == 0 && char_count_4 != 0{
                 word_2 = word_2 + "\n" + String(one)
             }else{
@@ -255,19 +282,86 @@ class Deep_EnlargeController: NSViewController {
     }
     @objc func randam_store_click(_ sender: NSButton) {
         if idea_input.stringValue != ""{
-            let exitstIt = realm.objects(Deep_Enlarge_Db.self).filter("theme == %@",theme_content.stringValue).filter("idea == %@",ordering_idea_content.stringValue).filter("more_idea_1 == %@",idea_input.stringValue)
-            if exitstIt.count == 0{
-                let more_idea_stock_1 = More_Idea_Stock_1()
-                more_idea_stock_1.theme  = theme_content.stringValue
-                more_idea_stock_1.hint = hint_content.stringValue
-                more_idea_stock_1.idea = ordering_idea_content.stringValue
-                more_idea_stock_1.more_idea_1 = idea_input.stringValue
+            var exist_count =  -99
+            if m_level == ""{
+                var exitstIt = realm.objects(Deep_Enlarge_Db.self).filter("theme == %@",theme_content.stringValue).filter("category_1 == %@",m_child_category).filter("idea_1 == %@",idea_input.stringValue)
+                exist_count = exitstIt.count
+            }else{
+                var serch_parent_category = "category_" + m_level
+                var serch_child_category = "category_" + String(Int(m_level)! + 1)
+                var serch_parent_idea = "idea_" + m_level
+                var serch_child_idea = "idea_" + String(Int(m_level)! + 1)
+                var exitstIt = realm.objects(Deep_Enlarge_Db.self).filter("theme == %@",theme_content.stringValue).filter(serch_parent_category + " == %@",m_parent_category).filter("serch_parent_idea == %@",ordering_idea_content.stringValue).filter(serch_child_category + " == %@",m_child_category).filter(serch_child_idea + " == %@",idea_input.stringValue)
+                exist_count = exitstIt.count
+            }
+            if exist_count == 0{
+                let deep_enlarge_eb = Deep_Enlarge_Db()
+                deep_enlarge_eb.theme  = theme_content.stringValue
+                if m_level == ""{
+                    deep_enlarge_eb.category_1 = m_child_category
+                    deep_enlarge_eb.hint_1 = hint_content.stringValue
+                    deep_enlarge_eb.idea_1 = idea_input.stringValue
+                }else if m_level == "1"{
+                    deep_enlarge_eb.category_1 = m_parent_category
+                    deep_enlarge_eb.idea_1 = ordering_idea_title.stringValue
+                    deep_enlarge_eb.category_2 = m_child_category
+                    deep_enlarge_eb.hint_2 = hint_content.stringValue
+                    deep_enlarge_eb.idea_2 = idea_input.stringValue
+                }else if m_level == "2"{
+                    deep_enlarge_eb.category_2 = m_parent_category
+                    deep_enlarge_eb.idea_2 = ordering_idea_title.stringValue
+                    deep_enlarge_eb.category_3 = m_child_category
+                    deep_enlarge_eb.hint_3 = hint_content.stringValue
+                    deep_enlarge_eb.idea_3 = idea_input.stringValue
+                }else if m_level == "3"{
+                    deep_enlarge_eb.category_3 = m_parent_category
+                    deep_enlarge_eb.idea_3 = ordering_idea_title.stringValue
+                    deep_enlarge_eb.category_4 = m_child_category
+                    deep_enlarge_eb.hint_4 = hint_content.stringValue
+                    deep_enlarge_eb.idea_4 = idea_input.stringValue
+                }else if m_level == "4"{
+                    deep_enlarge_eb.category_4 = m_parent_category
+                    deep_enlarge_eb.idea_4 = ordering_idea_title.stringValue
+                    deep_enlarge_eb.category_5 = m_child_category
+                    deep_enlarge_eb.hint_5 = hint_content.stringValue
+                    deep_enlarge_eb.idea_5 = idea_input.stringValue
+                }else if m_level == "5"{
+                    deep_enlarge_eb.category_5 = m_parent_category
+                    deep_enlarge_eb.idea_5 = ordering_idea_title.stringValue
+                    deep_enlarge_eb.category_6 = m_child_category
+                    deep_enlarge_eb.hint_6 = hint_content.stringValue
+                    deep_enlarge_eb.idea_6 = idea_input.stringValue
+                }else if m_level == "6"{
+                    deep_enlarge_eb.category_6 = m_parent_category
+                    deep_enlarge_eb.idea_6 = ordering_idea_title.stringValue
+                    deep_enlarge_eb.category_7 = m_child_category
+                    deep_enlarge_eb.hint_7 = hint_content.stringValue
+                    deep_enlarge_eb.idea_7 = idea_input.stringValue
+                }else if m_level == "7"{
+                    deep_enlarge_eb.category_7 = m_parent_category
+                    deep_enlarge_eb.idea_7 = ordering_idea_title.stringValue
+                    deep_enlarge_eb.category_8 = m_child_category
+                    deep_enlarge_eb.hint_8 = hint_content.stringValue
+                    deep_enlarge_eb.idea_8 = idea_input.stringValue
+                }else if m_level == "8"{
+                    deep_enlarge_eb.category_8 = m_parent_category
+                    deep_enlarge_eb.idea_8 = ordering_idea_title.stringValue
+                    deep_enlarge_eb.category_9 = m_child_category
+                    deep_enlarge_eb.hint_9 = hint_content.stringValue
+                    deep_enlarge_eb.idea_9 = idea_input.stringValue
+                }else if m_level == "9"{
+                    deep_enlarge_eb.category_9 = m_parent_category
+                    deep_enlarge_eb.idea_9 = ordering_idea_title.stringValue
+                    deep_enlarge_eb.category_10 = m_child_category
+                    deep_enlarge_eb.hint_10 = hint_content.stringValue
+                    deep_enlarge_eb.idea_10 = idea_input.stringValue
+                }
                 try! realm.write() {
-                    realm.add(more_idea_stock_1)
+                    realm.add(deep_enlarge_eb)
                 }
                 random_disp(tag: "HINT")
-                more_idea_count_disp()
-                more_idea_total_count_disp()
+                this_count_disp()
+                total_count_disp()
                 idea_input.stringValue = ""
             }else{
                 let alert = NSAlert()
@@ -279,20 +373,18 @@ class Deep_EnlargeController: NSViewController {
             random_disp(tag: "HINT")
         }
     }
-
     func idea_count_disp(){
-        if theme_content.stringValue != ""{
-            let ideaSelect = realm.objects(Deep_Enlarge_Db.self).filter("theme == %@",m_theme)
-            theme_idea_count.frame = CGRect(x:220, y:468 , width:100, height:50);
-            m_idea_total_num = ideaSelect.count
-            theme_idea_count.stringValue = String(m_idea_num + 1) + " / " + String(ideaSelect.count)
-            theme_idea_count.font = NSFont.systemFont(ofSize: CGFloat(20))
-            theme_idea_count.isEditable = false
-            theme_idea_count.isSelectable = false
-            theme_idea_count.isBordered = false
-            theme_idea_count.backgroundColor = NSColor.white
-            self.view.addSubview(theme_idea_count)
-        }
+        var serch_category = "category_" + m_level
+        let ideaSelect = realm.objects(Deep_Enlarge_Db.self).filter("theme == %@",m_theme).filter(serch_category + " == %@",m_parent_category)
+        theme_idea_count.frame = CGRect(x:220, y:468 , width:100, height:50);
+        m_idea_total_num = ideaSelect.count
+        theme_idea_count.stringValue = String(m_idea_num + 1) + " / " + String(ideaSelect.count)
+        theme_idea_count.font = NSFont.systemFont(ofSize: CGFloat(20))
+        theme_idea_count.isEditable = false
+        theme_idea_count.isSelectable = false
+        theme_idea_count.isBordered = false
+        theme_idea_count.backgroundColor = NSColor.white
+        self.view.addSubview(theme_idea_count)
     }
 }
 

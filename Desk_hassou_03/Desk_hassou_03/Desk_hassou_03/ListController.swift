@@ -64,16 +64,15 @@ class ListController: NSViewController, NSTableViewDelegate, NSTableViewDataSour
             var temp :[String] = []
             temp.append("[THEME]:" + m_theme)
             for one in stocks{
-                temp.append(one.category_1)
-                temp.append(one.category_2)
-                temp.append(one.category_3)
-                temp.append(one.category_4)
-                temp.append(one.category_5)
-                temp.append(one.category_6)
-                temp.append(one.category_7)
-                temp.append(one.category_8)
-                temp.append(one.category_9)
-                temp.append(one.category_10)
+                temp.append("1:" + one.category_1)
+                temp.append("2:" + one.category_2)
+                temp.append("3:" + one.category_3)
+                temp.append("4:" + one.category_4)
+                temp.append("5:" + one.category_5)
+                temp.append("6:" + one.category_6)
+                temp.append("7:" + one.category_7)
+                temp.append("8:" + one.category_8)
+                temp.append("9:" + one.category_9)
             }
             var temp_2 :[String] = []
             for one in temp{
@@ -97,7 +96,6 @@ class ListController: NSViewController, NSTableViewDelegate, NSTableViewDataSour
             
             var select_btn_p = Param(st_ :"決定",x_:600,y_:30,width_:75,height_:20,fontSize_:22)
             U().button_generate(param_:select_btn_p,viewCon_:self,view_:self.view,action: #selector(select_theme))
-            
         }
         
         tableview.action = #selector(onItemClicked)
