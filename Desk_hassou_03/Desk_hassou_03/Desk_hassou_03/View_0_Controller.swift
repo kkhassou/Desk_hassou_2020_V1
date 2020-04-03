@@ -28,6 +28,13 @@ class View_0_Controller: NSViewController, NSComboBoxDataSource{
         self.view.frame = CGRect(x:10, y:10 , width:1200, height:675);
         self.view.wantsLayer = true
         self.view.layer?.backgroundColor = NSColor.white.cgColor
+        
+//        let stocks2 = realm.objects(Deep_Enlarge_Db.self)
+//        try! realm.write {
+//            realm.delete(stocks2)
+//        }
+//        exit(0)
+        
         if false{
 //            let deleting = realm.objects(Random_Loc_Idea.self)
 //            try! realm.write {

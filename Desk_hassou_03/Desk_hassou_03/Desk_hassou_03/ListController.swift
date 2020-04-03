@@ -64,15 +64,25 @@ class ListController: NSViewController, NSTableViewDelegate, NSTableViewDataSour
             var temp :[String] = []
             temp.append("[THEME]:" + m_theme)
             for one in stocks{
-                temp.append("1:" + one.category_1)
-                temp.append("2:" + one.category_2)
-                temp.append("3:" + one.category_3)
-                temp.append("4:" + one.category_4)
-                temp.append("5:" + one.category_5)
-                temp.append("6:" + one.category_6)
-                temp.append("7:" + one.category_7)
-                temp.append("8:" + one.category_8)
-                temp.append("9:" + one.category_9)
+                if one.category_1 != ""{
+                    temp.append("1:" + one.category_1)
+                }else if one.category_2 != ""{
+                    temp.append("2:" + one.category_2)
+                }else if one.category_3 != ""{
+                    temp.append("3:" + one.category_3)
+                }else if one.category_4 != ""{
+                    temp.append("4:" + one.category_4)
+                }else if one.category_5 != ""{
+                    temp.append("5:" + one.category_5)
+                }else if one.category_6 != ""{
+                    temp.append("6:" + one.category_6)
+                }else if one.category_7 != ""{
+                    temp.append("7:" + one.category_7)
+                }else if one.category_8 != ""{
+                    temp.append("8:" + one.category_8)
+                }else if one.category_9 != ""{
+                    temp.append("9:" + one.category_9)
+                }
             }
             var temp_2 :[String] = []
             for one in temp{
