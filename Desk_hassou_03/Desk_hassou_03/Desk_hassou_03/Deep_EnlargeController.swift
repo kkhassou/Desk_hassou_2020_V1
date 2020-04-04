@@ -39,6 +39,7 @@ class Deep_EnlargeController: NSViewController {
     var return_disp_btn = NSButton()
     var randam_store_btn = NSButton()
     var hint_category_select_btn = NSButton()
+     var return_page_btn = NSButton()
     
 //    var theme_change_btn = NSButton()
 //    var theme_select_btn = NSButton()
@@ -53,7 +54,7 @@ class Deep_EnlargeController: NSViewController {
     var this_is_theme = false
     
     override func viewDidLoad() {
-        print("56")
+//        print("56")
         super.viewDidLoad()
         m_hint_category = UserDefaults.standard.object(forKey: "mHintCategory") as! String
 
@@ -64,11 +65,11 @@ class Deep_EnlargeController: NSViewController {
 //        exit(0)
         
         m_parent_category = UserDefaults.standard.object(forKey: "parent_category") as! String
-        print("m_parent_category")
-        print(m_parent_category)
+//        print("m_parent_category")
+//        print(m_parent_category)
         m_child_category = UserDefaults.standard.object(forKey: "child_category") as! String
 
-        print("64")
+//        print("64")
 
         self.view.frame = CGRect(x:10, y:10 , width:500, height:675);
         self.view.wantsLayer = true
@@ -91,12 +92,12 @@ class Deep_EnlargeController: NSViewController {
         theme_content.backgroundColor = NSColor.white
         self.view.addSubview(theme_content)
         
-        print("87")
+//        print("87")
         
         var arr:[String] = m_parent_category.components(separatedBy: ":")
         if arr[0] != "[THEME]"{
-            print("91")
-            ordering_idea_title.frame = CGRect(x:20, y:490 , width:250, height:20);
+//            print("91")
+            ordering_idea_title.frame = CGRect(x:20, y:490 , width:250, height:30);
             ordering_idea_title.stringValue = arr[1]
             ordering_idea_title.font = NSFont.systemFont(ofSize: CGFloat(20))
             ordering_idea_title.isEditable = false
@@ -115,9 +116,9 @@ class Deep_EnlargeController: NSViewController {
             next_disp_btn.frame = CGRect(x: 410, y: 480 , width: 80, height: 50)
             next_disp_btn.font = NSFont.systemFont(ofSize: 22)
             view.self.addSubview(next_disp_btn)
-            print("111")
+//            print("111")
             idea_count_disp()
-            print("113")
+//            print("113")
         }else{
             this_is_theme = true
         }
@@ -135,7 +136,7 @@ class Deep_EnlargeController: NSViewController {
         hint_category_select_btn.font = NSFont.systemFont(ofSize: 22)
         view.self.addSubview(hint_category_select_btn)
         
-        idea_title.frame = CGRect(x:20, y:180 , width:250, height:20);
+        idea_title.frame = CGRect(x:20, y:180 , width:250, height:30);
         idea_title.stringValue = m_child_category
         idea_title.font = NSFont.systemFont(ofSize: CGFloat(20))
         idea_title.isEditable = false
@@ -154,15 +155,20 @@ class Deep_EnlargeController: NSViewController {
         randam_store_btn.font = NSFont.systemFont(ofSize: 22)
         view.self.addSubview(randam_store_btn)
         
-        print("149")
+        return_page_btn = NSButton(title: "戻る", target: self, action: #selector(return_page_click))
+        return_page_btn.frame = CGRect(x: 20, y: 0 , width: 100, height: 50)
+        return_page_btn.font = NSFont.systemFont(ofSize: 22)
+        view.self.addSubview(return_page_btn)
+        
+//        print("149")
         
         random_disp(tag: "HINT")
-        print("152")
+//        print("152")
         
-        print("154")
+//        print("154")
         this_count_disp()
         total_count_disp()
-        print("157")
+//        print("157")
     }
     func random_disp(tag:String){
         if tag == "HINT"{
@@ -196,6 +202,14 @@ class Deep_EnlargeController: NSViewController {
             element_disp()
         }
     }
+    
+    @objc func return_page_click(_ sender: NSButton) {
+        UserDefaults.standard.set("Deep_Enlarge_Pre", forKey: "to_page")
+        UserDefaults.standard.synchronize()
+        let next = storyboard?.instantiateController(withIdentifier: "List")
+        self.presentAsModalWindow(next! as! NSViewController)
+        self.dismiss(nil)
+    }
     @objc func next_disp_click(_ sender: NSButton) {
         if m_idea_num < m_idea_total_num - 1{
             m_idea_num = m_idea_num + 1
@@ -227,12 +241,12 @@ class Deep_EnlargeController: NSViewController {
         print(dummy)
         if m_level == ""{
             print("228")
-//            var arr:[String] = m_child_category.components(separatedBy: ":")
+            var arr:[String] = m_child_category.components(separatedBy: ":")
             print("m_theme")
             print(m_theme)
-//            print("arr[1]")
-//            print(arr[1])
-            let ideaSelect = realm.objects(Deep_Enlarge_Db.self).filter("theme == %@",m_theme).filter("category_1 == %@",m_child_category)
+            print("m_child_category")
+            print(m_child_category)
+            let ideaSelect = realm.objects(Deep_Enlarge_Db.self).filter("theme == %@",m_theme).filter("category_1 == %@",m_child_category).filter("category_2 == %@","")
             ideaSelect_count = ideaSelect.count
         }else{
             print("233")
@@ -240,10 +254,21 @@ class Deep_EnlargeController: NSViewController {
             var serch_child_category = "category_" + String(Int(m_level)! + 1)
             var serch_parent_idea = "idea_" + m_level
             var arr:[String] = m_parent_category.components(separatedBy: ":")
+            print("m_theme")
+            print(m_theme)
+            print("serch_parent_category")
+            print(serch_parent_category)
+            print("arr[1]")
+            print(arr[1])
+            print("serch_child_category")
+            print(serch_child_category)
+            print("m_child_category")
+            print(m_child_category)
+//            var arr_2:[String] = m_child_category.components(separatedBy: ":")
             let ideaSelect = realm.objects(Deep_Enlarge_Db.self).filter("theme == %@",m_theme).filter(serch_parent_category + " == %@",arr[1]).filter(serch_parent_idea + " == %@",ordering_idea_content.stringValue).filter(serch_child_category + " == %@",m_child_category)
             ideaSelect_count = ideaSelect.count
         }
-        this_count.frame = CGRect(x:270, y:170 , width:100, height:35);
+        this_count.frame = CGRect(x:280, y:170 , width:100, height:35);
         this_count.stringValue = "個別:" + String(ideaSelect_count)
         this_count.font = NSFont.systemFont(ofSize: CGFloat(20))
         this_count.isEditable = false
@@ -264,13 +289,13 @@ class Deep_EnlargeController: NSViewController {
         self.view.addSubview(total_count)
     }
     func element_disp(){
-        print("251")
+//        print("251")
         var serch_category = "category_" + m_level
         var serch_idea = "idea_" + m_level
         var serch_child_category = "category_" + String(Int(m_level)! + 1)
         var arr:[String] = m_parent_category.components(separatedBy: ":")
         let dbSelect = realm.objects(Deep_Enlarge_Db.self).filter("theme == %@",m_theme).filter(serch_category + " == %@",arr[1]).filter(serch_child_category + " == %@","")
-        print("251")
+//        print("251")
         ideaArray = Array(dbSelect)
         
         var local_chiled_idea = ""
@@ -293,7 +318,7 @@ class Deep_EnlargeController: NSViewController {
         }else if m_level == "9"{
             local_chiled_idea = ideaArray[m_idea_num].idea_9
         }
-        print("279")
+//        print("279")
         var word_2 = ""
         var char_count_4 = 0
         for one in local_chiled_idea{
@@ -304,7 +329,7 @@ class Deep_EnlargeController: NSViewController {
             }
             char_count_4 = char_count_4 + 1
         }
-        print("290")
+//        print("290")
         ordering_idea_content.stringValue = word_2
         ordering_idea_content.frame = CGRect(x:20, y:370 , width:430, height:100);
         ordering_idea_content.font = NSFont.systemFont(ofSize: CGFloat(15))
@@ -313,7 +338,7 @@ class Deep_EnlargeController: NSViewController {
         ordering_idea_content.isBordered = false
         ordering_idea_content.backgroundColor = NSColor.white
         self.view.addSubview(ordering_idea_content)
-        print("299")
+//        print("299")
     }
     @objc func hint_category_select_click(_ sender: NSButton) {
             UserDefaults.standard.set("Hint_Category_List", forKey: "to_page")
@@ -419,10 +444,22 @@ class Deep_EnlargeController: NSViewController {
     }
     func idea_count_disp(){
         var serch_category = "category_" + m_level
+        var serch_idea = "idea_" + m_level
         var serch_child_category = "category_" + String(Int(m_level)! + 1)
         var arr:[String] = m_parent_category.components(separatedBy: ":")
+        print("m_theme")
+        print(m_theme)
+        print("serch_category")
+        print(serch_category)
+        print("arr[1]")
+        print(arr[1])
+        print("serch_idea")
+        print(serch_idea)
+        print("ordering_idea_content.stringValue")
+        print(ordering_idea_content.stringValue)
+        
         let ideaSelect = realm.objects(Deep_Enlarge_Db.self).filter("theme == %@",m_theme).filter(serch_category + " == %@",arr[1]).filter(serch_child_category + " == %@","")
-        theme_idea_count.frame = CGRect(x:240, y:468 , width:100, height:50);
+        theme_idea_count.frame = CGRect(x:280, y:468 , width:50, height:50);
         m_idea_total_num = ideaSelect.count
         theme_idea_count.stringValue = String(m_idea_num + 1) + " / " + String(ideaSelect.count)
         theme_idea_count.font = NSFont.systemFont(ofSize: CGFloat(20))

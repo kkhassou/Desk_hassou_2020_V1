@@ -169,10 +169,10 @@ class ListController: NSViewController, NSTableViewDelegate, NSTableViewDataSour
             alert.addButton(withTitle: "OK")
             let response = alert.runModal()
         }else if arr[0] == "1"{
-            UserDefaults.standard.set(select_stock, forKey: arr[0])
+            UserDefaults.standard.set(arr[1], forKey: "child_category")
             UserDefaults.standard.set("[THEME]" + ":" + m_theme, forKey: "parent_category")
         }else{
-            UserDefaults.standard.set(select_stock, forKey: "child_category")
+            UserDefaults.standard.set(arr[1], forKey: "child_category")
             var serch_parent_category = "category_" + String(Int(arr[0])! - 1)
             var serch_child_category = "category_" + (arr[0])
             var temp:[String] = []
