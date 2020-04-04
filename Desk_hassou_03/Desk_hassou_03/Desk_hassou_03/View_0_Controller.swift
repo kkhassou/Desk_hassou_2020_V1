@@ -34,7 +34,6 @@ class View_0_Controller: NSViewController, NSComboBoxDataSource{
 //            realm.delete(stocks2)
 //        }
 //        exit(0)
-        
         if false{
 //            let deleting = realm.objects(Random_Loc_Idea.self)
 //            try! realm.write {

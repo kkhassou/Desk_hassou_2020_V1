@@ -66,21 +66,29 @@ class ListController: NSViewController, NSTableViewDelegate, NSTableViewDataSour
             for one in stocks{
                 if one.category_1 != ""{
                     temp.append("1:" + one.category_1)
-                }else if one.category_2 != ""{
+                }
+                if one.category_2 != ""{
                     temp.append("2:" + one.category_2)
-                }else if one.category_3 != ""{
+                }
+                if one.category_3 != ""{
                     temp.append("3:" + one.category_3)
-                }else if one.category_4 != ""{
+                }
+                if one.category_4 != ""{
                     temp.append("4:" + one.category_4)
-                }else if one.category_5 != ""{
+                }
+                if one.category_5 != ""{
                     temp.append("5:" + one.category_5)
-                }else if one.category_6 != ""{
+                }
+                if one.category_6 != ""{
                     temp.append("6:" + one.category_6)
-                }else if one.category_7 != ""{
+                }
+                if one.category_7 != ""{
                     temp.append("7:" + one.category_7)
-                }else if one.category_8 != ""{
+                }
+                if one.category_8 != ""{
                     temp.append("8:" + one.category_8)
-                }else if one.category_9 != ""{
+                }
+                if one.category_9 != ""{
                     temp.append("9:" + one.category_9)
                 }
             }
@@ -104,8 +112,32 @@ class ListController: NSViewController, NSTableViewDelegate, NSTableViewDataSour
             var child_category_input_p = Param(st_ :"",x_:180,y_: 30,width_:400,height_:20,fontSize_:14)
             U().text_generate(param_:child_category_input_p,nsText_:child_category_input,view_:self.view,input_flag_:true,ajust_flag_:false,border_flag_:true)
             
-            var select_btn_p = Param(st_ :"決定",x_:600,y_:30,width_:75,height_:20,fontSize_:22)
+            var select_btn_p = Param(st_ :"決定",x_:590,y_:30,width_:70,height_:20,fontSize_:22)
             U().button_generate(param_:select_btn_p,viewCon_:self,view_:self.view,action: #selector(select_theme))
+            
+            var re_start_p = Param(st_ :"途中から再開",x_:660,y_:30,width_:160,height_:20,fontSize_:22)
+            U().button_generate(param_:re_start_p,viewCon_:self,view_:self.view,action: #selector(re_start))
+            
+            var list_confirm_p = Param(st_ :"リスト確認",x_:830,y_:30,width_:140,height_:20,fontSize_:22)
+            U().button_generate(param_:list_confirm_p,viewCon_:self,view_:self.view,action: #selector(list_confirm))
+        }else if m_to_page == "Deep_Enlarge_List_Confirm"{
+            var deep_enlarge_select = UserDefaults.standard.object(forKey: "deep_enlarge_select") as! String
+            var arr:[String] = deep_enlarge_select.components(separatedBy: ":")
+            var serch_parent_category = "category_" + arr[0]
+            var serch_parent_idea = "idea_" + arr[0]
+            let stocks = realm.objects(Deep_Enlarge_Db.self).filter("theme == %@",m_theme).filter(serch_parent_category + " == %@",arr[1]).value(forKey: serch_parent_idea) as! [String]
+            var temp :[String] = []
+            for one in stocks{
+                temp.append(one)
+            }
+            let orderedSet = NSOrderedSet(array: temp)
+            db_stocks = orderedSet.array as! [String]
+            var return_page_btn_p = Param(st_ :"戻る",x_:10,y_:30,width_:75,height_:50,fontSize_:22)
+            U().button_generate(param_:return_page_btn_p,viewCon_:self,view_:self.view,action: #selector(return_page))
+            
+            var parent_category_content = NSTextField()
+            var parent_category_content_p = Param(st_ :"カテゴリ:" + arr[1],x_:20,y_: 770,width_:200,height_:20,fontSize_:14)
+            U().text_generate(param_:parent_category_content_p,nsText_:parent_category_content,view_:self.view,input_flag_:false,ajust_flag_:false,border_flag_:false)
         }
         
         tableview.action = #selector(onItemClicked)
@@ -122,6 +154,44 @@ class ListController: NSViewController, NSTableViewDelegate, NSTableViewDataSour
         }else{
             print("配列の範囲外")
         }
+    }
+    @objc func re_start(){
+        // DBからクリックいしたテーマの上位のテーマを検索して、それをparentに選択されているものをchildにして、他は一緒で、画面遷移すれば、OK
+        
+        var local_parent_category = ""
+        // 親を子から探さないといけない
+        var arr:[String] = select_stock.components(separatedBy: ":")
+
+        if arr[0] == "[THEME]"{
+            // テーマからの再開はできないので、
+            let alert = NSAlert()
+            alert.messageText = "再開したい場合はテーマ以外を選んでください"
+            alert.addButton(withTitle: "OK")
+            let response = alert.runModal()
+        }else if arr[0] == "1"{
+            UserDefaults.standard.set(select_stock, forKey: arr[0])
+            UserDefaults.standard.set("[THEME]" + ":" + m_theme, forKey: "parent_category")
+        }else{
+            UserDefaults.standard.set(select_stock, forKey: "child_category")
+            var serch_parent_category = "category_" + String(Int(arr[0])! - 1)
+            var serch_child_category = "category_" + (arr[0])
+            var temp:[String] = []
+            temp = realm.objects(Deep_Enlarge_Db.self).filter("theme == %@",m_theme).filter(serch_child_category + " == %@",arr[1]).value(forKey: serch_parent_category) as! [String]
+            UserDefaults.standard.set( String(Int(arr[0])! - 1) + ":" + temp[0], forKey: "parent_category")
+        }
+        UserDefaults.standard.synchronize()
+        self.dismiss(nil)
+        let next = storyboard?.instantiateController(withIdentifier: "Deep_Enlarge")
+        self.presentAsModalWindow(next! as! NSViewController)
+    }
+    @objc func list_confirm(){
+        // クリックしたものを親にして、選択すれば良いだけ！
+        UserDefaults.standard.set("Deep_Enlarge_List_Confirm", forKey: "to_page")
+        UserDefaults.standard.set(select_stock, forKey: "deep_enlarge_select")
+        UserDefaults.standard.synchronize()
+        let next = storyboard?.instantiateController(withIdentifier: "List")
+        self.presentAsModalWindow(next! as! NSViewController)
+        self.dismiss(nil)
     }
     @objc func new_theme(){
         let alert = NSAlert()
@@ -167,6 +237,13 @@ class ListController: NSViewController, NSTableViewDelegate, NSTableViewDataSour
         default:
             break
         }
+    }
+    @objc func return_page(){
+        UserDefaults.standard.set("Deep_Enlarge_Pre", forKey: "to_page")
+        UserDefaults.standard.synchronize()
+        let next = storyboard?.instantiateController(withIdentifier: "List")
+        self.presentAsModalWindow(next! as! NSViewController)
+        self.dismiss(nil)
     }
     @objc func select_theme(){
         if select_stock != ""{

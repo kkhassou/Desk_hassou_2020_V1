@@ -96,7 +96,7 @@ class Deep_EnlargeController: NSViewController {
         var arr:[String] = m_parent_category.components(separatedBy: ":")
         if arr[0] != "[THEME]"{
             print("91")
-            ordering_idea_title.frame = CGRect(x:20, y:490 , width:100, height:30);
+            ordering_idea_title.frame = CGRect(x:20, y:490 , width:250, height:20);
             ordering_idea_title.stringValue = arr[1]
             ordering_idea_title.font = NSFont.systemFont(ofSize: CGFloat(20))
             ordering_idea_title.isEditable = false
@@ -135,7 +135,7 @@ class Deep_EnlargeController: NSViewController {
         hint_category_select_btn.font = NSFont.systemFont(ofSize: 22)
         view.self.addSubview(hint_category_select_btn)
         
-        idea_title.frame = CGRect(x:20, y:180 , width:150, height:30);
+        idea_title.frame = CGRect(x:20, y:180 , width:250, height:20);
         idea_title.stringValue = m_child_category
         idea_title.font = NSFont.systemFont(ofSize: CGFloat(20))
         idea_title.isEditable = false
@@ -266,38 +266,37 @@ class Deep_EnlargeController: NSViewController {
     func element_disp(){
         print("251")
         var serch_category = "category_" + m_level
+        var serch_idea = "idea_" + m_level
+        var serch_child_category = "category_" + String(Int(m_level)! + 1)
         var arr:[String] = m_parent_category.components(separatedBy: ":")
-        let dbSelect = realm.objects(Deep_Enlarge_Db.self).filter("theme == %@",m_theme).filter(serch_category + " == %@",arr[1])
+        let dbSelect = realm.objects(Deep_Enlarge_Db.self).filter("theme == %@",m_theme).filter(serch_category + " == %@",arr[1]).filter(serch_child_category + " == %@","")
         print("251")
         ideaArray = Array(dbSelect)
-        var temp:[String] = []
-        for one in ideaArray{
-            if m_level == "1"{
-                temp.append(one.idea_1)
-            }else if m_level == "2"{
-                temp.append(one.idea_2)
-            }else if m_level == "3"{
-                temp.append(one.idea_3)
-            }else if m_level == "4"{
-                temp.append(one.idea_4)
-            }else if m_level == "5"{
-                temp.append(one.idea_5)
-            }else if m_level == "6"{
-                temp.append(one.idea_6)
-            }else if m_level == "7"{
-                temp.append(one.idea_7)
-            }else if m_level == "8"{
-                temp.append(one.idea_8)
-            }else if m_level == "9"{
-                temp.append(one.idea_9)
-            }else if m_level == "10"{
-                temp.append(one.idea_10)
-            }
+        
+        var local_chiled_idea = ""
+        if m_level == "1"{
+            local_chiled_idea = ideaArray[m_idea_num].idea_1
+        }else if m_level == "2"{
+            local_chiled_idea = ideaArray[m_idea_num].idea_2
+        }else if m_level == "3"{
+            local_chiled_idea = ideaArray[m_idea_num].idea_3
+        }else if m_level == "4"{
+            local_chiled_idea = ideaArray[m_idea_num].idea_4
+        }else if m_level == "5"{
+            local_chiled_idea = ideaArray[m_idea_num].idea_5
+        }else if m_level == "6"{
+            local_chiled_idea = ideaArray[m_idea_num].idea_6
+        }else if m_level == "7"{
+            local_chiled_idea = ideaArray[m_idea_num].idea_7
+        }else if m_level == "8"{
+            local_chiled_idea = ideaArray[m_idea_num].idea_8
+        }else if m_level == "9"{
+            local_chiled_idea = ideaArray[m_idea_num].idea_9
         }
         print("279")
         var word_2 = ""
         var char_count_4 = 0
-        for one in temp{
+        for one in local_chiled_idea{
             if char_count_4 % 30 == 0 && char_count_4 != 0{
                 word_2 = word_2 + "\n" + String(one)
             }else{
@@ -420,9 +419,10 @@ class Deep_EnlargeController: NSViewController {
     }
     func idea_count_disp(){
         var serch_category = "category_" + m_level
+        var serch_child_category = "category_" + String(Int(m_level)! + 1)
         var arr:[String] = m_parent_category.components(separatedBy: ":")
-        let ideaSelect = realm.objects(Deep_Enlarge_Db.self).filter("theme == %@",m_theme).filter(serch_category + " == %@",arr[1])
-        theme_idea_count.frame = CGRect(x:220, y:468 , width:100, height:50);
+        let ideaSelect = realm.objects(Deep_Enlarge_Db.self).filter("theme == %@",m_theme).filter(serch_category + " == %@",arr[1]).filter(serch_child_category + " == %@","")
+        theme_idea_count.frame = CGRect(x:240, y:468 , width:100, height:50);
         m_idea_total_num = ideaSelect.count
         theme_idea_count.stringValue = String(m_idea_num + 1) + " / " + String(ideaSelect.count)
         theme_idea_count.font = NSFont.systemFont(ofSize: CGFloat(20))
