@@ -62,13 +62,24 @@ class Theme_EnlargeController: NSViewController {
             for x in 0..<3{
                 // テーマ
                 var title = CustomNSTextField()
-                title.tag = y * 10 + x
+                title.tag = y * 100 + x
                 var title_p = Param(st_ :titele_st[x*5+y],x_:10 + 400*x,y_: 1220 - y*115,width_:350,height_:40,fontSize_:12)
                 U().text_generate(param_:title_p,nsText_:title,view_:viewForContent,input_flag_:false,ajust_flag_:false,border_flag_:false)
+                title.tag = y * 100 + x
                 m_question_s.append(title)
                 
                 var content = CustomNSTextField()
-                content.tag = y * 10 + x
+                content.tag = y * 100 + x
+                
+                // ボタンを各TEXTに追加する
+
+                var select_btn = NSButton()
+                select_btn = NSButton(title:"決定", target: self, action: #selector(select_click))
+                select_btn.frame = CGRect(x:10 + 400 * x + 345,y:1220 - y * 115 - 30,width:50,height:50)
+                select_btn.font = NSFont.systemFont(ofSize: 10)
+                select_btn.tag = y * 100 + x
+                viewForContent.addSubview(select_btn)
+                
                 if y == 0 && x == 0{
                     var content_p = Param(st_ :m_flow_start_theme,x_:10 + 400*x,y_: 1150 - y*115,width_:350,height_:80,fontSize_:15)
                     U().text_generate(param_:content_p,nsText_:content,view_:viewForContent,input_flag_:false,ajust_flag_:false,border_flag_:true)
@@ -86,6 +97,26 @@ class Theme_EnlargeController: NSViewController {
             }
         }
     }
+
+    @objc func select_click(_ sender: NSButton){
+        print("102")
+        // 渡すものとしては、ボタンを押したテキスト
+        for one in m_theme_s{
+            if one.tag == sender.tag{
+                print("105")
+                print(one.tag)
+                print(one.stringValue)
+                UserDefaults.standard.set(one.stringValue, forKey: "selected_theme")
+                UserDefaults.standard.synchronize()
+                store_db()
+                self.dismiss(nil)
+                // ProcessControllerに戻す
+                let next = storyboard?.instantiateController(withIdentifier: "Flows_Progress")
+                self.presentAsModalWindow(next! as! NSViewController)
+            }
+        }
+    }
+
     @objc func store_click(_ sender: NSButton){
         store_db()
         self.dismiss(nil)

@@ -303,6 +303,7 @@ class MyLine: NSView {
             path.stroke()
         }else if self.derection == Direction.yoko{
             let path = NSBezierPath()
+
             path.move(to: NSPoint(x: Double(x + (150 / 2)), y: Double(y)))
             path.line(to: NSPoint(x: Double(x + (150 / 2) - 175), y: Double(y)))
             path.close()

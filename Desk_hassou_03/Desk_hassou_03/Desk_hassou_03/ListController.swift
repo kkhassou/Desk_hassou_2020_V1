@@ -329,6 +329,12 @@ class ListController: NSViewController, NSTableViewDelegate, NSTableViewDataSour
                     alert.addButton(withTitle: "OK")
                     let response = alert.runModal()
                 }
+            }else if m_to_page == "Flows_List"{
+                UserDefaults.standard.set(select_stock, forKey: "flow_start_theme")
+                UserDefaults.standard.synchronize()
+                self.dismiss(nil)
+                let next = storyboard?.instantiateController(withIdentifier: "Flows_Progress")
+                self.presentAsModalWindow(next! as! NSViewController)
             }
         }else{
             let alert = NSAlert()
