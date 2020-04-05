@@ -14,7 +14,8 @@ class Nine_x_NineController: NSViewController {
 
     let realm = try! Realm()
     var textField_s:[NSTextField] = []
-    
+    var m_from_page = ""
+    var m_theme  = ""
     override func viewDidLoad() {
         super.viewDidLoad()
         let myView = MyView()
@@ -35,16 +36,22 @@ class Nine_x_NineController: NSViewController {
             }
         }
 
-        var theme = UserDefaults.standard.object(forKey: "theme") as! String
+        
+        m_from_page = UserDefaults.standard.object(forKey: "from_page") as! String
+        if m_from_page == "Flows_Progress"{
+            m_theme = UserDefaults.standard.object(forKey: "selected_theme") as! String
+        }else{
+            m_theme = UserDefaults.standard.object(forKey: "theme") as! String
+        }
+        UserDefaults.standard.set("", forKey: "from_page")
+        UserDefaults.standard.synchronize()
         // ここに表示の処理を入れる
-        let stocks = realm.objects(Nine_x_Nine_Stock.self).filter("y4_x4 == %@",theme).last
-
-
+        let stocks = realm.objects(Nine_x_Nine_Stock.self).filter("y4_x4 == %@",m_theme).last
             for one in textField_s{
                 if stocks == nil{
                     switch one.tag {
                     case 44:
-                        one.stringValue = theme
+                        one.stringValue = m_theme
                         break
                     default:
                         break
@@ -570,8 +577,15 @@ class Nine_x_NineController: NSViewController {
             realm.add(stock)
         }
         self.dismiss(nil)
-        let next = storyboard?.instantiateController(withIdentifier: "zero")
-        self.presentAsModalWindow(next! as! NSViewController)
+        if m_from_page == "Flows_Progress"{
+            UserDefaults.standard.set("", forKey: "from_page")
+            UserDefaults.standard.synchronize()
+            let next = storyboard?.instantiateController(withIdentifier: "Flows_Progress")
+            self.presentAsModalWindow(next! as! NSViewController)
+        }else{
+            let next = storyboard?.instantiateController(withIdentifier: "zero")
+            self.presentAsModalWindow(next! as! NSViewController)
+        }
     }
     @objc func expansion_btn_click(_ sender: NSButton) {
         var xm1_ym1 = ""
@@ -666,6 +680,5 @@ class MyView: NSView {
         path_4.line(to: NSPoint(x: 795.0, y: 640.0))
         path_4.close()
         path_4.stroke()
-
     }
 }

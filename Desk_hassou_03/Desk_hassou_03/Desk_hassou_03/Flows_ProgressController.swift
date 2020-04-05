@@ -89,10 +89,85 @@ class Flows_ProgressController: NSViewController {
         frame_9x9_btn.frame = CGRect(x:0, y:CONTENTHEIGHT - 340, width:200, height:30);
         frame_9x9_btn.font = NSFont.systemFont(ofSize: 20)
         viewForContent.addSubview(frame_9x9_btn)
+        
+        let yajirusi_2 = Line_Flows_Progress(frame: self.view.frame, start_x_: 100.0, start_y_: Double(CONTENTHEIGHT) - 350.0, end_x_: 100.0, end_y_: Double(CONTENTHEIGHT) - 380.0,direction_:Direction.tate)
+        yajirusi_2.translatesAutoresizingMaskIntoConstraints = false
+        viewForContent.addSubview(yajirusi_2)
+        yajirusi_2.topAnchor.constraint(equalTo: viewForContent.topAnchor).isActive = true
+        yajirusi_2.bottomAnchor.constraint(equalTo: viewForContent.bottomAnchor).isActive = true
+        yajirusi_2.leftAnchor.constraint(equalTo: viewForContent.leftAnchor).isActive = true
+        yajirusi_2.rightAnchor.constraint(equalTo: viewForContent.rightAnchor).isActive = true
+        
+        var frame_9x9_done_flag_content = NSTextField()
+        frame_9x9_done_flag_content.frame = CGRect(x:20 + 10, y:CONTENTHEIGHT - 420, width:200, height:30);
+        frame_9x9_done_flag_content.font = NSFont.systemFont(ofSize: 20)
+        // 実行済みかどうかをDB検索して判定
+        let db_serch = realm.objects(Nine_x_Nine_Stock.self).filter("y4_x4 == %@",m_selected_theme)
+        if m_selected_theme != ""  && db_serch.count != 0 {
+            var nine_x_nine_idea:[String] = []
+            for x in 0..<9{
+                for y in 0..<9{
+                    var flag = false
+                    for i in 0..<3{
+                        for j in 0..<3{
+                            if x == 1 + i * 3 && y == 1 + j * 3{
+                                flag = true
+                            }
+                        }
+                    }
+                    if flag == false{
+                        let dbSelect = realm.objects(Nine_x_Nine_Stock.self).filter("y4_x4 == %@",m_selected_theme).value(forKey: "y" + String(y) + "_x" + String(x)) as! [String]
+                        if dbSelect[0] != ""{
+                            nine_x_nine_idea.append(dbSelect[0])
+                        }
+                    }
+                }
+            }
+            frame_9x9_done_flag_content.stringValue = "9x9実行済み　" + String(nine_x_nine_idea.count) + "/64"
+        }else{
+            frame_9x9_done_flag_content.stringValue = "9x9未実行"
+        }
+        frame_9x9_done_flag_content.isEditable = false
+        frame_9x9_done_flag_content.isBordered = false
+        viewForContent.addSubview(frame_9x9_done_flag_content)
+        
+        var idea_8x8_btn = NSButton(title: "8x8アイデア出し", target: self, action: #selector(idea_8x8_click))
+        idea_8x8_btn.frame = CGRect(x:0, y:CONTENTHEIGHT - 450, width:200, height:30);
+        idea_8x8_btn.font = NSFont.systemFont(ofSize: 20)
+        viewForContent.addSubview(idea_8x8_btn)
+        
+        let yajirusi_3 = Line_Flows_Progress(frame: self.view.frame, start_x_: 100.0, start_y_: Double(CONTENTHEIGHT) - 460.0, end_x_: 100.0, end_y_: Double(CONTENTHEIGHT) - 490.0,direction_:Direction.tate)
+        yajirusi_3.translatesAutoresizingMaskIntoConstraints = false
+        viewForContent.addSubview(yajirusi_3)
+        yajirusi_3.topAnchor.constraint(equalTo: viewForContent.topAnchor).isActive = true
+        yajirusi_3.bottomAnchor.constraint(equalTo: viewForContent.bottomAnchor).isActive = true
+        yajirusi_3.leftAnchor.constraint(equalTo: viewForContent.leftAnchor).isActive = true
+        yajirusi_3.rightAnchor.constraint(equalTo: viewForContent.rightAnchor).isActive = true
+        
+        var idea_8x8_done_flag_content = NSTextField()
+        idea_8x8_done_flag_content.frame = CGRect(x:20, y:CONTENTHEIGHT - 530, width:220, height:30);
+        idea_8x8_done_flag_content.font = NSFont.systemFont(ofSize: 20)
+        // 実行済みかどうかをDB検索して判定
+        let db_serch_2 = realm.objects(More_Idea_Stock_1.self).filter("theme == %@",m_selected_theme)
+        if m_selected_theme != ""  && db_serch_2.count != 0 {
+            idea_8x8_done_flag_content.stringValue = "8x8アイデア実行済み:" + String(db_serch_2.count) + "個"
+        }else{
+            idea_8x8_done_flag_content.stringValue = "8x8アイデア未実行"
+        }
+        idea_8x8_done_flag_content.isEditable = false
+        idea_8x8_done_flag_content.isBordered = false
+        viewForContent.addSubview(idea_8x8_done_flag_content)
+    }
+    @objc func idea_8x8_click(_ sender: NSButton) {
+        UserDefaults.standard.set("Flows_Progress", forKey: "from_page")
+        UserDefaults.standard.synchronize()
+        let next = storyboard?.instantiateController(withIdentifier: "More_Idea")
+        self.presentAsModalWindow(next! as! NSViewController)
+        self.dismiss(nil)
     }
     @objc func frame_9x9_click(_ sender: NSButton) {
-//        UserDefaults.standard.set("Deep_Enlarge_Pre", forKey: "to_page")
-//        UserDefaults.standard.synchronize()
+        UserDefaults.standard.set("Flows_Progress", forKey: "from_page")
+        UserDefaults.standard.synchronize()
         let next = storyboard?.instantiateController(withIdentifier: "Nine_x_Nine")
         self.presentAsModalWindow(next! as! NSViewController)
         self.dismiss(nil)

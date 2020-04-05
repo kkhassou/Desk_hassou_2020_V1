@@ -46,7 +46,7 @@ class More_IdeaController: NSViewController {
     var return_disp_btn = NSButton()
     var randam_store_btn = NSButton()
     var hint_category_select_btn = NSButton()
-    
+    var exit_btn = NSButton()
 //    var theme_change_btn = NSButton()
 //    var theme_select_btn = NSButton()
 
@@ -54,26 +54,23 @@ class More_IdeaController: NSViewController {
     var ideaArray:[Idea_Stock] = []
     
     var m_theme = ""
+    var m_from_page = ""
+    var nine_x_nine_idea:[String] = []
+    var m_first_flag = true
+    
     override func viewDidLoad() {
-        m_hint_category = UserDefaults.standard.object(forKey: "mHintCategory") as! String
-        
         super.viewDidLoad()
-        
-        m_theme = UserDefaults.standard.object(forKey: "theme") as! String
+        m_from_page = UserDefaults.standard.object(forKey: "from_page") as! String
+        if m_from_page == "Flows_Progress"{
+            m_theme = UserDefaults.standard.object(forKey: "selected_theme") as! String
+        }else{
+            m_theme = UserDefaults.standard.object(forKey: "theme") as! String
+        }
+        m_hint_category = UserDefaults.standard.object(forKey: "mHintCategory") as! String
         
         self.view.frame = CGRect(x:10, y:10 , width:500, height:675);
         self.view.wantsLayer = true
         self.view.layer?.backgroundColor = NSColor.white.cgColor
-        
-//        theme_change_btn = NSButton(title: "テーマ変更", target: self, action: #selector(theme_change_click))
-//        theme_change_btn.frame = CGRect(x: 140, y: 600 , width: 150, height: 50)
-//        theme_change_btn.font = NSFont.systemFont(ofSize: 22)
-//        view.self.addSubview(theme_change_btn)
-//
-//        theme_select_btn = NSButton(title: "テーマ選択", target: self, action: #selector(theme_select_click))
-//        theme_select_btn.frame = CGRect(x: 290, y: 600 , width: 150, height: 50)
-//        theme_select_btn.font = NSFont.systemFont(ofSize: 22)
-//        view.self.addSubview(theme_select_btn)
         
         theme_title.frame = CGRect(x:20, y:610 , width:100, height:30);
         theme_title.stringValue = "テーマ"
@@ -144,6 +141,13 @@ class More_IdeaController: NSViewController {
         randam_store_btn.font = NSFont.systemFont(ofSize: 22)
         view.self.addSubview(randam_store_btn)
         
+        if m_from_page == "Flows_Progress"{
+            exit_btn = NSButton(title: "終了", target: self, action: #selector(exit_click))
+            exit_btn.frame = CGRect(x: 20, y: 0 , width: 180, height: 50)
+            exit_btn.font = NSFont.systemFont(ofSize: 22)
+            view.self.addSubview(exit_btn)
+        }
+        
         random_disp(tag: "HINT")
         idea_count_disp()
         more_idea_count_disp()
@@ -181,8 +185,17 @@ class More_IdeaController: NSViewController {
             idea_disp()
         }
     }
+    @objc func exit_click(_ sender: NSButton) {
+            let next = storyboard?.instantiateController(withIdentifier: "Flows_Progress")
+            self.presentAsModalWindow(next! as! NSViewController)
+            self.dismiss(nil)
+    }
     @objc func next_disp_click(_ sender: NSButton) {
-        if m_idea_num < m_idea_total_num{
+        print("m_idea_num")
+        print(m_idea_num)
+        print("m_idea_total_num")
+        print(m_idea_total_num)
+        if m_idea_num < m_idea_total_num - 1{
             m_idea_num = m_idea_num + 1
             idea_disp()
             idea_count_disp()
@@ -202,9 +215,11 @@ class More_IdeaController: NSViewController {
         }
     }
     func more_idea_count_disp(){
+        var ideaSelect_count = -999
         let ideaSelect = realm.objects(More_Idea_Stock_1.self).filter("theme == %@",theme_content.stringValue).filter("idea == %@",ordering_idea_content.stringValue)
+        ideaSelect_count = ideaSelect.count
         more_idea_count.frame = CGRect(x:270, y:170 , width:100, height:35);
-        more_idea_count.stringValue = "個別:" + String(ideaSelect.count)
+        more_idea_count.stringValue = "個別:" + String(ideaSelect_count)
         more_idea_count.font = NSFont.systemFont(ofSize: CGFloat(20))
         more_idea_count.isEditable = false
         more_idea_count.isSelectable = false
@@ -224,18 +239,57 @@ class More_IdeaController: NSViewController {
         self.view.addSubview(more_idea_total_count)
     }
     func idea_disp(){
-        let dbSelect = realm.objects(Idea_Stock.self).filter("theme == %@",m_theme)
-        ideaArray = Array(dbSelect)
         var word_2 = ""
-        var char_count_4 = 0
-        for one in ideaArray[m_idea_num].idea{
-            if char_count_4 % 30 == 0 && char_count_4 != 0{
-                word_2 = word_2 + "\n" + String(one)
-            }else{
-                word_2 = word_2 + String(one)
+        if m_from_page == "Flows_Progress"{
+            // Nine_x_Nine_Stockからアイデアを84個、取得する
+            if m_first_flag == true{
+                for x in 0..<9{
+                    for y in 0..<9{
+                        var flag = false
+                        for i in 0..<3{
+                            for j in 0..<3{
+                                if x == 1 + i * 3 && y == 1 + j * 3{
+                                    flag = true
+                                }
+                            }
+                        }
+                        if flag == false{
+                            let dbSelect = realm.objects(Nine_x_Nine_Stock.self).filter("y4_x4 == %@",m_theme).value(forKey: "y" + String(y) + "_x" + String(x)) as! [String]
+                            if dbSelect[0] != ""{
+                                nine_x_nine_idea.append(dbSelect[0])
+                            }
+                        }
+                    }
+                }
+                m_first_flag = false
             }
-            char_count_4 = char_count_4 + 1
+            print("nine_x_nine_idea")
+            print(nine_x_nine_idea)
+            print("m_idea_num")
+            print(m_idea_num)
+            var char_count_4 = 0
+            for one in nine_x_nine_idea[m_idea_num]{
+                if char_count_4 % 30 == 0 && char_count_4 != 0{
+                    word_2 = word_2 + "\n" + String(one)
+                }else{
+                    word_2 = word_2 + String(one)
+                }
+                char_count_4 = char_count_4 + 1
+            }
+        }else{
+            let dbSelect = realm.objects(Idea_Stock.self).filter("theme == %@",m_theme)
+            ideaArray = Array(dbSelect)
+            var char_count_4 = 0
+            for one in ideaArray[m_idea_num].idea{
+                if char_count_4 % 30 == 0 && char_count_4 != 0{
+                    word_2 = word_2 + "\n" + String(one)
+                }else{
+                    word_2 = word_2 + String(one)
+                }
+                char_count_4 = char_count_4 + 1
+            }
         }
+
         ordering_idea_content.stringValue = word_2
         ordering_idea_content.frame = CGRect(x:20, y:370 , width:430, height:100);
         ordering_idea_content.font = NSFont.systemFont(ofSize: CGFloat(15))
@@ -281,10 +335,14 @@ class More_IdeaController: NSViewController {
 
     func idea_count_disp(){
         if theme_content.stringValue != ""{
-            let ideaSelect = realm.objects(Idea_Stock.self).filter("theme == %@",theme_content.stringValue)
+            if m_from_page == "Flows_Progress"{
+                m_idea_total_num = nine_x_nine_idea.count
+            }else{
+                let ideaSelect = realm.objects(Idea_Stock.self).filter("theme == %@",theme_content.stringValue)
+                m_idea_total_num = ideaSelect.count
+            }
             theme_idea_count.frame = CGRect(x:220, y:468 , width:100, height:50);
-            m_idea_total_num = ideaSelect.count
-            theme_idea_count.stringValue = String(m_idea_num + 1) + " / " + String(ideaSelect.count)
+            theme_idea_count.stringValue = String(m_idea_num + 1) + " / " + String(m_idea_total_num)
             theme_idea_count.font = NSFont.systemFont(ofSize: CGFloat(20))
             theme_idea_count.isEditable = false
             theme_idea_count.isSelectable = false
