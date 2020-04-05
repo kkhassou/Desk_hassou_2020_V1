@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		200706B02435CEC8003BE36D /* More_IdeaController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 200706AF2435CEC8003BE36D /* More_IdeaController.swift */; };
 		200706B42436D762003BE36D /* Deep_EnlargeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 200706B32436D762003BE36D /* Deep_EnlargeController.swift */; };
+		200706B624387D35003BE36D /* Flows_ProgressController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 200706B524387D35003BE36D /* Flows_ProgressController.swift */; };
+		200706B824388D39003BE36D /* Theme_EnlargeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 200706B724388D39003BE36D /* Theme_EnlargeController.swift */; };
 		2025D08723FF3830003A05A7 /* Combine_RandomController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2025D08623FF3830003A05A7 /* Combine_RandomController.swift */; };
 		2025D08924010541003A05A7 /* List_Theme_Combine_RandomController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2025D08824010541003A05A7 /* List_Theme_Combine_RandomController.swift */; };
 		2025D08B24024C8A003A05A7 /* List_Content_Combine_RandomController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2025D08A24024C8A003A05A7 /* List_Content_Combine_RandomController.swift */; };
@@ -44,6 +46,8 @@
 		13F29D9B5B10B60322A308DA /* Pods-Desk_hassou_03.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Desk_hassou_03.debug.xcconfig"; path = "Target Support Files/Pods-Desk_hassou_03/Pods-Desk_hassou_03.debug.xcconfig"; sourceTree = "<group>"; };
 		200706AF2435CEC8003BE36D /* More_IdeaController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = More_IdeaController.swift; sourceTree = "<group>"; };
 		200706B32436D762003BE36D /* Deep_EnlargeController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Deep_EnlargeController.swift; sourceTree = "<group>"; };
+		200706B524387D35003BE36D /* Flows_ProgressController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Flows_ProgressController.swift; sourceTree = "<group>"; };
+		200706B724388D39003BE36D /* Theme_EnlargeController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme_EnlargeController.swift; sourceTree = "<group>"; };
 		2025D08623FF3830003A05A7 /* Combine_RandomController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Combine_RandomController.swift; sourceTree = "<group>"; };
 		2025D08824010541003A05A7 /* List_Theme_Combine_RandomController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = List_Theme_Combine_RandomController.swift; sourceTree = "<group>"; };
 		2025D08A24024C8A003A05A7 /* List_Content_Combine_RandomController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = List_Content_Combine_RandomController.swift; sourceTree = "<group>"; };
@@ -140,6 +144,8 @@
 				20AA6D7024272F83006D59C3 /* MemoController.swift */,
 				200706AF2435CEC8003BE36D /* More_IdeaController.swift */,
 				200706B32436D762003BE36D /* Deep_EnlargeController.swift */,
+				200706B524387D35003BE36D /* Flows_ProgressController.swift */,
+				200706B724388D39003BE36D /* Theme_EnlargeController.swift */,
 				2040631A23BF1B1B001D0BB5 /* Assets.xcassets */,
 				2040631C23BF1B1B001D0BB5 /* Main.storyboard */,
 				2040631F23BF1B1B001D0BB5 /* Info.plist */,
@@ -303,10 +309,12 @@
 				208C4E6123FB450100A586FD /* EnlergeController.swift in Sources */,
 				2040632723BF2335001D0BB5 /* SetV.swift in Sources */,
 				20AA6D6324131F56006D59C3 /* Index_Group_DivideController.swift in Sources */,
+				200706B824388D39003BE36D /* Theme_EnlargeController.swift in Sources */,
 				2040633B23BF8370001D0BB5 /* View_3_Controller.swift in Sources */,
 				2040631723BF1B19001D0BB5 /* AppDelegate.swift in Sources */,
 				20AA6D7124272F83006D59C3 /* MemoController.swift in Sources */,
 				20AA6D73242F324D006D59C3 /* ProposalController.swift in Sources */,
+				200706B624387D35003BE36D /* Flows_ProgressController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

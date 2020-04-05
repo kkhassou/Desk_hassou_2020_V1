@@ -138,8 +138,26 @@ class ListController: NSViewController, NSTableViewDelegate, NSTableViewDataSour
             var parent_category_content = NSTextField()
             var parent_category_content_p = Param(st_ :"カテゴリ:" + arr[1],x_:20,y_: 770,width_:200,height_:20,fontSize_:14)
             U().text_generate(param_:parent_category_content_p,nsText_:parent_category_content,view_:self.view,input_flag_:false,ajust_flag_:false,border_flag_:false)
+        }else if m_to_page == "Flows_List"{
+            let stocks = realm.objects(Flows_Theme_Db.self).value(forKey: "start_theme") as! [String]
+            var temp :[String] = []
+            for one in stocks{
+                temp.append(one)
+            }
+            let orderedSet = NSOrderedSet(array: temp)
+            db_stocks = orderedSet.array as! [String]
+            
+            var parent_category_content = NSTextField()
+            var parent_category_content_p = Param(st_ :"スタートテーマ一覧",x_:20,y_: 770,width_:200,height_:20,fontSize_:14)
+            U().text_generate(param_:parent_category_content_p,nsText_:parent_category_content,view_:self.view,input_flag_:false,ajust_flag_:false,border_flag_:false)
+            var return_page_btn_p = Param(st_ :"戻る",x_:10,y_:30,width_:80,height_:50,fontSize_:22)
+            U().button_generate(param_:return_page_btn_p,viewCon_:self,view_:self.view,action: #selector(return_page))
+            var select_btn_p = Param(st_ :"決定",x_:100,y_:30,width_:80,height_:50,fontSize_:22)
+            U().button_generate(param_:select_btn_p,viewCon_:self,view_:self.view,action: #selector(select_theme))
+            
+            var new_btn_p = Param(st_ :"新規作成",x_:190,y_:30,width_:160,height_:50,fontSize_:22)
+            U().button_generate(param_:new_btn_p,viewCon_:self,view_:self.view,action: #selector(new_theme))
         }
-        
         tableview.action = #selector(onItemClicked)
     }
     func numberOfRows(in tableView: NSTableView) -> Int {
@@ -207,18 +225,28 @@ class ListController: NSViewController, NSTableViewDelegate, NSTableViewDataSour
         switch response {
         case .alertFirstButtonReturn:
             if new_theme_input.stringValue != ""{
-                var exitstIt = realm.objects(Concurrent_db.self).filter("theme == %@",new_theme_input.stringValue)
-                if exitstIt.count == 0{
-                    let new_Db = Concurrent_db()
-                    new_Db.theme  = new_theme_input.stringValue
-                    try! realm.write() {
-                        realm.add(new_Db)
+                var exitstIt_count = -999
+                if m_to_page == "Concurrent_List"{
+                    var exitstIt = realm.objects(Concurrent_db.self).filter("theme == %@",new_theme_input.stringValue)
+                    exitstIt_count = exitstIt.count
+                }else if m_to_page == "Flows_List"{
+                    var exitstIt = realm.objects(Flows_Theme_Db.self).filter("start_theme == %@",new_theme_input.stringValue)
+                    exitstIt_count = exitstIt.count
+                }
+                if exitstIt_count == 0{
+                    if m_to_page == "Concurrent_List"{
+                        UserDefaults.standard.set(new_theme_input.stringValue, forKey: "concurrent_theme")
+                        UserDefaults.standard.synchronize()
+                        self.dismiss(nil)
+                        let next = storyboard?.instantiateController(withIdentifier: "Concurrent")
+                        self.presentAsModalWindow(next! as! NSViewController)
+                    }else if m_to_page == "Flows_List"{
+                        UserDefaults.standard.set(new_theme_input.stringValue, forKey: "flow_start_theme")
+                        UserDefaults.standard.synchronize()
+                        self.dismiss(nil)
+                        let next = storyboard?.instantiateController(withIdentifier: "Flows_Progress")
+                        self.presentAsModalWindow(next! as! NSViewController)
                     }
-                    UserDefaults.standard.set(new_theme_input.stringValue, forKey: "concurrent_theme")
-                    UserDefaults.standard.synchronize()
-                    self.dismiss(nil)
-                    let next = storyboard?.instantiateController(withIdentifier: "Concurrent")
-                    self.presentAsModalWindow(next! as! NSViewController)
                 }else{
                     let alert = NSAlert()
                     alert.messageText = "重複したアイデアは登録出来ません。"
@@ -239,11 +267,19 @@ class ListController: NSViewController, NSTableViewDelegate, NSTableViewDataSour
         }
     }
     @objc func return_page(){
-        UserDefaults.standard.set("Deep_Enlarge_Pre", forKey: "to_page")
-        UserDefaults.standard.synchronize()
-        let next = storyboard?.instantiateController(withIdentifier: "List")
-        self.presentAsModalWindow(next! as! NSViewController)
-        self.dismiss(nil)
+        if m_to_page == "Deep_Enlarge_List_Confirm"{
+            UserDefaults.standard.set("Deep_Enlarge_Pre", forKey: "to_page")
+            UserDefaults.standard.synchronize()
+            let next = storyboard?.instantiateController(withIdentifier: "List")
+            self.presentAsModalWindow(next! as! NSViewController)
+            self.dismiss(nil)
+        }else if m_to_page == "Flows_List"{
+            UserDefaults.standard.set("Flows_List", forKey: "to_page")
+            UserDefaults.standard.synchronize()
+            let next = storyboard?.instantiateController(withIdentifier: "zero")
+            self.presentAsModalWindow(next! as! NSViewController)
+            self.dismiss(nil)
+        }
     }
     @objc func select_theme(){
         if select_stock != ""{

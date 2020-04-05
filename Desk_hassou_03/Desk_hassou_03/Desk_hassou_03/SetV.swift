@@ -189,6 +189,11 @@ class More_Idea_Stock_1: Object{
     @objc dynamic var idea = ""
     @objc dynamic var more_idea_1 = ""
 }
+class Flows_Theme_Db: Object{
+    @objc dynamic var start_theme = ""
+    @objc dynamic var enlarge_theme = ""
+    @objc dynamic var enlarge_question = ""
+}
 class Deep_Enlarge_Db: Object{
     @objc dynamic var theme = ""
     @objc dynamic var category_1 = ""

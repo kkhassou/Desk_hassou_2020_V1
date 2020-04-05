@@ -115,6 +115,16 @@ class View_0_Controller: NSViewController, NSComboBoxDataSource{
         
         var concurrent_p = Param(st_ :"複数同時入力",x_:50,y_:350,width_:250,height_:50,fontSize_:22)
         U().button_generate(param_:concurrent_p,viewCon_:self,view_:self.view,action: #selector(concurrent_click))
+        
+        var flows_p = Param(st_ :"一連の流れ",x_:50,y_:300,width_:250,height_:50,fontSize_:22)
+        U().button_generate(param_:flows_p,viewCon_:self,view_:self.view,action: #selector(flows_click))
+    }
+    @objc func flows_click(_ sender: NSButton) {
+        UserDefaults.standard.set("Flows_List", forKey: "to_page")
+        UserDefaults.standard.synchronize()
+        let next = storyboard?.instantiateController(withIdentifier: "List")
+        self.presentAsModalWindow(next! as! NSViewController)
+        self.dismiss(nil)
     }
     @objc func concurrent_click(_ sender: NSButton) {
         UserDefaults.standard.set("Concurrent_List", forKey: "to_page")
