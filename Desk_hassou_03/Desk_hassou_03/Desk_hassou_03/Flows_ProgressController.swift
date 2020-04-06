@@ -157,6 +157,18 @@ class Flows_ProgressController: NSViewController {
         idea_8x8_done_flag_content.isEditable = false
         idea_8x8_done_flag_content.isBordered = false
         viewForContent.addSubview(idea_8x8_done_flag_content)
+        
+        var proposal_text_btn = NSButton(title: "企画テキスト化", target: self, action: #selector(proposal_text_click))
+        proposal_text_btn.frame = CGRect(x:0, y:CONTENTHEIGHT - 560, width:200, height:30);
+        proposal_text_btn.font = NSFont.systemFont(ofSize: 20)
+        viewForContent.addSubview(proposal_text_btn)
+    }
+    @objc func proposal_text_click(_ sender: NSButton) {
+        UserDefaults.standard.set("Flows_Progress", forKey: "from_page")
+        UserDefaults.standard.synchronize()
+        let next = storyboard?.instantiateController(withIdentifier: "Txt_Disp")
+        self.presentAsModalWindow(next! as! NSViewController)
+        self.dismiss(nil)
     }
     @objc func idea_8x8_click(_ sender: NSButton) {
         UserDefaults.standard.set("Flows_Progress", forKey: "from_page")

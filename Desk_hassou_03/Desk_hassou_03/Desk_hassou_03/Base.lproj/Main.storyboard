@@ -1602,5 +1602,18 @@
             </objects>
             <point key="canvasLocation" x="-860" y="2427"/>
         </scene>
+        <!--Proposal Text Controller-->
+        <scene sceneID="uVa-o4-Fg2">
+            <objects>
+                <viewController identifier="Proposal_Text" storyboardIdentifier="Proposal_Text" id="HVA-7e-aCF" customClass="Proposal_TextController" customModule="Desk_hassou_03" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" id="p10-cz-OY2">
+                        <rect key="frame" x="0.0" y="0.0" width="450" height="300"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </view>
+                </viewController>
+                <customObject id="Rfd-K5-Jy0" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-864" y="2657"/>
+        </scene>
     </scenes>
 </document>
