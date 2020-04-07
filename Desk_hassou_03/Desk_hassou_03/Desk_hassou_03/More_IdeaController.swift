@@ -256,7 +256,12 @@ class More_IdeaController: NSViewController {
                         if flag == false{
                             let dbSelect = realm.objects(Nine_x_Nine_Stock.self).filter("y4_x4 == %@",m_theme).value(forKey: "y" + String(y) + "_x" + String(x)) as! [String]
                             if dbSelect[0] != ""{
-                                nine_x_nine_idea.append(dbSelect[0])
+                                if Int(y/3) + 3 == 4 && Int(x/3) + 3 == 4{
+
+                                }else{
+                                    let dbSelect_2 = realm.objects(Nine_x_Nine_Stock.self).filter("y4_x4 == %@",m_theme).value(forKey: "y" + String( Int(y/3) + 3 ) + "_x" + String( Int(x/3) + 3 )) as! [String]
+                                    nine_x_nine_idea.append(dbSelect_2[0] + ">>" + dbSelect[0])
+                                }
                             }
                         }
                     }

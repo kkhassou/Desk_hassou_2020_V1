@@ -166,7 +166,7 @@ class Flows_ProgressController: NSViewController {
     @objc func proposal_text_click(_ sender: NSButton) {
         UserDefaults.standard.set("Flows_Progress", forKey: "from_page")
         UserDefaults.standard.synchronize()
-        let next = storyboard?.instantiateController(withIdentifier: "Txt_Disp")
+        let next = storyboard?.instantiateController(withIdentifier: "Proposal_Text")
         self.presentAsModalWindow(next! as! NSViewController)
         self.dismiss(nil)
     }

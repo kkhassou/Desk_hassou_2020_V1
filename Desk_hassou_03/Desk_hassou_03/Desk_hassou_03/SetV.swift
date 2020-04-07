@@ -71,7 +71,10 @@ class group_set_color{
     var group = ""
     var backColor:NSColor = NSColor.clear
 }
-
+class Proposal_text_db: Object{
+    @objc dynamic var theme = ""
+    @objc dynamic var content = ""
+}
 class Concurrent_db: Object{
     @objc dynamic var id = 0
     @objc dynamic var theme = ""
