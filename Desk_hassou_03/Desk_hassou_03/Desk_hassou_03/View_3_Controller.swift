@@ -76,7 +76,9 @@ class View_3_Controller: NSViewController, NSTableViewDelegate, NSTableViewDataS
     }
     
     @objc func more_idea(){
-        U().screen_next(viewCon : self ,id:"More_Idea" , storyboard:storyboard!)
+            UserDefaults.standard.set("", forKey: "from_page")
+            UserDefaults.standard.synchronize()
+            U().screen_next(viewCon : self ,id:"More_Idea" , storyboard:storyboard!)
     }
     @objc func deep_enlarge(){
         UserDefaults.standard.set("Deep_Enlarge_Pre", forKey: "to_page")
