@@ -32,10 +32,10 @@
             </objects>
             <point key="canvasLocation" x="-826" y="-55"/>
         </scene>
-        <!--Randam AreaS Controller-->
+        <!--Randam AreaS Ver2 Controller-->
         <scene sceneID="LOW-mZ-i14">
             <objects>
-                <viewController identifier="Randam_Area_S" storyboardIdentifier="Randam_Area_S" id="2DS-oa-KH1" customClass="Randam_Area_S_Controller" customModule="Desk_hassou_03" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController identifier="Randam_Area_S" storyboardIdentifier="Randam_Area_S" id="2DS-oa-KH1" customClass="Randam_Area_S_Ver2_Controller" customModule="Desk_hassou_03" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" id="nlg-g5-JhD">
                         <rect key="frame" x="0.0" y="0.0" width="450" height="300"/>
                         <autoresizingMask key="autoresizingMask"/>
