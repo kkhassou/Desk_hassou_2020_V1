@@ -26,6 +26,8 @@
 		2040633B23BF8370001D0BB5 /* View_3_Controller.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2040633A23BF8370001D0BB5 /* View_3_Controller.swift */; };
 		2063A875243AE17C00BF0B25 /* Proposal_TextController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2063A874243AE17C00BF0B25 /* Proposal_TextController.swift */; };
 		2063A8772445F1D200BF0B25 /* Randam_Area_S_Ver2_Controller.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2063A8762445F1D200BF0B25 /* Randam_Area_S_Ver2_Controller.swift */; };
+		2063A87B245BEC5200BF0B25 /* View_0_ver2_Controller.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2063A87A245BEC5200BF0B25 /* View_0_ver2_Controller.swift */; };
+		2063A87D245BF44C00BF0B25 /* One_BrainstormingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2063A87C245BF44C00BF0B25 /* One_BrainstormingController.swift */; };
 		208C4E5923F8F25700A586FD /* Nine_x_NineController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 208C4E5823F8F25700A586FD /* Nine_x_NineController.swift */; };
 		208C4E5B23F9D7E600A586FD /* List_Nine_x_NineController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 208C4E5A23F9D7E600A586FD /* List_Nine_x_NineController.swift */; };
 		208C4E6123FB450100A586FD /* EnlergeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 208C4E6023FB450100A586FD /* EnlergeController.swift */; };
@@ -68,6 +70,8 @@
 		2040633A23BF8370001D0BB5 /* View_3_Controller.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = View_3_Controller.swift; sourceTree = "<group>"; };
 		2063A874243AE17C00BF0B25 /* Proposal_TextController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Proposal_TextController.swift; sourceTree = "<group>"; };
 		2063A8762445F1D200BF0B25 /* Randam_Area_S_Ver2_Controller.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Randam_Area_S_Ver2_Controller.swift; sourceTree = "<group>"; };
+		2063A87A245BEC5200BF0B25 /* View_0_ver2_Controller.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = View_0_ver2_Controller.swift; sourceTree = "<group>"; };
+		2063A87C245BF44C00BF0B25 /* One_BrainstormingController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = One_BrainstormingController.swift; sourceTree = "<group>"; };
 		208C4E5823F8F25700A586FD /* Nine_x_NineController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Nine_x_NineController.swift; sourceTree = "<group>"; };
 		208C4E5A23F9D7E600A586FD /* List_Nine_x_NineController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = List_Nine_x_NineController.swift; sourceTree = "<group>"; };
 		208C4E6023FB450100A586FD /* EnlergeController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnlergeController.swift; sourceTree = "<group>"; };
@@ -132,6 +136,8 @@
 				20AA6D6C2423A278006D59C3 /* Randam_Area_S_Controller.swift */,
 				2063A8762445F1D200BF0B25 /* Randam_Area_S_Ver2_Controller.swift */,
 				2040633223BF7B54001D0BB5 /* View_0_Controller.swift */,
+				2063A87A245BEC5200BF0B25 /* View_0_ver2_Controller.swift */,
+				2063A87C245BF44C00BF0B25 /* One_BrainstormingController.swift */,
 				2025D08E240359E0003A05A7 /* Group_DivideController.swift */,
 				2040633A23BF8370001D0BB5 /* View_3_Controller.swift */,
 				20AA6D6224131F56006D59C3 /* Index_Group_DivideController.swift */,
@@ -299,6 +305,7 @@
 				2025D08D24026878003A05A7 /* List_Combine_RandomController.swift in Sources */,
 				2025D08924010541003A05A7 /* List_Theme_Combine_RandomController.swift in Sources */,
 				2040632D23BF4923001D0BB5 /* View_2_Controller.swift in Sources */,
+				2063A87D245BF44C00BF0B25 /* One_BrainstormingController.swift in Sources */,
 				2025D08F240359E0003A05A7 /* Group_DivideController.swift in Sources */,
 				20AA6D6D2423A278006D59C3 /* Randam_Area_S_Controller.swift in Sources */,
 				2063A875243AE17C00BF0B25 /* Proposal_TextController.swift in Sources */,
@@ -312,6 +319,7 @@
 				20AA6D6B241A737B006D59C3 /* Randam_LocationController.swift in Sources */,
 				200706B42436D762003BE36D /* Deep_EnlargeController.swift in Sources */,
 				20AA6D7724301988006D59C3 /* ListController.swift in Sources */,
+				2063A87B245BEC5200BF0B25 /* View_0_ver2_Controller.swift in Sources */,
 				208C4E5923F8F25700A586FD /* Nine_x_NineController.swift in Sources */,
 				208C4E6123FB450100A586FD /* EnlergeController.swift in Sources */,
 				2040632723BF2335001D0BB5 /* SetV.swift in Sources */,

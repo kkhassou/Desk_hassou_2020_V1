@@ -66,6 +66,24 @@ class U {
         param_.st = hintArray[ranInt_2].content
         text_generate(param_:param_,nsText_:ns_content_,view_:view_,input_flag_:false,ajust_flag_:true,border_flag_:false)
     }
+    func random_hint_disp_ver2(param_:Param,hint_key_:String,ns_content_ : NSTextField ,view_ : NSView, realm_: Realm,befor_num_:Int)->Int{
+        var flag = true
+        let dbSelect = realm_.objects(Hint_Db_ver2.self).filter("theme == %@",hint_key_)
+        let hintArray:[Hint_Db_ver2] = Array(dbSelect) as! [Hint_Db_ver2]
+        var ranInt_2 = -99
+        while flag{
+            ranInt_2 = Int.random(in: 0 ... Array(dbSelect).count - 1)
+            if ranInt_2 != befor_num_{
+                flag = false
+            }
+            if flag == false{
+                break
+            }
+        }
+        param_.st = hintArray[ranInt_2].content
+        text_generate(param_:param_,nsText_:ns_content_,view_:view_,input_flag_:false,ajust_flag_:true,border_flag_:false)
+        return ranInt_2
+     }
     // 引数が多いが、便利に使えるようにしよう。
     func idea_count_disp(param_:Param,theme_st_ : String ,ns_count_ : NSTextField ,view_ : NSView, realm_: Realm,dbObj_:Object.Type){
         if theme_st_ != ""{
@@ -102,7 +120,7 @@ class U {
     }
     func disp_adjust(in_st : String , nstext : NSTextField ) -> String {
         var st = ""
-        if in_st.count > 95{
+        if in_st.count > 80{
             nstext.font = NSFont.systemFont(ofSize: CGFloat(13))
             var count = 1
             for one in in_st{
@@ -113,7 +131,7 @@ class U {
                 }
                 count = count + 1
             }
-        }else if in_st.count > 80{
+        }else if in_st.count > 65{
             nstext.font = NSFont.systemFont(ofSize: CGFloat(14))
             var count = 1
             for one in in_st{
@@ -124,7 +142,7 @@ class U {
                 }
                 count = count + 1
             }
-        }else if in_st.count > 65{
+        }else if in_st.count > 50{
             nstext.font = NSFont.systemFont(ofSize: CGFloat(16))
             var count = 1
             for one in in_st{
@@ -135,7 +153,7 @@ class U {
                 }
                 count = count + 1
             }
-        }else if in_st.count > 50{
+        }else if in_st.count > 35{
             nstext.font = NSFont.systemFont(ofSize: CGFloat(20))
             var count = 1
             for one in in_st{

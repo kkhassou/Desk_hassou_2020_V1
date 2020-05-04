@@ -157,6 +157,22 @@ class ListController: NSViewController, NSTableViewDelegate, NSTableViewDataSour
             
             var new_btn_p = Param(st_ :"新規作成",x_:190,y_:30,width_:160,height_:50,fontSize_:22)
             U().button_generate(param_:new_btn_p,viewCon_:self,view_:self.view,action: #selector(new_theme))
+        }else if m_to_page == "One_Brainstorming"{
+            let stocks = realm.objects(Idea_Stock_ver2.self).value(forKey: "theme") as! [String]
+            let orderedSet = NSOrderedSet(array: stocks)
+            db_stocks = orderedSet.array as! [String]
+            var return_page_btn_p = Param(st_ :"戻る",x_:10,y_:30,width_:80,height_:50,fontSize_:22)
+            U().button_generate(param_:return_page_btn_p,viewCon_:self,view_:self.view,action: #selector(return_page))
+            var select_btn_p = Param(st_ :"決定",x_:100,y_:30,width_:80,height_:50,fontSize_:22)
+            U().button_generate(param_:select_btn_p,viewCon_:self,view_:self.view,action: #selector(select_theme))
+            var new_btn_p = Param(st_ :"新規作成",x_:190,y_:30,width_:160,height_:50,fontSize_:22)
+            U().button_generate(param_:new_btn_p,viewCon_:self,view_:self.view,action: #selector(new_theme))
+        }else if m_to_page == "Hint_Category_List_ver2"{
+            let stocks = realm.objects(Hint_Db_ver2.self).value(forKey: "theme") as! [String]
+            let orderedSet = NSOrderedSet(array: stocks)
+            db_stocks = orderedSet.array as! [String]
+            var select_btn_p = Param(st_ :"決定",x_:10,y_:30,width_:75,height_:50,fontSize_:22)
+            U().button_generate(param_:select_btn_p,viewCon_:self,view_:self.view,action: #selector(select_theme))
         }
         tableview.action = #selector(onItemClicked)
     }
@@ -232,6 +248,9 @@ class ListController: NSViewController, NSTableViewDelegate, NSTableViewDataSour
                 }else if m_to_page == "Flows_List"{
                     var exitstIt = realm.objects(Flows_Theme_Db.self).filter("start_theme == %@",new_theme_input.stringValue)
                     exitstIt_count = exitstIt.count
+                }else if m_to_page == "One_Brainstorming"{
+                    var exitstIt = realm.objects(Idea_Stock_ver2.self).filter("theme == %@",new_theme_input.stringValue)
+                    exitstIt_count = exitstIt.count
                 }
                 if exitstIt_count == 0{
                     if m_to_page == "Concurrent_List"{
@@ -245,6 +264,12 @@ class ListController: NSViewController, NSTableViewDelegate, NSTableViewDataSour
                         UserDefaults.standard.synchronize()
                         self.dismiss(nil)
                         let next = storyboard?.instantiateController(withIdentifier: "Flows_Progress")
+                        self.presentAsModalWindow(next! as! NSViewController)
+                    }else if m_to_page == "One_Brainstorming"{
+                        UserDefaults.standard.set(new_theme_input.stringValue, forKey: "one_brainstorming_theme")
+                        UserDefaults.standard.synchronize()
+                        self.dismiss(nil)
+                        let next = storyboard?.instantiateController(withIdentifier: "One_Brainstorming")
                         self.presentAsModalWindow(next! as! NSViewController)
                     }
                 }else{
@@ -278,6 +303,8 @@ class ListController: NSViewController, NSTableViewDelegate, NSTableViewDataSour
             UserDefaults.standard.synchronize()
             let next = storyboard?.instantiateController(withIdentifier: "zero")
             self.presentAsModalWindow(next! as! NSViewController)
+            self.dismiss(nil)
+        }else if m_to_page == "One_Brainstorming"{
             self.dismiss(nil)
         }
     }
@@ -334,6 +361,18 @@ class ListController: NSViewController, NSTableViewDelegate, NSTableViewDataSour
                 UserDefaults.standard.synchronize()
                 self.dismiss(nil)
                 let next = storyboard?.instantiateController(withIdentifier: "Flows_Progress")
+                self.presentAsModalWindow(next! as! NSViewController)
+            }else if m_to_page == "One_Brainstorming"{
+                UserDefaults.standard.set(select_stock, forKey: "one_brainstorming_theme")
+                UserDefaults.standard.synchronize()
+                self.dismiss(nil)
+                let next = storyboard?.instantiateController(withIdentifier: "One_Brainstorming")
+                self.presentAsModalWindow(next! as! NSViewController)
+            }else if m_to_page == "Hint_Category_List_ver2"{
+                UserDefaults.standard.set(select_stock, forKey: "m_hint_category")
+                UserDefaults.standard.synchronize()
+                self.dismiss(nil)
+                let next = storyboard?.instantiateController(withIdentifier: "One_Brainstorming")
                 self.presentAsModalWindow(next! as! NSViewController)
             }
         }else{

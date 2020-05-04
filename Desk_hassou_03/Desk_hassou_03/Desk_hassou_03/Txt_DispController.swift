@@ -109,6 +109,17 @@ class Txt_DispController: NSViewController {
             for i in 0..<300{
                 text_content_st = text_content_st + "\n"
             }
+        }else if from_page == "One_Brainstorming"{
+            m_theme = UserDefaults.standard.object(forKey: "one_brainstorming_theme") as! String
+            let stocks = realm.objects(Idea_Stock_ver2.self).filter("theme == %@",m_theme).value(forKey: "idea") as! [String]
+            // indexの順番に並べる必要がある。
+            text_content_st = m_theme  + "\n"
+            for one in stocks{
+                text_content_st = text_content_st + "●" + one + "\n"
+            }
+            for i in 0..<3 {
+                text_content_st = text_content_st + "\n"
+            }
         }
         
         if from_page == "Combine_Random"{
