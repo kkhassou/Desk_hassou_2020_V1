@@ -18,7 +18,7 @@ class Txt_DispController: NSViewController {
     var text_content_st = ""
     var m_hint_content = NSTextField()
     var m_category_content = NSTextField()
-    
+    var from_page = ""
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.wantsLayer = true
@@ -27,7 +27,7 @@ class Txt_DispController: NSViewController {
         var scrollView = NSScrollView()//NSTextField()
         scrollView.frame = NSRect(x:10,y:10,width:1180,height:630)
         
-        var from_page = UserDefaults.standard.object(forKey: "from_page") as! String
+        from_page = UserDefaults.standard.object(forKey: "from_page") as! String
         
         m_theme = UserDefaults.standard.object(forKey: "theme") as! String
         if from_page == "Divided_Group_Disp" {
@@ -122,7 +122,7 @@ class Txt_DispController: NSViewController {
             }
         }
         
-        if from_page == "Combine_Random"{
+        if from_page == "Combine_Random" || from_page == "One_Brainstorming_Hint_Add"{
             var category_titel = NSTextField()
             category_titel.stringValue = "ヒントのカテゴリ"
             category_titel.frame = CGRect(x:10, y:10 , width:1200, height:25);
@@ -183,16 +183,33 @@ class Txt_DispController: NSViewController {
         let arr:[String] = str.components(separatedBy: "\n")
         for one in arr{
             if one != ""{
-                let exitstIt = realm.objects(Hint_Db.self).filter("theme == %@",m_category_content.stringValue).filter("content == %@",one)
-                    if exitstIt.count == 0{
-                    let hint_Db = Hint_Db()
-                    hint_Db.theme  = m_category_content.stringValue
-                    hint_Db.content = one
-                    try! realm.write() {
-                        realm.add(hint_Db)
+                if from_page == "Combine_Random" {
+                    let exitstIt = realm.objects(Hint_Db.self).filter("theme == %@",m_category_content.stringValue).filter("content == %@",one)
+                        if exitstIt.count == 0{
+                        let hint_Db = Hint_Db()
+                        hint_Db.theme  = m_category_content.stringValue
+                        hint_Db.content = one
+                        try! realm.write() {
+                            realm.add(hint_Db)
+                        }
                     }
+                }else if from_page == "One_Brainstorming_Hint_Add"{
+                    let exitstIt = realm.objects(Hint_Db_ver2.self).filter("theme == %@",m_category_content.stringValue).filter("content == %@",one)
+                        if exitstIt.count == 0{
+                        let hint_Db = Hint_Db_ver2()
+                        hint_Db.theme  = m_category_content.stringValue
+                        hint_Db.content = one
+                        try! realm.write() {
+                            realm.add(hint_Db)
+                        }
+                    }
+
                 }
             }
+        }
+        if from_page == "One_Brainstorming_Hint_Add"{
+            self.dismiss(nil)
+            U().screen_next(viewCon : self ,id:"One_Brainstorming" , storyboard:storyboard!)
         }
     }
 }

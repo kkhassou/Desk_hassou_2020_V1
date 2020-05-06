@@ -33,6 +33,16 @@ class One_BrainstormingController: NSViewController, NSTableViewDelegate, NSTabl
     override func viewDidLoad() {
         super.viewDidLoad()
         if false{
+            let dummy = realm.objects(Hint_Db_ver2.self).filter("theme == %@","業界一覧")
+            try! realm.write {
+                realm.delete(dummy)
+            }
+            let dummy2 = realm.objects(Hint_Db_ver2.self).filter("theme == %@","興味深い事_1")
+            try! realm.write {
+                realm.delete(dummy2)
+            }
+        }
+        if false{
             let dummy = realm.objects(Hint_Db_ver2.self)
             try! realm.write {
                 realm.delete(dummy)
@@ -83,7 +93,7 @@ class One_BrainstormingController: NSViewController, NSTableViewDelegate, NSTabl
         m_theme = UserDefaults.standard.object(forKey: "one_brainstorming_theme") as! String
         
         m_hint_category = UserDefaults.standard.object(forKey: "m_hint_category") as! String
-        
+
         var theme_title = NSTextField()
         var theme_title_p = Param(st_ :"テーマ",x_:650,y_:550,width_:100,height_:50,fontSize_:20)
         U().text_generate(param_:theme_title_p,nsText_:theme_title,view_:self.view,input_flag_:false,ajust_flag_:false,border_flag_:false)
@@ -97,9 +107,14 @@ class One_BrainstormingController: NSViewController, NSTableViewDelegate, NSTabl
         U().text_generate(param_:hint_title_p,nsText_:hint_title,view_:self.view,input_flag_:false,ajust_flag_:false,border_flag_:false)
         
         hint_category_select_btn = NSButton(title: "ヒントカテゴリ選択", target: self, action: #selector(hint_category_select_click))
-        hint_category_select_btn.frame = CGRect(x: 750, y: 400 , width: 200, height: 20)
+        hint_category_select_btn.frame = CGRect(x: 750, y: 400 , width: 200, height: 30)
         hint_category_select_btn.font = NSFont.systemFont(ofSize: 20)
         view.self.addSubview(hint_category_select_btn)
+        
+        var hint_add_btn = NSButton(title: "ヒントを追加", target: self, action: #selector(hint_add_click))
+        hint_add_btn.frame = CGRect(x: 950, y: 400 , width: 200, height: 30)
+        hint_add_btn.font = NSFont.systemFont(ofSize: 20)
+        view.self.addSubview(hint_add_btn)
         
         m_ran_int = U().random_hint_disp_ver2(param_:hint_content_p,hint_key_:m_hint_category,ns_content_ : hint_content,view_ : self.view, realm_: realm,befor_num_: m_ran_int)
         
@@ -115,7 +130,7 @@ class One_BrainstormingController: NSViewController, NSTableViewDelegate, NSTabl
         U().button_generate(param_:ramdom_store_btn_p,viewCon_:self,view_:self.view,action: #selector(randam_store_click))
         
         var text_disp_btn_p = Param(st_ :"テキスト表示",x_:620,y_:20,width_:180,height_:50,fontSize_:20)
-        U().button_generate(param_:text_disp_btn_p,viewCon_:self,view_:self.view,action: #selector(text_disp))
+        U().button_generate(param_:text_disp_btn_p,viewCon_:self,view_:self.view,action: #selector(text_disp_click))
         
         let stocks = realm.objects(Idea_Stock_ver2.self).filter("theme == %@",m_theme).value(forKey: "idea") as! [String]
         let orderedSet = NSOrderedSet(array: stocks)
@@ -172,9 +187,16 @@ class One_BrainstormingController: NSViewController, NSTableViewDelegate, NSTabl
             self.presentAsModalWindow(next! as! NSViewController)
             self.dismiss(nil)
     }
-    @objc func text_disp(_ sender: CustomNSButton){
+    @objc func text_disp_click(_ sender: CustomNSButton){
         UserDefaults.standard.set("One_Brainstorming", forKey: "from_page")
         UserDefaults.standard.synchronize()
+        let next = storyboard?.instantiateController(withIdentifier: "Txt_Disp")
+        self.presentAsModalWindow(next! as! NSViewController)
+    }
+    @objc func hint_add_click(_ sender: NSButton) {
+        UserDefaults.standard.set("One_Brainstorming_Hint_Add", forKey: "from_page")
+        UserDefaults.standard.synchronize()
+        self.dismiss(nil)
         let next = storyboard?.instantiateController(withIdentifier: "Txt_Disp")
         self.presentAsModalWindow(next! as! NSViewController)
     }
